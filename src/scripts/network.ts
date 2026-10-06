@@ -37,7 +37,7 @@ export function initNetwork() {
   const group = new Group();
   scene.add(group);
 
-  const N = 190;
+  const N = 360;
   const K = skills.length;
   const R = 3.2;
   const rnd = (a: number, b: number) => a + Math.random() * (b - a);
@@ -67,12 +67,13 @@ export function initNetwork() {
   }
   const ctr = categories.map((_, c) => {
     const a = (c / categories.length) * Math.PI * 2;
-    return [Math.cos(a) * 2.9, c % 2 ? 0.9 : -0.9, Math.sin(a) * 2.9];
+    const ring = 2.7 + categories.length * 0.05;
+    return [Math.cos(a) * ring, c % 2 ? 0.9 : -0.9, Math.sin(a) * ring];
   });
   for (let i = 0; i < N; i++) {
     const cc = ctr[cat[i]];
     const u = Math.random(), v = Math.random() * 2 - 1, ph = Math.random() * Math.PI * 2;
-    const rr = Math.cbrt(u) * 1.05, sq = Math.sqrt(1 - v * v);
+    const rr = Math.cbrt(u) * 0.95, sq = Math.sqrt(1 - v * v);
     F[1][i * 3] = cc[0] + rr * sq * Math.cos(ph); F[1][i * 3 + 1] = cc[1] + rr * v; F[1][i * 3 + 2] = cc[2] + rr * sq * Math.sin(ph);
   }
   for (let i = 0; i < N; i++) {
@@ -184,6 +185,7 @@ export function initNetwork() {
   const wts = [1, 0, 0, 0];
   let fromW = [1, 0, 0, 0], toW = [1, 0, 0, 0];
   let hl = -1, hold = false, nextAt = 3;
+  let targetRot: number | null = null; // when a discipline is picked, turn its cluster to face the viewer
   const ease = (t: number) => (t < 0 ? 0 : t > 1 ? 1 : t * t * (3 - 2 * t));
   const t00 = performance.now();
   const clock = () => (performance.now() - t00) / 1000;
@@ -193,6 +195,14 @@ export function initNetwork() {
   }
   function setHL(c: number, now: number) {
     hl = c; setColors(c); hold = c >= 0;
+    if (c >= 0) {
+      const a = (c / categories.length) * Math.PI * 2;
+      let t = a - Math.PI / 2;
+      const TWO = Math.PI * 2;
+      t += Math.round((rotY - t) / TWO) * TWO; // nearest turn
+      targetRot = t;
+      if (reduce) rotY = t;
+    } else targetRot = null;
     btns.forEach((b, i) => { b.classList.toggle("on", i === c); b.setAttribute("aria-pressed", String(i === c)); });
     if (c >= 0) go(1, now, reduce);
     else { nextAt = now + 1.4; if (reduce) go(0, now, true); }
@@ -222,7 +232,7 @@ export function initNetwork() {
     const rect = wrap!.getBoundingClientRect(), par = parent.getBoundingClientRect();
     const px = rect.left - par.left + (v3.x * 0.5 + 0.5) * w + 8, py = rect.top - par.top + (-v3.y * 0.5 + 0.5) * h - 8;
     el.style.transform = `translate(${px}px,${py}px)`;
-    const o = Math.max(0, Math.min(1, (depth - 0.2) / 2.6)) * op;
+    const o = Math.max(0, Math.min(1, (depth - 0.9) / 2.2)) * op;
     el.style.opacity = String(o);
     el.style.visibility = o < 0.04 ? "hidden" : "visible";
   }
@@ -230,7 +240,9 @@ export function initNetwork() {
     const dt = Math.min(0.1, Math.max(0, now - lastNow));
     lastNow = now;
     const off = isOff();
-    if (!off) { rotY += dt * (hold ? 0.03 : 0.07); pulseT += dt * 0.16; }
+    if (targetRot !== null) rotY += (targetRot - rotY) * Math.min(1, dt * 2.2);
+    else if (!off) rotY += dt * 0.07;
+    if (!off) pulseT += dt * 0.16;
     if (!hold && !reduce && !off && now > nextAt && now - t0 > dur + 3.2) { go((form + 1) % 4, now); nextAt = now + 1; }
     const s = ease((now - t0) / dur);
     for (let n = 0; n < (N + 1) * 3; n++) cur[n] = from[n] + (to[n] - from[n]) * s;
@@ -241,6 +253,9 @@ export function initNetwork() {
     }
     for (let n = 0; n < (N + 1) * 3; n++) colArr[n] += (colTarget[n] - colArr[n]) * 0.12;
     colAttr.needsUpdate = true;
+    // keep the whole picked cluster inside the canvas: slide the cloud left while a discipline is held
+    const baseX = window.innerWidth > 1000 ? 1.3 : 0;
+    group.position.x += ((hold ? baseX - 1.5 : baseX) - group.position.x) * Math.min(1, dt * 2.2);
     group.rotation.y = rotY + mx * 0.35;
     group.rotation.x = my * 0.2;
     group.updateMatrixWorld(true);
