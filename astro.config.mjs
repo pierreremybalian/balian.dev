@@ -10,5 +10,9 @@ export default defineConfig({
   devToolbar: { enabled: false },
   integrations: [sitemap()],
   // Pre-bundle three up front so the dev server does not re-optimise it mid-session.
-  vite: { optimizeDeps: { include: ["three"] } },
+  vite: {
+    optimizeDeps: { include: ["three"] },
+    // Never inline assets as data: URIs, so the CSP can keep font-src and img-src strict.
+    build: { assetsInlineLimit: 0 },
+  },
 });

@@ -20,13 +20,32 @@ npm run preview
 
 `npm run pages:dev` builds and serves the site with Wrangler, including the `/api/contact` Pages Function.
 
-## Deploy (not done yet)
+## Deploy
+
+Nothing has been deployed yet. Preflight is done: lints, type check, build, and a local Pages run (`npm run pages:dev`) that checked the headers, CSP, 404, trailing-slash redirects and the contact function.
+
+`npm run build` runs the copy lint, the SEO lint, `astro build`, then `scripts/headers.mjs`, which writes `dist/_headers` (security headers, a Content-Security-Policy with script hashes computed from the built HTML, and immutable caching for `/_astro/*`).
+
+One-time setup:
 
 ```bash
-npm run deploy
+npx wrangler pages project create balian-dev --production-branch main
+npx wrangler pages secret put RESEND_API_KEY --project-name balian-dev
+npx wrangler pages secret put CONTACT_TO --project-name balian-dev
+npx wrangler pages secret put CONTACT_FROM --project-name balian-dev
 ```
 
-Creates or updates the `balian-dev` Cloudflare Pages project from `dist/`. Nothing has been deployed or pushed.
+`CONTACT_FROM` must be on a domain verified in Resend.
+
+Deploy:
+
+```bash
+PUBLIC_BOOKING_URL="https://your-booking-link" npm run deploy
+```
+
+`PUBLIC_BOOKING_URL` is read at build time. Leave it unset and the call-to-action buttons go to `/contact/`.
+
+Then add the custom domain in the Cloudflare dashboard (Workers & Pages, balian-dev, Custom domains): `balian.dev`, and `www.balian.dev` if wanted. The zone is already on Cloudflare. To deploy on every push instead, connect the GitHub repo to the Pages project with build command `npm run build`, output `dist`, and `NODE_VERSION=22`.
 
 ## Structure
 
