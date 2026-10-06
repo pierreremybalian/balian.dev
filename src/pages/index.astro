@@ -1,0 +1,171 @@
+---
+import Base from "../layouts/Base.astro";
+import Faq from "../components/Faq.astro";
+import Timeline from "../components/Timeline.astro";
+import { site } from "../data/site";
+import { serviceGroups } from "../data/services";
+import { stacks, categories, skills } from "../data/skills";
+import { generalFaq } from "../data/faq";
+import { caseStudies } from "../data/work";
+import { professionalService, website, faqPage } from "../lib/schema";
+import { copy } from "../data/ledes";
+import { seo } from "../data/seo";
+
+const termLines = [
+  '<span class="dim">ai</span>     drafted approve-change.ts',
+  '<span class="no">review</span> ✗ change is applied before the approval check',
+  '<span class="sg">fix</span>    approval gate added on the server',
+  '<span class="ok">tests</span>  ✓ passed',
+  '<span class="ok">verify</span> ✓ result checked against live state',
+];
+---
+<Base
+  title={seo.home.title}
+  description={seo.home.description}
+  schema={[professionalService(), website(), faqPage(generalFaq)]}
+>
+  <section class="hero" id="hero">
+    <div id="gl" aria-hidden="true"></div>
+    <div class="sr-only">
+      <h2>Skills by discipline</h2>
+      <ul>{categories.map((c, i) => <li>{c}: {skills.filter((s) => s[1] === i).map((s) => s[0]).join(", ")}</li>)}</ul>
+    </div>
+    <div class="in">
+      <span class="label">Web engineering · AI-directed · Stack-agnostic</span>
+      <h1 style="margin-top:24px">Agency-level web engineering, <b>without the agency.</b></h1>
+      <p class="lead">{copy.home.lede}</p>
+      <div class="btns">
+        <a class="btn" href={site.bookingUrl}>Book a 30-minute call</a>
+        <a class="lnk" href="/process/">See how a project runs</a>
+      </div>
+    </div>
+    <div class="legend" role="group" aria-label="Regroup the animated skills network by discipline">
+      <div class="in"><span class="label">Skills by discipline</span><div id="lg" style="display:contents"></div></div>
+    </div>
+  </section>
+
+  <section class="sec" id="model">
+    <div class="in">
+      <span class="label">The model</span>
+      <h2>Six handoffs become one engineer.</h2>
+      <div class="cmp rv">
+        <div class="side">
+          <span class="label">A typical agency</span>
+          <div class="chips"><span class="chip">Strategist</span><span class="arr">→</span><span class="chip">Designer</span><span class="arr">→</span><span class="chip">Developer</span><span class="arr">→</span><span class="chip">Project manager</span><span class="arr">→</span><span class="chip">Account manager</span><span class="arr">→</span><span class="chip">QA</span></div>
+          <p class="cap">Each handoff adds hours, delay and a message to relay.</p>
+        </div>
+        <div class="side">
+          <span class="label" style="color:var(--sig)">An agency of one</span>
+          <div class="chips"><span class="chip me">One senior engineer + directed AI</span></div>
+          <p class="cap">The same work, with fewer handoffs and direct attention to every decision.</p>
+        </div>
+      </div>
+      <p class="intro" style="margin-top:36px">Agencies bill for a team. AI changed what one person can deliver, and experience is what makes that safe. <a class="lnk" href="/about/">How the model works</a></p>
+    </div>
+  </section>
+
+  <section class="sec" id="services">
+    <div class="in">
+      <span class="label">Services</span>
+      <h2>Whatever the problem needs, in the stack that fits.</h2>
+      <div class="sgrid">
+        {serviceGroups.map((s) => (
+          <a class="sc rv" href={s.href}>
+            <svg viewBox="0 0 34 34" aria-hidden="true" set:html={s.icon} />
+            <h3>{s.name}</h3>
+            <p>{s.short}</p>
+            <span class="go">Explore</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="how">
+    <div class="in">
+      <span class="label">How I work</span>
+      <h2>I read the code the AI writes.</h2>
+      <div class="hgrid">
+        <div class="rv">
+          <p>I do not sell a framework. AI handles the syntax and the API detail in whatever stack the problem calls for. Two decades of experience mean I can tell when it is going the wrong way.</p>
+          <div class="two">
+            <div><h3>The AI handles</h3><span>Syntax, boilerplate, API details, first drafts, test scaffolding.</span></div>
+            <div><h3>I decide</h3><span>Architecture, trade-offs, security, and what ships.</span></div>
+          </div>
+          <p style="margin-top:28px;margin-bottom:0"><a class="lnk" href="/services/ai-assisted-engineering/">How AI-assisted engineering works</a></p>
+        </div>
+        <div class="term" role="group" aria-label="Review log: an AI draft is reviewed, rejected, fixed and verified">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+          <pre id="term" set:html={termLines.join("\n")}></pre>
+        </div>
+      </div>
+      <ul class="stack" aria-label="Stacks I work in">{stacks.map((s) => <li>{s}</li>)}</ul>
+    </div>
+  </section>
+
+  <section class="sec" id="process">
+    <div class="in">
+      <span class="label">Process</span>
+      <h2>Thirteen stages, with your sign-off at every gate.</h2>
+      <p class="intro">Design comes before build. You see three directions, choose one, and refine it before a line of production code is written.</p>
+      <Timeline />
+      <p style="margin-top:40px"><a class="lnk" href="/process/">The process in detail</a></p>
+    </div>
+  </section>
+
+  <section class="sec" id="work">
+    <div class="in">
+      <span class="label">Work</span>
+      <h2>Two products of my own, built and run in production.</h2>
+      <p class="intro">For ten years I worked as an employee, so most of my client work is not mine to show. These two are.</p>
+      <div class="wgrid">
+        <div class="wp rv">
+          <div class="vis"><div class="gatecard"><span><b>proposed</b> rate-limit rule, /login</span><span class="st2">status: </span><div class="row"><span class="a">Reject</span><span class="a y">Approve</span></div></div></div>
+          <div class="body"><span class="label">{caseStudies[0].status}</span><h3>{caseStudies[0].name}</h3><p>{caseStudies[0].short}</p><a class="lnk" href="/work/zonesteward/">Read the case study</a></div>
+        </div>
+        <div class="wp rv">
+          <div class="vis"><div class="banner"><span>We use cookies to measure and improve this site.</span><div class="row"><div class="tg"></div><span>Analytics</span></div><div class="btns2"><i>Reject all</i><i>Save choices</i></div></div></div>
+          <div class="body"><span class="label">{caseStudies[1].status}</span><h3>{caseStudies[1].name}</h3><p>{caseStudies[1].short}</p><a class="lnk" href="/work/cookiesteward/">Read the case study</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Faq items={generalFaq} />
+
+  <section class="close">
+    <div class="in">
+      <h2>Tell me what you're building.</h2>
+      <div class="btns"><a class="btn" href={site.bookingUrl}>Book a 30-minute call</a></div>
+    </div>
+  </section>
+
+  <script>
+    // network hero: three.js loads lazily, after first paint
+    const start = () => import("../scripts/network").then((m) => m.initNetwork());
+    if ("requestIdleCallback" in window) (window as any).requestIdleCallback(start, { timeout: 1200 });
+    else setTimeout(start, 200);
+
+    // terminal: the review log types in once, when it scrolls into view. Full text is in the HTML for everyone else.
+    const term = document.getElementById("term");
+    if (term && !window.matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
+      const lines = term.innerHTML.split("\n");
+      const io = new IntersectionObserver((es) => {
+        if (!es[0].isIntersecting) return;
+        io.disconnect();
+        term.innerHTML = "";
+        let i = 0;
+        const next = () => {
+          if (i >= lines.length) {
+            term.insertAdjacentHTML("beforeend", '\n<span class="caret"></span>');
+            return;
+          }
+          term.insertAdjacentHTML("beforeend", (i ? "\n" : "") + lines[i++]);
+          setTimeout(next, i === 2 ? 900 : 650);
+        };
+        next();
+      }, { threshold: 0.4 });
+      io.observe(term);
+    }
+  </script>
+</Base>

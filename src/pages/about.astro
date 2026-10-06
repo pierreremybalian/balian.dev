@@ -1,0 +1,90 @@
+---
+import Base from "../layouts/Base.astro";
+import Faq from "../components/Faq.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { stacks } from "../data/skills";
+import { generalFaq } from "../data/faq";
+import { aboutPage, breadcrumbs } from "../lib/schema";
+import { seo } from "../data/seo";
+import { copy } from "../data/ledes";
+
+const moves = [
+  { t: "Agencies bill for a team.", p: "Strategists, designers, developers, project managers and account managers each add hours and handoffs to what you pay." },
+  { t: "AI changed what one person can deliver.", p: "Drafting, scaffolding, testing and documentation that once took a team now take one engineer directing capable tools." },
+  { t: "Experience is what makes it safe.", p: "I wrote software before these tools existed. I can read the code, see when the AI is heading the wrong way, and correct it." },
+  { t: "The result is better for you.", p: "Faster delivery, a lower cost, and the person doing the work in every conversation." },
+];
+---
+<Base
+  title={seo.about.title}
+  description={seo.about.description}
+  schema={[aboutPage(), breadcrumbs([{ name: "Home", path: "/" }, { name: "About", path: "/about/" }])]}
+>
+  <section class="phero">
+    <div class="in">
+      <p class="crumb">About</p>
+      <h1>{copy.about.h1}</h1>
+      <p class="lede">{copy.about.lede}</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="in">
+      <span class="label">The argument</span>
+      <h2>Why one person can do what a team does.</h2>
+      <ul class="items" style="max-width:none;margin-top:48px">
+        {moves.map((m) => <li class="rv"><b style="font-size:1.35rem">{m.t}</b><span style="font-size:17px">{m.p}</span></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <div class="in">
+    <section class="prose">
+      <h2>What one person covers</h2>
+      <div class="body rv">
+        <p>Discovery and research, content strategy, design, development, quality checks, launch and support. You talk to the person doing the work, so decisions are not relayed through an account manager, and the person who designed it is the one who builds it.</p>
+        <p>The process is the same one an agency would run, with the same approval gates. What changes is who is in it.</p>
+      </div>
+    </section>
+    <section class="prose">
+      <h2>Where this model is not the right fit</h2>
+      <div class="body rv">
+        <p>One person is the wrong choice for some work, and I would rather say so than take it.</p>
+        <ul class="plainlist">
+          <li>Large programs with many parallel workstreams and hard simultaneous deadlines</li>
+          <li>Round-the-clock operations coverage</li>
+          <li>Procurement that requires a vendor of a particular size</li>
+        </ul>
+      </div>
+    </section>
+    <section class="prose">
+      <h2>What if I am unavailable?</h2>
+      <div class="body rv">
+        <p>It is the fair question to ask about a solo engineer, and the answer is built into how I work.</p>
+        <ul class="plainlist">
+          <li>You own the code, the repositories and the accounts</li>
+          <li>Everything is documented for the next engineer, not for me</li>
+          <li>Automated tests protect the behaviour that matters</li>
+          <li>Handover is a defined step, not an afterthought</li>
+        </ul>
+      </div>
+    </section>
+    <section class="prose">
+      <h2>Why there is not more to show</h2>
+      <div class="body rv">
+        <p>For about ten years I was an employee at an agency. Nearly everything I built there belongs to the clients and the company, so I cannot show it here, and I will not pass it off as my own.</p>
+        <p>What I can show is the software I build on my own time, the process I follow and the way I work. If you want to know what a decade of production work looks like, ask me on a call.</p>
+      </div>
+    </section>
+    <section class="prose">
+      <h2>The person</h2>
+      <div class="body rv">
+        <p>I am Pierre Balian, a web engineer in Minneapolis with more than twenty years of experience building websites, commerce systems and web applications. I work across TypeScript, PHP, Python and SQL, on WordPress, Next.js, Astro and Cloudflare, and I build and run my own products, ZoneSteward and CookieSteward.</p>
+        <ul class="stack" style="margin-top:8px">{stacks.map((s) => <li>{s}</li>)}</ul>
+      </div>
+    </section>
+  </div>
+
+  <Faq items={generalFaq} />
+  <CtaBand />
+</Base>

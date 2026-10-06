@@ -1,0 +1,57 @@
+---
+import Base from "../../layouts/Base.astro";
+import Faq from "../../components/Faq.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import ServiceBody from "../../components/ServiceBody.astro";
+import { servicePages } from "../../data/services";
+import { site } from "../../data/site";
+import { service, faqPage, breadcrumbs } from "../../lib/schema";
+import { seo } from "../../data/seo";
+
+export function getStaticPaths() {
+  return servicePages.map((p) => ({ params: { slug: p.slug }, props: { page: p } }));
+}
+const { page } = Astro.props;
+const path = `/services/${page.slug}/`;
+const meta = seo[page.slug];
+const trail = [
+  { name: "Home", path: "/" },
+  { name: "Services", path: "/services/" },
+  ...(page.parent ? [{ name: page.parent.label, path: page.parent.href }] : []),
+  { name: page.serviceName, path },
+];
+---
+<Base
+  title={meta.title}
+  description={meta.description}
+  schema={[service(page.serviceName, meta.description, path), faqPage(page.faq), breadcrumbs(trail)]}
+>
+  <section class="phero">
+    <div class="in">
+      <p class="crumb">
+        <a href="/services/">Services</a>
+        {page.parent && <><span>/</span><a href={page.parent.href}>{page.parent.label}</a></>}
+      </p>
+      <h1>{page.h1}</h1>
+      <p class="lede">{page.lede}</p>
+      <div class="btns">
+        <a class="btn" href={site.bookingUrl}>Book a 30-minute call</a>
+        <a class="lnk" href="/process/">How a project runs</a>
+      </div>
+    </div>
+  </section>
+
+  <ServiceBody blocks={page.blocks} />
+
+  <section class="pwrap">
+    <div class="in">
+      <h2>Related</h2>
+      <div class="related">
+        {page.related.map((r) => <a href={r.href}>{r.label}</a>)}
+      </div>
+    </div>
+  </section>
+
+  <Faq items={page.faq} />
+  <CtaBand />
+</Base>

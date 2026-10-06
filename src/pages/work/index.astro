@@ -1,0 +1,41 @@
+---
+import Base from "../../layouts/Base.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { caseStudies } from "../../data/work";
+import { breadcrumbs, collectionPage } from "../../lib/schema";
+import { copy } from "../../data/ledes";
+import { seo } from "../../data/seo";
+---
+<Base
+  title={seo.work.title}
+  description={seo.work.description}
+  schema={[collectionPage(caseStudies.map((c) => ({ name: c.name, path: `/work/${c.slug}/` }))), breadcrumbs([{ name: "Home", path: "/" }, { name: "Work", path: "/work/" }])]}
+>
+  <section class="phero">
+    <div class="in">
+      <p class="crumb">Work</p>
+      <h1>{copy.work.h1}</h1>
+      <p class="lede">{copy.work.lede}</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="in">
+      <h2 class="sr-only">Products</h2>
+      <div class="wgrid" style="margin-top:0">
+        {caseStudies.map((c) => (
+          <div class="wp rv">
+            <div class="body" style="padding-top:34px">
+              <span class="label">{c.status}</span>
+              <h3>{c.name}</h3>
+              <p>{c.short}</p>
+              <a class="lnk" href={`/work/${c.slug}/`}>Read the case study</a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand heading="Have something to build?" text="If you are weighing a product, a rebuild or an AI feature, the first call is a good place to start." />
+</Base>

@@ -1,0 +1,63 @@
+---
+import Base from "../../layouts/Base.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { serviceGroups, hubSections } from "../../data/services";
+import { site } from "../../data/site";
+import { breadcrumbs } from "../../lib/schema";
+import { copy } from "../../data/ledes";
+import { seo } from "../../data/seo";
+---
+<Base
+  title={seo.services.title}
+  description={seo.services.description}
+  schema={[breadcrumbs([{ name: "Home", path: "/" }, { name: "Services", path: "/services/" }])]}
+>
+  <section class="phero">
+    <div class="in">
+      <p class="crumb">Services</p>
+      <h1>{copy.services.h1}</h1>
+      <p class="lede">{copy.services.lede}</p>
+      <div class="btns"><a class="btn" href={site.bookingUrl}>Book a 30-minute call</a><a class="lnk" href="/process/">How a project runs</a></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="in">
+      <h2 class="sr-only">Services</h2>
+      <div class="sgrid" style="margin-top:0">
+        {serviceGroups.map((s) => (
+          <a class="sc rv" href={s.href}>
+            <svg viewBox="0 0 34 34" aria-hidden="true" set:html={s.icon} />
+            <h3>{s.name}</h3>
+            <p>{s.short}</p>
+            <span class="go">Explore</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {hubSections.map((h) => (
+    <section class="pwrap" id={h.id}>
+    <div class="in">
+        <h2>{h.name}</h2>
+        <div class="body rv">
+          <p>{h.text}</p>
+          <ul class="plainlist">{h.bullets.map((b) => <li>{b}</li>)}</ul>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="pwrap">
+    <div class="in">
+      <h2>How I build</h2>
+      <div class="body rv">
+        <p>Across every service, AI handles syntax and API detail, and a person with twenty years of experience reads, tests and decides what ships. It is why one engineer can cover what a team does.</p>
+        <div class="related"><a href="/services/ai-assisted-engineering/">AI-assisted engineering</a><a href="/services/wordpress-development/">WordPress development</a><a href="/process/">The process</a></div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>

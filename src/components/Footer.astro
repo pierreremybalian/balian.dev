@@ -1,0 +1,9 @@
+---
+import { nav, site } from "../data/site";
+---
+<footer class="site">
+  <span>{site.brand} · {site.location} · <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></span>
+  <nav aria-label="Footer">
+    {nav.filter((n) => n.href !== "/").map((n) => <a href={n.href}>{n.label}</a>)}
+  </nav>
+</footer>

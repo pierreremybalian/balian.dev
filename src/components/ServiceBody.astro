@@ -1,0 +1,21 @@
+---
+import type { Block } from "../data/services";
+interface Props { blocks: Block[] }
+const { blocks } = Astro.props;
+---
+<div class="in">
+  {blocks.map((b) => (
+    <section class="prose">
+      <h2>{b.h2}</h2>
+      <div class="body rv">
+        {b.paras?.map((p) => <p>{p}</p>)}
+        {b.items && (
+          <ul class="items">
+            {b.items.map((i) => <li><b>{i.title}</b><span>{i.text}</span></li>)}
+          </ul>
+        )}
+        {b.bullets && <ul class="plainlist">{b.bullets.map((t) => <li>{t}</li>)}</ul>}
+      </div>
+    </section>
+  ))}
+</div>

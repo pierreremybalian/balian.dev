@@ -1,0 +1,24 @@
+---
+import { stages } from "../data/process";
+interface Props { detailed?: boolean }
+const { detailed = false } = Astro.props;
+let lastGroup = "";
+---
+<ol class="tl" id="tl" aria-label="Project stages">
+  <li class="tl-line" aria-hidden="true"></li><li class="tl-fill" id="tlfill" aria-hidden="true"></li>
+  {stages.map((s) => {
+    const showGroup = s.group !== lastGroup;
+    lastGroup = s.group;
+    return (
+      <li class:list={["st", { key: s.key }]}>
+        <span class="g" style={s.key ? "color:var(--sig)" : undefined}>{showGroup ? s.group : ""}</span>
+        <span class="dot" aria-hidden="true"></span>
+        <div class="c">
+          <h3><span class="n">{String(s.n).padStart(2, "0")}</span>{s.name}{s.gate && <span class="gate">Your approval</span>}</h3>
+          <p>{detailed ? s.detail : s.text}</p>
+          {detailed && <p class="label" style="margin-top:12px">You get: <span style="color:var(--soft);text-transform:none;letter-spacing:0;font-family:var(--sans);font-size:15px">{s.youGet}</span></p>}
+        </div>
+      </li>
+    );
+  })}
+</ol>

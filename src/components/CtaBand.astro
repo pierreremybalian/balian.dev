@@ -1,0 +1,15 @@
+---
+import { site } from "../data/site";
+interface Props { heading?: string; text?: string }
+const { heading = "Tell me what you're building.", text } = Astro.props;
+---
+<section class="cta-band">
+  <div class="in">
+    <h2>{heading}</h2>
+    {text && <p class="intro" style="margin:-8px 0 32px;color:var(--soft);max-width:52ch">{text}</p>}
+    <div class="btns">
+      <a class="btn" href={site.bookingUrl}>Book a 30-minute call</a>
+      <a class="lnk" href="/process/">See how a project runs</a>
+    </div>
+  </div>
+</section>

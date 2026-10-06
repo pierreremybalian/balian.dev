@@ -1,0 +1,56 @@
+---
+import Base from "../layouts/Base.astro";
+import Faq from "../components/Faq.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Timeline from "../components/Timeline.astro";
+import { stages } from "../data/process";
+import { breadcrumbs, faqPage } from "../lib/schema";
+import { copy } from "../data/ledes";
+import { seo } from "../data/seo";
+import type { Faq as FaqItem } from "../data/faq";
+
+const faq: FaqItem[] = [
+  { q: "How long does a project take?", a: "It depends on scope, and the proposal states a timeline you can approve. The gates are there so that timeline is based on decisions you have already made." },
+  { q: "What if I do not like any of the three directions?", a: "Say so and say why. The feedback shapes the next round, and you are not charged for being specific about what is wrong. Often the answer is a mix of parts from two directions." },
+  { q: "How many revision rounds do I get?", a: "Refinement continues until the design is right. The proposal sets the expectations, and in practice a clear approver on your side keeps rounds short." },
+  { q: "Can we skip stages?", a: "Some projects compress them, but design before build and your approval at the gates stay. They are what keep the cost of changes low." },
+  { q: "Does this work for a web app, not just a website?", a: "Yes. Content and copy stages give way to product scoping and iterative delivery, and the design gates stay the same." },
+];
+const gates = stages.filter((s) => s.gate).length;
+---
+<Base
+  title={seo.process.title}
+  description={seo.process.description}
+  schema={[faqPage(faq), breadcrumbs([{ name: "Home", path: "/" }, { name: "Process", path: "/process/" }])]}
+>
+  <section class="phero">
+    <div class="in">
+      <p class="crumb">Process</p>
+      <h1>{copy.process.h1}</h1>
+      <p class="lede">{copy.process.lede}</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="in">
+      <span class="label">The stages</span>
+      <h2>What happens, and what you get.</h2>
+      <Timeline detailed />
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="in">
+      <span class="label">Design before build</span>
+      <h2>Why the design stages come first.</h2>
+      <div class="pgrid rv" style="margin-top:48px">
+        <div class="pcell"><h3>Three real choices</h3><p>The styleframes use your actual content and differ in mood, type and layout. You react to something concrete instead of a mood board.</p></div>
+        <div class="pcell"><h3>Feedback goes into the system</h3><p>When you say what to change, it is applied to the design system, so the fix shows up everywhere it applies.</p></div>
+        <div class="pcell"><h3>Cheap to change, then expensive</h3><p>Changing a design is quick. Changing a built site is not. The gates put the decisions where changes cost least.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faq} />
+  <CtaBand heading="Ready to start with a call?" />
+</Base>
