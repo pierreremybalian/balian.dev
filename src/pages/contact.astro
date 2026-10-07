@@ -25,8 +25,8 @@ import { copy } from "../data/ledes";
       <h2 style="margin-bottom:12px">Pick a 30-minute slot.</h2>
       <p class="note" id="book-note">Times are shown in your time zone. Calls are on Google Meet.</p>
       <div class="book">
-        <div class="days" id="book-days" aria-label="Days with open slots"></div>
-        <div class="slots" id="book-slots" aria-label="Open times"><span class="note">Loading open days...</span></div>
+        <div class="group"><span class="label" id="book-days-label">Day</span><div class="days" id="book-days" aria-labelledby="book-days-label"></div></div>
+        <div class="group"><span class="label" id="book-slots-label">Time</span><div class="slots" id="book-slots" aria-labelledby="book-slots-label"><span class="note">Loading open days...</span></div></div>
         <p class="note" id="book-empty" hidden>No open slots in the next three weeks. Email me and we will find one.</p>
         <form class="form" id="book-form" hidden novalidate>
           <p class="chosen" id="book-chosen"></p>
