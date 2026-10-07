@@ -20,7 +20,7 @@ export const serviceGroups: ServiceGroup[] = [
     short: "Multi-tenant products with accounts, billing and a release process you can run.",
     icon: '<path d="M17 4l12 6v14l-12 6-12-6V10z"/><path d="M17 16l12-6M17 16L5 10M17 16v14"/>' },
   { id: "ai", name: "AI features and agents", href: "/services/ai-integration/",
-    short: "The model proposes, a person approves, and the system checks the result.",
+    short: "Data processing, dashboards and system integrations where AI does the tedious part and a person checks what matters.",
     icon: '<circle cx="17" cy="17" r="5"/><path d="M17 3v6M17 25v6M3 17h6M25 17h6M7 7l4 4M23 23l4 4M27 7l-4 4M11 23l-4 4"/>' },
   { id: "integrations", name: "Integrations and automation", href: "/services/#integrations-and-automation",
     short: "Store, ERP, accounting and CRM connected, plus internal tools for the manual jobs.",
@@ -273,12 +273,26 @@ export const servicePages: ServicePage[] = [
     serviceName: "AI integration",
     blocks: [
       {
-        h2: "What works well",
+        h2: "Where AI pays off",
+        paras: ["The best candidates are jobs that are tedious for people, have a clear right answer, and happen often. The model does the reading and matching. Code does the validation and the writes. A person checks the cases that matter."],
         items: [
-          { title: "Drafting and summarising", text: "First drafts and summaries that a person edits and approves." },
-          { title: "Classification and triage", text: "Sorting requests, tickets or content so people see the important ones first." },
-          { title: "Search and answers", text: "Finding and explaining things in your own content." },
-          { title: "Internal tools", text: "Small tools that remove repetitive work from a team." },
+          { title: "Data processing", text: "Orders, invoices, product feeds, spreadsheets and PDFs that arrive in the wrong shape. The model extracts and normalises them and flags what it is unsure of. Clean records go into your system through a validated path." },
+          { title: "CRM, ERP and EDI integrations", text: "Connections where the field mapping is messy and the exceptions pile up. AI handles the fuzzy matching and the exception notes. Code handles every write, with a record of what happened." },
+          { title: "Dashboards and analytics", text: "Ask a question in plain English and get a chart. The model writes the query, code computes the numbers, and every figure in the answer traces back to the data." },
+          { title: "Classification and triage", text: "Support requests, leads, documents, products. The model proposes a category with a confidence score, and a person approves the ones that matter." },
+          { title: "Content from your data", text: "Alt text, product descriptions, summaries and first drafts generated from records you already hold, reviewed before they ship." },
+          { title: "Internal tools and agents", text: "Small tools that take a recurring job off someone's plate, with a defined scope, a log of what they did, and an off switch." },
+        ],
+      },
+      {
+        h2: "How I keep it reliable",
+        bullets: [
+          "Structured outputs validated against a schema before anything downstream sees them",
+          "Numbers computed by code; the model writes the query and explains the result, and any figure that cannot be traced is flagged",
+          "Confidence thresholds, with low-confidence cases routed to a review queue instead of guessed",
+          "An evaluation set with known answers, run before launch and after every model change",
+          "Untrusted input, such as third-party text or uploaded documents, wrapped so it cannot steer the model",
+          "A model chosen per task, cost logged per feature, and a way to switch the feature off",
         ],
       },
       {
@@ -299,9 +313,11 @@ export const servicePages: ServicePage[] = [
       {
         h2: "Work I have done",
         bullets: [
+          "ZoneSteward: the model writes Cloudflare analytics queries, the server computes the figures, and every number in an answer is traced; alert rules drafted from a sentence and dry-run before they are armed; AI incident investigation with a suggested fix behind an approval card",
+          "CookieSteward: unknown trackers classified by AI with structured output and a confidence score, hardened against prompt injection, with a person approving each verdict",
           "An alt-text plugin on the Claude API, deployed across an agency's whole client portfolio",
-          "ZoneSteward's approval gate: the model proposes, the server enforces approval, the live ruleset is checked afterward",
           "AI-assisted development adopted across a web team, with standards and review to match",
+          "Years of the plumbing these features sit on: Sage 100 and QuickBooks sync, TrueCommerce EDI, point-of-sale and CRM integrations for stores and B2B businesses",
         ],
       },
       {
@@ -313,19 +329,20 @@ export const servicePages: ServicePage[] = [
       {
         h2: "A fixed-scope AI audit",
         paras: [
-          "If you are not sure where AI would help, I can run a short audit. I look at your processes and site, identify a few candidate features, describe how each would work with a person in control, and estimate effort and risk. You leave with a plan whether or not we build it together.",
+          "If you are not sure where AI would help, I can run a short audit. I look at your processes, data and systems, identify the jobs where AI would pay off, describe how each would work with a person in control, and estimate effort and risk. You leave with a plan whether or not we build it together.",
         ],
       },
     ],
     faq: [
+      { q: "Can AI really handle our order and product data?", a: "Yes, for the parts that are pattern work: reading, matching, normalising and flagging. The write into your ERP or CRM is ordinary validated code, and anything below a confidence threshold goes to a person." },
       { q: "Which models do you use?", a: "Mostly Claude through its API, and I pick the model per task. The right choice depends on quality needed, speed, cost and data requirements." },
-      { q: "Will it make things up?", a: "Models can be wrong. That is why the design puts a person in the approval step for anything consequential, and why outputs are checked against real data where possible." },
-      { q: "Can you add AI to my existing WordPress site?", a: "Yes, as a plugin or a connected service, with the same approval pattern and clear limits on what it may do." },
+      { q: "Will it make things up?", a: "Models can be wrong. That is why numbers are computed by code, outputs are checked against a schema, and a person sits in the approval step for anything consequential." },
+      { q: "Can you add AI to my existing WordPress site or store?", a: "Yes, as a plugin or a connected service, with the same approval pattern and clear limits on what it may do." },
       { q: "What happens to my data?", a: "We decide it together before building: what is sent, to which provider, under what terms, and what is stored. Nothing is sent that you have not agreed to." },
     ],
     related: [
       { label: "ZoneSteward", href: "/work/zonesteward/" },
-      { label: "AI-assisted engineering", href: "/services/ai-assisted-engineering/" },
+      { label: "Integrations and automation", href: "/services/#integrations-and-automation" },
       { label: "Web apps and SaaS", href: "/services/web-app-saas-development/" },
     ],
   },

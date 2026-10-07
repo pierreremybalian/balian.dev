@@ -45,7 +45,7 @@ export const seo: Record<string, Seo> = {
   },
   "ai-integration": {
     title: "AI Integration Services, Human in Control",
-    description: "AI integration services for websites, products and internal tools. Features where the model suggests and a person approves every change.",
+    description: "AI integration services for data processing, dashboards, CRM, ERP and EDI integrations and analytics. The model proposes, code validates, a person approves.",
     keyword: "ai integration services",
   },
   "ai-assisted-engineering": {

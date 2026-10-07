@@ -33,8 +33,8 @@ export const copy: Record<string, PageCopy> = {
     lede: "You have a product idea or a prototype that has outgrown itself. I build the real version, with accounts and payments, and I already run two products of my own.",
   },
   "ai-integration": {
-    h1: "AI features with a human in control.",
-    lede: "AI can write, sort and answer for you, but it should not change anything on its own. I build features where the model suggests and a person decides.",
+    h1: "AI for the work that eats your team's time.",
+    lede: "Your team spends hours on data entry and cleanup, reporting and the gaps between systems. I build AI into those jobs so they run reliably and a person checks what matters.",
   },
   "ai-assisted-engineering": {
     h1: "AI writes the syntax. Experience decides what ships.",
