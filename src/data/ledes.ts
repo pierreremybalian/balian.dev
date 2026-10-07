@@ -37,8 +37,8 @@ export const copy: Record<string, PageCopy> = {
     lede: "Your team spends hours on data entry and cleanup, reporting and the gaps between systems. I build AI into those jobs so they run reliably and a person checks what matters.",
   },
   "ai-assisted-engineering": {
-    h1: "AI writes the syntax. Experience decides what ships.",
-    lede: "Yes, I use AI to build your site. It does the typing and I read every line. You pay for the result, not for a team's hours.",
+    h1: "Twenty years of engineering, with AI as a very fast pair of hands.",
+    lede: "I use AI to build your site. I design the system, direct the work and read every line, and AI types faster than any team could. You pay for the result.",
   },
   work: {
     h1: "Two products of my own, built and run in production.",

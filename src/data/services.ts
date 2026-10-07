@@ -236,7 +236,7 @@ export const servicePages: ServicePage[] = [
         h2: "How I pick a stack",
         paras: [
           "I do not sell a framework. TypeScript across the app where it makes sense, Next.js and Node for the application, Cloudflare Workers, D1, KV, R2 and Queues for edge work, and a SQL database for the data. When a different tool is a better fit, I use that.",
-          "AI handles syntax and API detail across all of it. I make the architecture and security decisions, and I read the code.",
+          "I design the architecture and the data model, make the security decisions and read every line. AI fills in framework idiom and API detail, which is where the typing used to go.",
         ],
       },
       {
@@ -373,13 +373,13 @@ export const servicePages: ServicePage[] = [
       {
         h2: "Why experience matters",
         paras: [
-          "AI is fluent in every language and fast in every framework, and it is sometimes confidently wrong. Knowing the difference takes years of seeing how software actually fails. Because I wrote software before these tools existed, I can read what they produce, notice when it is going the wrong way, and correct it. For example, an AI draft might apply a change before checking that a person approved it. Catching that is the job.",
+          "Every language I have worked in shares the same bones: control flow, data structures, state, input and output, and the same ways of failing. That is why a senior engineer can read an unfamiliar codebase in an afternoon, and why AI output is easy to judge once you know what correct looks like. AI is fast and fluent and sometimes confidently wrong. Knowing the difference takes years of watching software fail. For example, a draft might apply a change before checking that a person approved it. Catching that is the job.",
         ],
       },
       {
         h2: "Stack-agnostic by design",
         paras: [
-          "I do not need to know every subtlety of every language and API, because AI is the interface layer for syntax and detail. I do need to know how systems are built, so I work across TypeScript, Next.js, Node, PHP and WordPress, Python, SQL, Astro and Cloudflare, and I pick the tool that fits the problem.",
+          "After twenty years across PHP, JavaScript, TypeScript, Python and SQL, a new framework is a dialect, and reading what code does is the easy part. AI's job is the dialect: the exact signature, the idiom, the boilerplate. Mine is the system: how it is built, where it will fail and what it should do. So I work across TypeScript, Next.js, Node, PHP and WordPress, Python, SQL, Astro and Cloudflare, and pick the tool that fits the problem.",
         ],
       },
       {
@@ -391,7 +391,7 @@ export const servicePages: ServicePage[] = [
       {
         h2: "Why it costs less and moves faster",
         paras: [
-          "An agency bills for a team: strategists, designers, developers, project managers and account managers, each adding hours and handoffs. Here, one engineer covers the chain with AI doing the heavy lifting. There are fewer handoffs, no team overhead and no relay of messages, and I give direct attention to every decision.",
+          "An agency bills for a team: strategists, designers, developers, project managers and account managers, each adding hours and handoffs. Here, one engineer covers the chain, with AI removing the typing and lookup that used to fill a developer's day. There are fewer handoffs, no team overhead and no relay of messages, and I give direct attention to every decision.",
         ],
       },
     ],
