@@ -9,6 +9,8 @@ import { categories, skills } from "../data/skills";
 export function initNetwork() {
   const wrap = document.getElementById("gl");
   const lgBox = document.getElementById("lg");
+  const cap = document.getElementById("gl-cap");
+  const capDefault = cap?.textContent ?? "";
   if (!wrap || !lgBox) return;
   const parent = wrap.parentElement as HTMLElement;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -203,6 +205,7 @@ export function initNetwork() {
       targetRot = t;
       if (reduce) rotY = t;
     } else targetRot = null;
+    if (cap) cap.textContent = c >= 0 ? `${categories[c]}: ${skills.filter((s) => s[1] === c).map((s) => s[0]).join(", ")}` : capDefault;
     btns.forEach((b, i) => { b.classList.toggle("on", i === c); b.setAttribute("aria-pressed", String(i === c)); });
     if (c >= 0) go(1, now, reduce);
     else { nextAt = now + 1.4; if (reduce) go(0, now, true); }
@@ -210,8 +213,12 @@ export function initNetwork() {
   btns.forEach((b, i) => {
     const on = () => setHL(i, clock());
     const off = () => setHL(-1, clock());
-    b.addEventListener("mouseenter", on); b.addEventListener("focus", on);
-    b.addEventListener("mouseleave", off); b.addEventListener("blur", off);
+    // touch fires an emulated mouseenter before click, which made a tap select then immediately deselect
+    const canHover = window.matchMedia("(hover: hover)");
+    b.addEventListener("mouseenter", () => { if (canHover.matches) on(); });
+    b.addEventListener("mouseleave", () => { if (canHover.matches) off(); });
+    b.addEventListener("focus", () => { if (b.matches(":focus-visible")) on(); });
+    b.addEventListener("blur", () => { if (hl === i) off(); });
     b.addEventListener("click", () => (hl === i ? off() : on()));
   });
 
@@ -222,7 +229,9 @@ export function initNetwork() {
   function size() {
     w = wrap!.clientWidth; h = wrap!.clientHeight;
     renderer.setSize(w, h, false);
-    camera.aspect = w / h; camera.updateProjectionMatrix();
+    camera.aspect = w / h;
+    camera.position.z = 10.5 * Math.min(1.7, Math.max(1, 1.25 / camera.aspect)); // pull back so the whole cloud fits a narrow canvas
+    camera.updateProjectionMatrix();
     group.position.x = window.innerWidth > 1000 ? 1.3 : 0;
   }
   function place(el: HTMLElement, x: number, y: number, z: number, op: number) {
@@ -255,7 +264,7 @@ export function initNetwork() {
     colAttr.needsUpdate = true;
     // keep the whole picked cluster inside the canvas: slide the cloud left while a discipline is held
     const baseX = window.innerWidth > 1000 ? 1.3 : 0;
-    group.position.x += ((hold ? baseX - 1.5 : baseX) - group.position.x) * Math.min(1, dt * 2.2);
+    group.position.x += ((hold && baseX ? baseX - 1.5 : baseX) - group.position.x) * Math.min(1, dt * 2.2);
     group.rotation.y = rotY + mx * 0.35;
     group.rotation.x = my * 0.2;
     group.updateMatrixWorld(true);

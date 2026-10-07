@@ -116,6 +116,7 @@ section { position: relative; }
 .legend { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; border-top: 1px solid var(--line); background: rgba(9, 11, 16, 0.86); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
 .legend .in { padding-block: 10px !important; display: flex; flex-wrap: wrap; gap: 10px 8px; align-items: center; }
 .legend .label { margin-right: 10px; }
+.gl-cap { display: none; }
 .lg { font: 500 12.5px var(--mono); border: 1px solid var(--ctl); background: transparent; color: var(--ink); padding: 10px 12px; min-height: 44px; cursor: pointer; border-radius: 3px; transition: background 0.25s, color 0.25s, border-color 0.25s, transform 0.2s; }
 .lg:is(:hover, :focus-visible), .lg.on, .lg[aria-pressed="true"] { background: var(--sig); color: #0a0c18; border-color: var(--sig); transform: translateY(-1px); }
 .tag { position: absolute; left: 0; top: 0; font: 500 11px/1 var(--mono); letter-spacing: 0.06em; color: var(--ink); background: rgba(16, 19, 26, 0.78); border: 1px solid var(--line); padding: 5px 8px; white-space: nowrap; pointer-events: none; will-change: transform, opacity; z-index: 1; transition: color 0.3s, border-color 0.3s; }
@@ -319,9 +320,13 @@ footer.site a { padding-block: 6px; display: inline-block; }
   .mpanel a.sub { font-size: 1rem; color: var(--mut); padding-left: 16px; font-weight: 500; }
   .mpanel .rbtn { margin-top: 20px; border-bottom: 0; font: 600 16px var(--sans); }
   .in { padding-inline: 20px; }
-  #gl { width: 100%; right: 0; opacity: 0.5; }
+  .hero { flex-direction: column; align-items: stretch; min-height: 0; }
+  .hero > .in { order: 1; padding-block: 80px 8px; }
+  #gl { order: 2; position: relative; width: 100%; height: min(96vw, 420px); opacity: 1; }
+  .legend { order: 3; position: static; }
+  .gl-cap { display: block; width: 100%; font: 400 0.875rem/1.5 var(--sans); color: var(--soft); }
   .tag:not(.hub) { display: none; }
-  .hero > .in { padding-block: 80px 260px; }
+  .gl-cap { min-height: 4.5em; }
   .sgrid, .wgrid, .hgrid, .fgrid, .prose, .pgrid { grid-template-columns: minmax(0, 1fr); }
   .sc { border-right: 0 !important; border-bottom: 1px solid var(--line) !important; }
   .sc:last-child { border-bottom: 0 !important; }
