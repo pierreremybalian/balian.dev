@@ -344,19 +344,11 @@ footer.site a { padding-block: 6px; display: inline-block; }
   .st .dot { grid-column: 1; grid-row: 1 / span 2; margin-top: 4px; }
   .st .c { grid-column: 2; }
 }
-/* viewer-controlled motion pause (WCAG 2.2.2) */
-.motion-btn { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 12px; border: 1px solid var(--ctl); border-radius: 3px; background: transparent; color: var(--soft); font: 500 12.5px var(--mono); cursor: pointer; transition: border-color 0.2s, color 0.2s; }
-.motion-btn:is(:hover, :focus-visible) { border-color: var(--sig); color: var(--ink); }
-@media (prefers-reduced-motion: reduce) { .motion-btn { display: none; } }
-.motion-btn .pip { width: 9px; height: 9px; border-radius: 50%; background: var(--sig); }
-.motion-btn[aria-pressed="true"] .pip { border-radius: 1px; background: var(--mut); }
-html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-html[data-motion="off"] .js .rv, html[data-motion="off"].js .rv { opacity: 1; transform: none; }
 
 /* high contrast / forced colours: gradient text and decorative fills must not vanish */
 @media (forced-colors: active) {
   .hero h1 b, .grad { background: none; color: CanvasText; -webkit-text-fill-color: currentColor; }
-  .btn, .rbtn, .lg, .related a, .motion-btn { border: 1px solid ButtonText; }
+  .btn, .rbtn, .lg, .related a { border: 1px solid ButtonText; }
   .btn::before, .rbtn::before, .btn::after, .rbtn::after { display: none; }
   .tl-fill, .rnav .fill { background: Highlight; }
   .st .dot, .st.on .dot { border-color: ButtonText; background: Canvas; }

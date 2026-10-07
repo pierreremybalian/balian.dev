@@ -24,7 +24,6 @@ const inServices = path.startsWith("/services/");
   </nav>
   <div class="rfoot">
     <span>{site.location} · remote</span>
-    <button type="button" class="motion-btn" aria-pressed="false" data-motion-toggle><span class="pip" aria-hidden="true"></span>Pause motion</button>
     <a class="rbtn" href={site.bookingUrl}>Book a call</a>
   </div>
 </header>
@@ -35,6 +34,5 @@ const inServices = path.startsWith("/services/");
       {item.children?.map((c) => <a class="sub" href={c.href} aria-current={path === c.href ? "page" : undefined}>{c.label}</a>)}
     </>
   ))}
-  <button type="button" class="motion-btn" aria-pressed="false" data-motion-toggle style="margin-top:16px"><span class="pip" aria-hidden="true"></span>Pause motion</button>
   <a class="rbtn" href={site.bookingUrl}>Book a call</a>
 </nav>

@@ -227,7 +227,6 @@ export function initNetwork() {
     });
   });
 
-  const isOff = () => document.documentElement.dataset.motion === "off";
   let rotY = 1.2 * 0.07, pulseT = 0, lastNow = 0;
   const v3 = new Vector3();
   let mx = 0, my = 0, w = 1, h = 1, visible = true;
@@ -253,11 +252,10 @@ export function initNetwork() {
   function frame(now: number, _rotT: number) {
     const dt = Math.min(0.1, Math.max(0, now - lastNow));
     lastNow = now;
-    const off = isOff();
     if (targetRot !== null) rotY += (targetRot - rotY) * Math.min(1, dt * 2.2);
-    else if (!off) rotY += dt * 0.07;
-    if (!off) pulseT += dt * 0.16;
-    if (!hold && !reduce && !off && now > nextAt && now - t0 > dur + 3.2) { go((form + 1) % 4, now); nextAt = now + 1; }
+    else rotY += dt * 0.07;
+    pulseT += dt * 0.16;
+    if (!hold && !reduce && now > nextAt && now - t0 > dur + 3.2) { go((form + 1) % 4, now); nextAt = now + 1; }
     const s = ease((now - t0) / dur);
     for (let n = 0; n < (N + 1) * 3; n++) cur[n] = from[n] + (to[n] - from[n]) * s;
     posAttr.needsUpdate = true;

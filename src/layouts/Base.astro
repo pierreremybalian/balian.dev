@@ -51,7 +51,7 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:image:alt" content="Balian.dev: agency-level web engineering, without the agency." />
-    <script is:inline>document.documentElement.classList.add("js");try{if(localStorage.getItem("motion")==="off")document.documentElement.dataset.motion="off";}catch(e){}</script>
+    <script is:inline>document.documentElement.classList.add("js");</script>
     {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
   </head>
   <body>

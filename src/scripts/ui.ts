@@ -21,23 +21,9 @@ document.addEventListener("keydown", (e) => {
 });
 window.matchMedia("(min-width: 1001px)").addEventListener("change", (m) => { if (m.matches) setMenu(false); });
 
-/* viewer-controlled motion pause. Persisted, and honoured by CSS and by the network canvas. */
-const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const toggles = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-motion-toggle]"));
-function setMotion(off: boolean) {
-  document.documentElement.dataset.motion = off ? "off" : "on";
-  toggles.forEach((t) => t.setAttribute("aria-pressed", String(off)));
-  try { localStorage.setItem("motion", off ? "off" : "on"); } catch { /* storage unavailable */ }
-}
-toggles.forEach((t) => {
-  t.setAttribute("aria-pressed", String(document.documentElement.dataset.motion === "off"));
-  t.addEventListener("click", () => setMotion(document.documentElement.dataset.motion !== "off"));
-});
-if (reduceMotion) toggles.forEach((t) => (t.hidden = true));
-
 /* soft reveals: content is visible by default, this only eases it in */
 const rv = Array.from(document.querySelectorAll<HTMLElement>(".rv"));
-if (rv.length && "IntersectionObserver" in window && !reduce && document.documentElement.dataset.motion !== "off") {
+if (rv.length && "IntersectionObserver" in window && !reduce) {
   const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => {
@@ -69,7 +55,7 @@ function update() {
     const r = tl.getBoundingClientRect();
     const mark = window.innerHeight * 0.62;
     const p = Math.max(0, Math.min(1, (mark - r.top) / r.height));
-    const still = reduce || document.documentElement.dataset.motion === "off";
+    const still = reduce;
     tlFill.style.transform = `scaleY(${still ? 1 : p})`;
     steps.forEach((s) => {
       const top = s.getBoundingClientRect().top;
