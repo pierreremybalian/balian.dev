@@ -24,8 +24,8 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex" />}
+    {!noindex && <link rel="canonical" href={canonical} />}
+    <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"} />
     <meta name="theme-color" content="#090b10" />
     <meta name="google-site-verification" content="d83qAyrXmdeerRyimM8C57WkCfzOkzTiTqQKY6E3uKU" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -33,6 +33,7 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content={site.brand} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
@@ -45,6 +46,7 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content="Balian.dev: agency-level web engineering, without the agency." />
     <script is:inline>document.documentElement.classList.add("js");try{if(localStorage.getItem("motion")==="off")document.documentElement.dataset.motion="off";}catch(e){}</script>
     {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
   </head>

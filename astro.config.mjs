@@ -8,7 +8,7 @@ export default defineConfig({
   trailingSlash: "always",
   build: { inlineStylesheets: "auto" },
   devToolbar: { enabled: false },
-  integrations: [sitemap()],
+  integrations: [sitemap({ lastmod: new Date() })],
   // Pre-bundle three up front so the dev server does not re-optimise it mid-session.
   vite: {
     optimizeDeps: { include: ["three"] },
