@@ -113,6 +113,9 @@ section { position: relative; }
   transition: background-size 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.2s;
 }
 .lnk { font-weight: 600; padding-bottom: 3px; }
+/* standalone links (CTA groups, footer nav) rest without an underline; it draws in on hover and keyboard focus.
+   Links inside running text keep theirs (WCAG 1.4.1). */
+.lnk, footer.site a { background-size: 0 2px, 0 1px; }
 .lnk:is(:hover, :focus-visible), footer.site a:is(:hover, :focus-visible), .crumb a:is(:hover, :focus-visible), .direct a:is(:hover, :focus-visible) { background-size: 100% 2px, 100% 1px; color: var(--sig); }
 .btns { display: flex; flex-wrap: wrap; align-items: center; gap: 24px 28px; }
 
