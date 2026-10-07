@@ -32,8 +32,8 @@ export const caseStudies: CaseStudy[] = [
       { k: "Role", v: "Product, architecture, design and engineering. Built alone." },
       { k: "Status", v: "Private beta, twenty seats, free until general availability" },
       { k: "Stack", v: "Next.js, React, TypeScript, Node, SQLite, three.js, Claude API" },
-      { k: "Platform", v: "Cloudflare GraphQL Analytics and REST APIs, one Node process on a VPS behind Caddy" },
-      { k: "Size", v: "About 76,000 lines of TypeScript, 53 test files, a 25-question evaluation harness" },
+      { k: "Platform", v: "Cloudflare GraphQL Analytics and REST APIs, self-hosted behind Cloudflare" },
+      { k: "Scale", v: "Tens of thousands of lines of TypeScript, a large automated test suite and an evaluation harness with known answers" },
     ],
     media: {
       src: "/work/zonesteward/globe-modes-poster.webp", webm: "/work/zonesteward/globe-modes.webm", mp4: "/work/zonesteward/globe-modes.mp4",
@@ -52,10 +52,10 @@ export const caseStudies: CaseStudy[] = [
       {
         h2: "See what is happening",
         bullets: [
-          "A live 3D globe draws requests from where visitors are to the Cloudflare data centre that served them, over a rolling 30-minute window, with a 24-hour replay and a fleet view across every zone",
+          "A live 3D globe draws requests from where visitors are to the Cloudflare data centre that served them, over a rolling window, with a replay of the last day and a fleet view across every zone",
           "Live filters by country, user agent, path, status or host, with a side log of the actual requests",
           "A saved dashboard wall with about 27 widget types: requests, bandwidth, status split, top countries and ASNs, firewall events, bot traffic, attack feed, origin monitor, cache hit ratio, latency, incidents and more",
-          "Nineteen chart types, twelve flat and seven in 3D, that the AI can suggest and you can save",
+          "A library of flat and 3D chart types that the AI can suggest and you can save",
           "Google Analytics 4 read in beside the Cloudflare data, plus read-only panels for certificates, DNSSEC, Logpush, health checks, load balancers, waiting rooms, Turnstile, Workers routes and Access",
         ],
         figure: { src: "/work/zonesteward/see-live.webp", width: 1600, height: 1257, alt: "The Live view: a globe with request arcs, filters for country, user agent, path and status, a requests-per-minute counter and a replay scrubber", caption: "Live view with filters and the 24-hour replay scrubber." },
@@ -63,7 +63,7 @@ export const caseStudies: CaseStudy[] = [
       {
         h2: "Ask questions and get numbers you can trace",
         paras: [
-          "The chat has about forty tools. For a question like \"who is attacking us?\" or \"why is this site slow in Germany?\", the model writes a Cloudflare GraphQL query and the server computes the figures. The model is told to quote only server-computed numbers, and any figure in an answer that cannot be traced to one is flagged under the answer. On the last evaluation run, 25 of 25 questions were answered with 97.5 percent of figures traceable.",
+          "The chat has a large set of read tools. For a question like \"who is attacking us?\" or \"why is this site slow in Germany?\", the model writes a Cloudflare GraphQL query and the server computes the figures. The model is told to quote only server-computed numbers, and any figure in an answer that cannot be traced to one is flagged under the answer. On the last evaluation run every question was answered and nearly every figure traced back to the data.",
         ],
         bullets: [
           "Attacker profiling into nine categories, from login brute force and CMS probing to SQL injection and credential stuffing, with a severity score and known crawlers cleared with a reason",
@@ -76,7 +76,7 @@ export const caseStudies: CaseStudy[] = [
       {
         h2: "Alerts from real traffic",
         paras: [
-          "Alerts read the same analytics data the globe does. A shared poller keeps a 30-minute buffer per workspace and built-in detectors run over it every ten seconds, whether or not anyone is watching. Preset and custom rules run on their own schedule.",
+          "Alerts read the same analytics data the globe does. A shared poller keeps a recent buffer per workspace and built-in detectors run over it continuously, whether or not anyone is watching. Preset and custom rules run on their own schedule.",
         ],
         bullets: [
           "Built-in detectors: 5xx error-rate spike, origin down, traffic drop or spike, 404 surge, geographic anomaly, and one ASN sending a flood of failed requests",
@@ -95,7 +95,7 @@ export const caseStudies: CaseStudy[] = [
         ],
         bullets: [
           "WAF custom rules, rate limits, cache rules and purges, redirects, rewrites, header rules, IP and country access rules, zone lockdowns, managed rulesets, zone settings such as SSL mode and minimum TLS, DNS records, health checks and waiting rooms",
-          "Bulk apply across a zone group, up to fifty zones, with a separate acknowledgement above ten",
+          "Bulk apply across a zone group, with a separate acknowledgement once the change touches many zones",
           "High-impact changes such as a whole-site lockdown or an apex DNS deletion need an explicit acknowledgement; DNS and bulk changes are admin only",
           "Per-class write rate limits with an audited break-glass override",
         ],
@@ -106,7 +106,7 @@ export const caseStudies: CaseStudy[] = [
         bullets: [
           "Workspaces with owner, admin, user and viewer roles; sign-in by magic link, Google, Microsoft Entra ID or GitHub",
           "An audit log of every mutation attempt with actor, payload, Cloudflare's response and revert data",
-          "Read-only share links for clients, pinned to one zone, revocable, expiring within 30 days; the link secret is never stored",
+          "Read-only share links for clients, pinned to one zone, revocable and time-limited; the link secret is never stored",
           "Printable zone and incident reports with CSV export, and a presentation mode that swaps real names for aliases so a workspace can be screenshotted",
           "Per-token capability model learned from real responses, never by writing; an AI spend log by feature and model; an email delivery log",
         ],
@@ -114,11 +114,11 @@ export const caseStudies: CaseStudy[] = [
       {
         h2: "How it is built",
         bullets: [
-          "Next.js App Router and React, Node, better-sqlite3 in WAL mode, one database per workspace, secrets encrypted per workspace with AES-256-GCM under a master key",
-          "The globe runs on the GPU through three.js and react-three-fiber, five draw calls a frame",
+          "Next.js and React on Node, with each workspace isolated in its own database and its own encryption key",
+          "The globe runs on the GPU through three.js and react-three-fiber, light enough to stay smooth on a laptop",
           "The Cloudflare layer degrades by plan: denied fields are dropped and retried, time spans clamped, sampling reversed, free zones fall back to coarser data",
           "Any model provider: Anthropic, OpenAI or an OpenAI-compatible endpoint, with the customer's own key billed at cost",
-          "One Node process under PM2 behind Caddy, origin sealed with Cloudflare Authenticated Origin Pulls; nightly encrypted backups restored by the job itself before it reports success",
+          "Self-hosted behind Cloudflare with the origin sealed; encrypted off-site backups that are test-restored before the job reports success",
         ],
       },
     ],
@@ -141,8 +141,8 @@ export const caseStudies: CaseStudy[] = [
       { k: "Role", v: "Product, architecture, design and engineering. Built alone." },
       { k: "Status", v: "Alpha, hosted, with the edge in production" },
       { k: "Stack", v: "TypeScript, Next.js, Drizzle, Zod, Playwright, Hono" },
-      { k: "Platform", v: "Cloudflare Workers, KV, D1, Queues and R2 for the edge; a Next.js dashboard behind Caddy" },
-      { k: "Tests", v: "Banner tests in real Chromium, Firefox and WebKit, scan and full-stack suites, about 190 unit tests" },
+      { k: "Platform", v: "Cloudflare Workers, KV, D1 and Queues for the edge; a hosted Next.js dashboard" },
+      { k: "Tests", v: "Banner tests in real Chromium, Firefox and WebKit, plus scan, full-stack and unit suites" },
     ],
     media: {
       src: "/work/cookiesteward/banner-eu.webp", width: 1600, height: 1000,
@@ -161,7 +161,7 @@ export const caseStudies: CaseStudy[] = [
         h2: "HIPAA mode for healthcare sites",
         paras: [
           "In December 2022 the HHS Office for Civil Rights published guidance on tracking technologies on healthcare websites, naming Google Analytics and the Meta Pixel. Under HIPAA, a visitor clicking Accept all is not the authorisation the rules ask for. So HIPAA mode does not ask. It blocks.",
-          "Switched on per site, it compiles a curated ruleset of 29 vendors and 39 hosts into hard-block rules on every publish: ad platforms such as Google Ads, Meta, TikTok, Microsoft and LinkedIn; session-replay tools such as Hotjar, Clarity and FullStory; social widgets; and Google Analytics. No consent path can release them, which is covered by a browser test. The post-publish scan fails if any of those hosts fires anyway, and regression alerts label the hit as a health-data risk.",
+          "Switched on per site, it compiles a curated and growing ruleset of tracking vendors into hard-block rules on every publish: ad platforms such as Google Ads, Meta, TikTok, Microsoft and LinkedIn; session-replay tools such as Hotjar, Clarity and FullStory; social widgets; and Google Analytics. No consent path can release them, which is covered by a browser test. The post-publish scan fails if any of those hosts fires anyway, and regression alerts label the hit as a health-data risk.",
           "Receipts for HIPAA-mode sites never compute an IP hash, because a salted hash of an IP is still linkable. Every classified cookie also carries a HIPAA risk rating, and the banner editor lists trackers seen on the site that are rated high risk and not yet covered. A Business Associate Agreement is available as an add-on. The product is clear about limits: it does not make an organisation HIPAA compliant, it does not detect health information, and server-side integrations are outside its reach.",
         ],
       },
@@ -170,23 +170,23 @@ export const caseStudies: CaseStudy[] = [
         bullets: [
           "Opt-in for the EU, EEA, UK, Switzerland and unknown locations; opt-out for the United States, applying the California model to every state",
           "Global Privacy Control honoured from the browser signal or the Sec-GPC header, with an automatic opt-out receipt for US visitors",
-          "A persistent Your Privacy Choices link with the official California icon, and an opt-out that stays sticky for a year across config versions",
+          "A persistent Your Privacy Choices link with the official California icon, and an opt-out that stays sticky across config versions",
           "Four categories, Accept all and Reject all with equal prominence enforced at publish, a preferences layer with per-category toggles and a cookie declaration table rebuilt from the site's classified cookies",
           "Re-consent when the configuration changes or consent expires, a withdraw action, and a reopen widget",
-          "Blocked-embed placeholders that name the provider, for YouTube, Vimeo, Google Maps, Calendly, HubSpot and a dozen others, sized to the embed so accepting does not shift the page",
+          "Blocked-embed placeholders that name the provider, for YouTube, Vimeo, Google Maps, Calendly, HubSpot and others, sized to the embed so accepting does not shift the page",
         ],
         figure: { src: "/work/cookiesteward/banner-us.webp", width: 1600, height: 1000, alt: "The same clinic site for a US visitor: no banner, a persistent Your Privacy Choices link with the California opt-out icon, and a cookie reopen widget", caption: "A US visitor gets the opt-out model: no gate, a persistent Your Privacy Choices link with the California icon, and the reopen widget." },
       },
       {
         h2: "A scanner that checks its own work",
         paras: [
-          "After every publish, on demand, and weekly by default, headless Chromium loads up to twenty representative pages chosen from the sitemap: the homepage, one page per URL pattern, then pages that look like checkout, booking, contact, login or donate. With the banner installed it runs two passes, before and after consent, and reports per rule whether blocking held and which third parties received data before consent.",
+          "After every publish, on demand, and on a schedule, a real browser loads a representative sample of pages chosen from the sitemap: the homepage, one page per URL pattern, then pages that look like checkout, booking, contact, login or donate. With the banner installed it runs two passes, before and after consent, and reports per rule whether blocking held and which third parties received data before consent.",
         ],
         bullets: [
-          "Cookies, local storage and third-party requests collected with setter attribution through Chrome's initiator chains; raw values never stored",
-          "Leak detection for email addresses, page URLs, screen size, 21 named identifiers such as fbp and gclid, and forwarded cookie values in query strings and POST bodies",
-          "Classification against 2,261 Open Cookie Database patterns and a hand-curated vendor map; unknown cookies get an AI investigation using the customer's own key, wrapped against prompt injection, and a person approves the verdict, which then applies fleet-wide",
-          "A six-point install check: script present, right site key, UI mounted, loads before Google Tag Manager, Consent Mode default set before Google tags read it",
+          "Cookies, local storage and third-party requests collected with attribution to the script that set them; raw values never stored",
+          "Leak detection that watches outbound requests for email addresses, page URLs, device fingerprints, forwarded cookie values and an ever-growing library of advertising and analytics identifiers",
+          "Classification against a large, maintained pattern library and a curated vendor map; unknown cookies get an AI investigation using the customer's own key, wrapped against prompt injection, and a person approves the verdict, which then applies fleet-wide",
+          "An install check that confirms the script is present and mounted, loads before Google Tag Manager, and sets the Consent Mode default before any Google tag reads it",
           "A diff against the previous scan, screenshots per page, and regression emails when something got worse",
         ],
       },
@@ -203,27 +203,27 @@ export const caseStudies: CaseStudy[] = [
         h2: "Records you can hand to an auditor",
         bullets: [
           "One receipt per choice: visitor id, regime, action, categories, config version, GPC flag, country, browser family and timestamp; no page URL",
-          "Written through a Cloudflare Queue into D1 in batches, with retries and a dead-letter queue so failures are kept",
+          "Written through a queue with retries, so a receipt is kept even when something downstream fails",
           "The config version maps to the exact published banner configuration, including compiled HIPAA rules, so you can show what the visitor was served",
           "Per-visitor lookup, daily statistics by regime and action, and streamed CSV export per site and date range, formula-safe, available to client-role users",
-          "Rolling three-year retention enforced by a daily edge cron",
+          "Multi-year retention enforced automatically, with deletion on request",
         ],
       },
       {
         h2: "Performance and delivery",
         bullets: [
-          "A zero-dependency runtime in vanilla TypeScript, under 10 KB gzipped, with a size budget enforced in CI",
-          "A single-request embed: the edge Worker returns the regime, GPC state and configuration together with the runtime in one response, cached per site, version and regime",
-          "Everything renders in a shadow DOM as fixed overlays, so the page does not move; six theme presets, five layouts, custom CSS up to 10 KB",
-          "Dialog roles, focus management, a Tab trap in the preferences layer, a polite live region, reduced-motion support and 44-pixel targets",
+          "A zero-dependency runtime in vanilla TypeScript, small enough to ignore in a performance budget, with a size limit enforced in CI",
+          "A single-request embed: the edge returns the visitor's regime, GPC state and the site configuration together with the runtime in one cached response",
+          "Everything renders in a shadow DOM as fixed overlays, so the page does not move; theme presets, several layouts and custom CSS",
+          "Dialog roles, focus management, a Tab trap in the preferences layer, a polite live region, reduced-motion support and touch-sized targets",
         ],
         figure: { src: "/work/cookiesteward/banner-prefs.webp", width: 1600, height: 1000, alt: "The preferences dialog with toggles for strictly necessary, functional, analytics and advertising, each with a cookie count, and Save preferences, Accept all and Reject all buttons", caption: "The preferences layer: per-category toggles, the cookie declaration under each, and a focus trap while it is open." },
       },
       {
         h2: "How it is built",
         bullets: [
-          "The edge is a Hono Worker on Cloudflare with KV for configuration, D1 for receipts, Queues for writes and a cron for retention; Zod schemas shared between the dashboard and the edge",
-          "The dashboard is Next.js 15 with one SQLite database per workspace, roles for owner, admin, staff and read-only client, magic-link and OAuth sign-in behind Turnstile, and AI keys encrypted at rest",
+          "The edge runs on Cloudflare Workers with KV for configuration, D1 for receipts and Queues for writes; Zod schemas are shared between the dashboard and the edge",
+          "The dashboard is Next.js with each workspace isolated in its own database, roles for owner, admin, staff and read-only client, passwordless and OAuth sign-in, and AI keys encrypted at rest",
           "Workspaces, sites and clients as the tenancy model; Stripe for annual billing with grace, frozen and stopped states",
           "Playwright drives the banner tests across Chromium, Firefox and WebKit against a fixture site with real trackers, and the same engine powers the scanner",
         ],

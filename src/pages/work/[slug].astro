@@ -93,14 +93,14 @@ const meta = seo[c.slug];
       <div class="in">
         <span class="label">Consent path</span>
         <div class="diagram rv" style="margin-top:24px">
-          <svg viewBox="0 0 900 140" role="img" aria-label="Visitor's browser runs the banner, an edge Worker serves configuration from KV, consent receipts go through a queue into D1.">
+          <svg viewBox="0 0 900 140" role="img" aria-label="Visitor's browser runs the banner, an edge Worker serves configuration from KV, consent receipts go through a queue and are stored in D1.">
             <defs><marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5a6482"/></marker></defs>
             <rect class="bx" x="2" y="38" width="170" height="64" rx="4"/><text x="87" y="66" text-anchor="middle">Banner runtime</text><text x="87" y="84" text-anchor="middle">in the browser</text>
             <rect class="hi" x="226" y="38" width="170" height="64" rx="4"/><text x="311" y="66" text-anchor="middle">Edge Worker</text><text x="311" y="84" text-anchor="middle">config from KV</text>
             <rect class="bx" x="450" y="38" width="170" height="64" rx="4"/><text x="535" y="66" text-anchor="middle">Queue</text><text x="535" y="84" text-anchor="middle">consent writes</text>
-            <rect class="bx" x="674" y="38" width="170" height="64" rx="4"/><text x="759" y="66" text-anchor="middle">D1 receipts</text><text x="759" y="84" text-anchor="middle">dead-letter queue</text>
+            <rect class="bx" x="674" y="38" width="170" height="64" rx="4"/><text x="759" y="66" text-anchor="middle">Receipts</text><text x="759" y="84" text-anchor="middle">stored in D1</text>
             <path class="ln" d="M172 70H224" marker-end="url(#ah2)"/><path class="ln" d="M396 70H448" marker-end="url(#ah2)"/><path class="ln" d="M620 70H672" marker-end="url(#ah2)"/>
-            <text class="cap" x="87" y="22" text-anchor="middle">under 10 KB gzipped</text>
+            <text class="cap" x="87" y="22" text-anchor="middle">small, zero dependencies</text>
             <text class="cap" x="759" y="128" text-anchor="middle">failures are kept</text>
           </svg>
         </div>
