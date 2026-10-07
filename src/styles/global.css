@@ -155,7 +155,7 @@ section { position: relative; }
 
 /* services grid */
 .sgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--line); margin-top: 56px; }
-.sc { padding: 32px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 14px; min-height: 270px; position: relative; transition: background 0.3s; overflow: hidden; }
+.sc { padding: 32px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 14px; position: relative; transition: background 0.3s; overflow: hidden; }
 .sc:nth-child(3n) { border-right: 0; }
 .sc:nth-last-child(-n + 3) { border-bottom: 0; }
 .sc::after { content: ""; position: absolute; inset: auto 0 0 0; height: 2px; background: var(--sig); transform: scaleX(0); transform-origin: 0 50%; transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
@@ -168,7 +168,7 @@ section { position: relative; }
 .sc svg { width: 34px; height: 34px; stroke: var(--sig); fill: none; stroke-width: 1.5; }
 .sc h3 { font-size: 1.4rem; letter-spacing: -0.03em; font-weight: 700; line-height: 1.15; }
 .sc p { color: var(--mut); font-size: 16px; line-height: 1.5; }
-.sc .go { margin-top: auto; font: 500 12px var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--sig); }
+.sc .go { margin-top: 6px; font: 500 12px var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--sig); }
 
 /* how I work */
 .hgrid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; margin-top: 48px; align-items: start; }
@@ -204,13 +204,13 @@ section { position: relative; }
 
 /* work cards */
 .wgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 56px; }
-.wp { border: 1px solid var(--line); background: var(--surface); display: flex; flex-direction: column; min-height: 500px; transition: border-color 0.3s, transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.wp { border: 1px solid var(--line); background: var(--surface); display: flex; flex-direction: column; transition: border-color 0.3s, transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .wp:is(:hover, :focus-within) { border-color: var(--sig); transform: translateY(-4px); }
 .wp .vis { height: 220px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: center; background: radial-gradient(70% 90% at 50% 120%, rgba(255, 46, 147, 0.18), transparent 70%), var(--bg); padding: 20px; }
 .wp .body { padding: 30px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
 .wp h3 { font-size: 2.2rem; letter-spacing: -0.04em; font-weight: 800; line-height: 1; }
 .wp p { color: var(--soft); max-width: 42ch; }
-.wp .lnk { margin-top: auto; align-self: flex-start; }
+.wp .lnk { margin-top: 6px; align-self: flex-start; }
 .gatecard { width: min(340px, 100%); border: 1px solid var(--line); background: var(--surface2); padding: 16px; font: 400 13px/1.5 var(--mono); display: flex; flex-direction: column; gap: 12px; }
 .gatecard b { font-weight: 500; color: var(--warm); }
 .gatecard .row { display: flex; gap: 8px; }
