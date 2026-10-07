@@ -14,7 +14,7 @@ interface Props {
 }
 const { title, description, schema = [], noindex = false, home = false } = Astro.props;
 const fullTitle = `${title}${TITLE_SUFFIX}`;
-const ogImage = new URL("/og.png", site.url).toString();
+const ogImage = new URL("/og.png?v=2", site.url).toString();
 const canonical = new URL(Astro.url.pathname, site.url).toString();
 ---
 <!doctype html>
