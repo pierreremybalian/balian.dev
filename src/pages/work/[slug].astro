@@ -57,7 +57,14 @@ const meta = seo[c.slug];
           {s.bullets && <ul class="plainlist">{s.bullets.map((b) => <li>{b}</li>)}</ul>}
           {s.figure && (
             <figure class="plate">
-              <img src={s.figure.src} alt={s.figure.alt} width={s.figure.width} height={s.figure.height} loading="lazy" decoding="async" />
+              {s.figure.webm ? (
+                <video autoplay muted loop playsinline preload="metadata" width={s.figure.width} height={s.figure.height} poster={s.figure.src} aria-label={s.figure.alt}>
+                  <source src={s.figure.webm} type="video/webm" />
+                  <source src={s.figure.mp4} type="video/mp4" />
+                </video>
+              ) : (
+                <img src={s.figure.src} alt={s.figure.alt} width={s.figure.width} height={s.figure.height} loading="lazy" decoding="async" />
+              )}
               <figcaption>{s.figure.caption}</figcaption>
             </figure>
           )}
@@ -118,9 +125,13 @@ const meta = seo[c.slug];
   <CtaBand heading="Want a product built this way?" />
 
   <script>
-    // the globe video stays on its poster for anyone who asked for less motion
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      document.querySelectorAll<HTMLVideoElement>(".plate video").forEach((v) => { v.removeAttribute("autoplay"); v.pause(); v.controls = true; });
-    }
+    // Product video: autoplays muted. Stays on its poster with controls for anyone who asked for less motion,
+    // and shows controls if the browser refuses autoplay, so it can always be played by hand.
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.querySelectorAll<HTMLVideoElement>(".plate video").forEach((v) => {
+      if (reduce) { v.removeAttribute("autoplay"); v.pause(); v.controls = true; return; }
+      const p = v.play();
+      if (p) p.catch(() => { v.controls = true; });
+    });
   </script>
 </Base>

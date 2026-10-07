@@ -1,6 +1,7 @@
 import { copy } from "./ledes";
 
 export interface Figure { src: string; alt: string; caption: string; width: number; height: number }
+export type Media = Figure & { webm?: string; mp4?: string }; // with webm/mp4 it renders as a video, src is the poster
 
 export interface CaseStudy {
   slug: string;
@@ -12,8 +13,8 @@ export interface CaseStudy {
   external?: { label: string; href: string };
   facts: { k: string; v: string }[];
   // Real product media. A video or a still after the facts, and an optional figure per section.
-  media?: Figure & { webm?: string; mp4?: string };
-  sections: { h2: string; paras?: string[]; bullets?: string[]; figure?: Figure }[];
+  media?: Media;
+  sections: { h2: string; paras?: string[]; bullets?: string[]; figure?: Media }[];
   related: { label: string; href: string }[];
 }
 
@@ -35,12 +36,7 @@ export const caseStudies: CaseStudy[] = [
       { k: "Platform", v: "Cloudflare GraphQL Analytics and REST APIs, self-hosted behind Cloudflare" },
       { k: "Scale", v: "Tens of thousands of lines of TypeScript, a large automated test suite and an evaluation harness with known answers" },
     ],
-    media: {
-      src: "/work/zonesteward/globe-modes-poster.webp", webm: "/work/zonesteward/globe-modes.webm", mp4: "/work/zonesteward/globe-modes.mp4",
-      width: 1160, height: 1032,
-      alt: "The live globe showing a fleet's request traffic as arcs to Cloudflare data centres, cycling through its display modes: Flow, Bundle, Heat, Trace, Pulse and Bars",
-      caption: "The live globe, cycling through its six display modes. Real traffic from my own fleet.",
-    },
+    media: { src: "/work/zonesteward/see-live.webp", width: 1600, height: 1257, alt: "The Live view: a globe with request arcs, filters for country, user agent, path and status, a requests-per-minute counter and a replay scrubber", caption: "Live view with filters and the 24-hour replay scrubber. Real traffic from my own fleet." },
     sections: [
       {
         h2: "What it is",
@@ -58,7 +54,12 @@ export const caseStudies: CaseStudy[] = [
           "A library of flat and 3D chart types that the AI can suggest and you can save",
           "Google Analytics 4 read in beside the Cloudflare data, plus read-only panels for certificates, DNSSEC, Logpush, health checks, load balancers, waiting rooms, Turnstile, Workers routes and Access",
         ],
-        figure: { src: "/work/zonesteward/see-live.webp", width: 1600, height: 1257, alt: "The Live view: a globe with request arcs, filters for country, user agent, path and status, a requests-per-minute counter and a replay scrubber", caption: "Live view with filters and the 24-hour replay scrubber." },
+        figure: {
+          src: "/work/zonesteward/globe-modes-poster.webp", webm: "/work/zonesteward/globe-modes.webm", mp4: "/work/zonesteward/globe-modes.mp4",
+          width: 1160, height: 1032,
+          alt: "The live globe showing a fleet's request traffic as arcs to Cloudflare data centres, cycling through its display modes: Flow, Bundle, Heat, Trace, Pulse and Bars",
+          caption: "The live globe, cycling through its six display modes.",
+        },
       },
       {
         h2: "Ask questions and get numbers you can trace",
