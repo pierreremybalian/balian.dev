@@ -13,48 +13,98 @@ export interface CaseStudy {
   related: { label: string; href: string }[];
 }
 
+// These pages are proof of work, so they describe what each product actually does, checked against the code.
 export const caseStudies: CaseStudy[] = [
   {
     slug: "zonesteward",
     name: "ZoneSteward",
-    status: "Public beta",
+    status: "Private beta",
     short:
-      "Cloudflare operations for teams that manage many sites. Plain-language analytics, and AI-proposed rule changes that a person approves before anything is applied.",
+      "A console for teams that run many Cloudflare zones. Ask questions in plain English, watch live traffic on a globe, get alerts from real traffic, and approve every change the AI proposes before it is applied.",
     h1: copy["zonesteward"].h1,
     lede: copy["zonesteward"].lede,
     external: { label: "Visit zonesteward.com", href: "https://www.zonesteward.com" },
     facts: [
-      { k: "Role", v: "Product, architecture, design and engineering" },
-      { k: "Status", v: "Public beta" },
-      { k: "Stack", v: "Next.js, React, TypeScript, Node, Claude API, SQLite" },
-      { k: "Platform", v: "Cloudflare APIs, one VPS behind Caddy" },
+      { k: "Role", v: "Product, architecture, design and engineering. Built alone." },
+      { k: "Status", v: "Private beta, twenty seats, free until general availability" },
+      { k: "Stack", v: "Next.js, React, TypeScript, Node, SQLite, three.js, Claude API" },
+      { k: "Platform", v: "Cloudflare GraphQL Analytics and REST APIs, one Node process on a VPS behind Caddy" },
+      { k: "Size", v: "About 76,000 lines of TypeScript, 53 test files, a 25-question evaluation harness" },
     ],
     sections: [
       {
-        h2: "The problem",
+        h2: "What it is",
         paras: [
-          "Managing Cloudflare across many sites means a lot of dashboards, a lot of rules and a lot of risk. A wrong rule can take a site down, and an attack does not wait for someone to find the right page.",
+          "ZoneSteward is a web console for agencies and teams responsible for many Cloudflare zones across client accounts, usually ten or more they did not all build themselves. You connect your own Cloudflare API token and your own AI key. From there you can ask what is happening in plain English, watch traffic live, get alerted when something goes wrong, and fix it through an approval card instead of a dozen dashboards.",
+          "I run my own fleet through it every day. It started as the tool I wanted at work and became a multi-tenant product.",
         ],
       },
       {
-        h2: "What it does",
+        h2: "See what is happening",
         bullets: [
-          "Answers questions about traffic and attacks in plain language",
-          "Shows live activity on a globe and helps investigate incidents",
-          "Proposes WAF, rate-limit and cache rule changes",
-          "Gives read-only share links for stakeholders",
+          "A live 3D globe draws requests from where visitors are to the Cloudflare data centre that served them, over a rolling 30-minute window, with a 24-hour replay and a fleet view across every zone",
+          "Live filters by country, user agent, path, status or host, with a side log of the actual requests",
+          "A saved dashboard wall with about 27 widget types: requests, bandwidth, status split, top countries and ASNs, firewall events, bot traffic, attack feed, origin monitor, cache hit ratio, latency, incidents and more",
+          "Nineteen chart types, twelve flat and seven in 3D, that the AI can suggest and you can save",
+          "Google Analytics 4 read in beside the Cloudflare data, plus read-only panels for certificates, DNSSEC, Logpush, health checks, load balancers, waiting rooms, Turnstile, Workers routes and Access",
         ],
       },
       {
-        h2: "The design decision that matters",
+        h2: "Ask questions and get numbers you can trace",
         paras: [
-          "Every write needs human approval, an impact preview, read-back verification and a one-click revert. The model has no direct write path. It proposes, the server enforces approval, and the system checks the live ruleset afterward. This is the same pattern I recommend for any AI feature that can change something real.",
+          "The chat has about forty tools. For a question like \"who is attacking us?\" or \"why is this site slow in Germany?\", the model writes a Cloudflare GraphQL query and the server computes the figures. The model is told to quote only server-computed numbers, and any figure in an answer that cannot be traced to one is flagged under the answer. On the last evaluation run, 25 of 25 questions were answered with 97.5 percent of figures traceable.",
+        ],
+        bullets: [
+          "Attacker profiling into nine categories, from login brute force and CMS probing to SQL injection and credential stuffing, with a severity score and known crawlers cleared with a reason",
+          "Per-attacker investigation that checks whether the same source is hitting your other zones",
+          "A blast-radius preview that runs a proposed firewall rule against the last 24 hours of real traffic and warns when it would hit traffic that was being served, or good crawlers, or more than a fifth of all requests",
+          "A question library of presets and saved questions",
         ],
       },
       {
-        h2: "How it runs",
+        h2: "Alerts from real traffic",
         paras: [
-          "A single Node process on a server behind Caddy, supervised by PM2, with the origin sealed by Cloudflare Authenticated Origin Pulls. It is deliberately simple to operate.",
+          "Alerts read the same analytics data the globe does. A shared poller keeps a 30-minute buffer per workspace and built-in detectors run over it every ten seconds, whether or not anyone is watching. Preset and custom rules run on their own schedule.",
+        ],
+        bullets: [
+          "Built-in detectors: 5xx error-rate spike, origin down, traffic drop or spike, 404 surge, geographic anomaly, and one ASN sending a flood of failed requests",
+          "Presets: firewall block surge, cache hit ratio drop, origin p95 latency, and likely-bot surge on plans with Bot Management",
+          "Custom rules written from a sentence: the model drafts the query, metric, threshold and window, dry-runs it against the live zone, and refuses to arm anything that does not reduce to a number",
+          "Each incident gets an AI investigation before notifications go out, so the message arrives with a classification and a suggested fix that can become an approval card in one click",
+          "Delivery to email, Slack, Microsoft Teams, SMS, PagerDuty and signed webhooks, each with a minimum severity, retries and a delivery record; plus an in-app stream and alert bell",
+          "Incidents can be acknowledged, resolved or marked false positive, with cooldowns so one problem does not page you ten times",
+        ],
+      },
+      {
+        h2: "Changes with a gate in front",
+        paras: [
+          "The model has no write tool. It can only propose. A proposal becomes a card that shows the impact and a preview; a person approves; the server re-reads the current state and refuses if anything moved; the change is applied and read back from Cloudflare; an audit row is written with the data needed to revert it in one click. The single automatic action, a managed challenge on one IP when a severe attack is detected, is off by default, opt-in per zone and capped.",
+        ],
+        bullets: [
+          "WAF custom rules, rate limits, cache rules and purges, redirects, rewrites, header rules, IP and country access rules, zone lockdowns, managed rulesets, zone settings such as SSL mode and minimum TLS, DNS records, health checks and waiting rooms",
+          "Bulk apply across a zone group, up to fifty zones, with a separate acknowledgement above ten",
+          "High-impact changes such as a whole-site lockdown or an apex DNS deletion need an explicit acknowledgement; DNS and bulk changes are admin only",
+          "Per-class write rate limits with an audited break-glass override",
+        ],
+      },
+      {
+        h2: "Governance and sharing",
+        bullets: [
+          "Workspaces with owner, admin, user and viewer roles; sign-in by magic link, Google, Microsoft Entra ID or GitHub",
+          "An audit log of every mutation attempt with actor, payload, Cloudflare's response and revert data",
+          "Read-only share links for clients, pinned to one zone, revocable, expiring within 30 days; the link secret is never stored",
+          "Printable zone and incident reports with CSV export, and a presentation mode that swaps real names for aliases so a workspace can be screenshotted",
+          "Per-token capability model learned from real responses, never by writing; an AI spend log by feature and model; an email delivery log",
+        ],
+      },
+      {
+        h2: "How it is built",
+        bullets: [
+          "Next.js App Router and React, Node, better-sqlite3 in WAL mode, one database per workspace, secrets encrypted per workspace with AES-256-GCM under a master key",
+          "The globe runs on the GPU through three.js and react-three-fiber, five draw calls a frame",
+          "The Cloudflare layer degrades by plan: denied fields are dropped and retried, time spans clamped, sampling reversed, free zones fall back to coarser data",
+          "Any model provider: Anthropic, OpenAI or an OpenAI-compatible endpoint, with the customer's own key billed at cost",
+          "One Node process under PM2 behind Caddy, origin sealed with Cloudflare Authenticated Origin Pulls; nightly encrypted backups restored by the job itself before it reports success",
         ],
       },
     ],
@@ -69,45 +119,92 @@ export const caseStudies: CaseStudy[] = [
     name: "CookieSteward",
     status: "Alpha",
     short:
-      "Consent management for GDPR and CCPA/CPRA, with Global Privacy Control and Google Consent Mode v2. A banner runtime small enough to stay out of the way of performance.",
+      "Cookie consent that checks its own work. Opt-in or opt-out by the visitor's law, Google Consent Mode v2, a scanner that verifies blocking after every publish, and a HIPAA mode that keeps tracking pixels off healthcare sites.",
     h1: copy["cookiesteward"].h1,
     lede: copy["cookiesteward"].lede,
+    external: { label: "Visit cookiesteward.com", href: "https://cookiesteward.com" },
     facts: [
-      { k: "Role", v: "Product, architecture, design and engineering" },
-      { k: "Status", v: "Alpha" },
-      { k: "Stack", v: "TypeScript, Next.js, Drizzle, Zod, Playwright" },
-      { k: "Platform", v: "Cloudflare Workers, KV, D1 and Queues" },
+      { k: "Role", v: "Product, architecture, design and engineering. Built alone." },
+      { k: "Status", v: "Alpha, hosted, with the edge in production" },
+      { k: "Stack", v: "TypeScript, Next.js, Drizzle, Zod, Playwright, Hono" },
+      { k: "Platform", v: "Cloudflare Workers, KV, D1, Queues and R2 for the edge; a Next.js dashboard behind Caddy" },
+      { k: "Tests", v: "Banner tests in real Chromium, Firefox and WebKit, scan and full-stack suites, about 190 unit tests" },
     ],
     sections: [
       {
-        h2: "The problem",
+        h2: "What it is",
         paras: [
-          "Consent banners are usually heavy, slow and bolted on. They hurt performance, and they are hard to prove correct across regions and browsers.",
+          "CookieSteward is a hosted consent manager for agencies and site owners. One script tag goes first in the head. Cloudflare's edge serves a small banner that blocks third-party scripts and iframes until the visitor consents, applies opt-in or opt-out depending on where the visitor is, sets Google Consent Mode v2 before any Google tag loads, and writes a receipt for every choice.",
+          "Most consent tools show a banner and hope. This one scans the site afterward, with and without consent, and reports whether the blocking held.",
         ],
       },
       {
-        h2: "What it does",
+        h2: "HIPAA mode for healthcare sites",
+        paras: [
+          "In December 2022 the HHS Office for Civil Rights published guidance on tracking technologies on healthcare websites, naming Google Analytics and the Meta Pixel. Under HIPAA, a visitor clicking Accept all is not the authorisation the rules ask for. So HIPAA mode does not ask. It blocks.",
+          "Switched on per site, it compiles a curated ruleset of 29 vendors and 39 hosts into hard-block rules on every publish: ad platforms such as Google Ads, Meta, TikTok, Microsoft and LinkedIn; session-replay tools such as Hotjar, Clarity and FullStory; social widgets; and Google Analytics. No consent path can release them, which is covered by a browser test. The post-publish scan fails if any of those hosts fires anyway, and regression alerts label the hit as a health-data risk.",
+          "Receipts for HIPAA-mode sites never compute an IP hash, because a salted hash of an IP is still linkable. Every classified cookie also carries a HIPAA risk rating, and the banner editor lists trackers seen on the site that are rated high risk and not yet covered. A Business Associate Agreement is available as an add-on. The product is clear about limits: it does not make an organisation HIPAA compliant, it does not detect health information, and server-side integrations are outside its reach.",
+        ],
+      },
+      {
+        h2: "Consent that matches the visitor's law",
         bullets: [
-          "Opt-in under GDPR and opt-out under CCPA/CPRA, including Global Privacy Control",
-          "Google Consent Mode v2 and a Google Tag Manager bridge",
-          "A scanner that crawls a site and classifies the trackers it finds",
-          "A WordPress plugin and a dashboard for managing sites",
+          "Opt-in for the EU, EEA, UK, Switzerland and unknown locations; opt-out for the United States, applying the California model to every state",
+          "Global Privacy Control honoured from the browser signal or the Sec-GPC header, with an automatic opt-out receipt for US visitors",
+          "A persistent Your Privacy Choices link with the official California icon, and an opt-out that stays sticky for a year across config versions",
+          "Four categories, Accept all and Reject all with equal prominence enforced at publish, a preferences layer with per-category toggles and a cookie declaration table rebuilt from the site's classified cookies",
+          "Re-consent when the configuration changes or consent expires, a withdraw action, and a reopen widget",
+          "Blocked-embed placeholders that name the provider, for YouTube, Vimeo, Google Maps, Calendly, HubSpot and a dozen others, sized to the embed so accepting does not shift the page",
+        ],
+      },
+      {
+        h2: "A scanner that checks its own work",
+        paras: [
+          "After every publish, on demand, and weekly by default, headless Chromium loads up to twenty representative pages chosen from the sitemap: the homepage, one page per URL pattern, then pages that look like checkout, booking, contact, login or donate. With the banner installed it runs two passes, before and after consent, and reports per rule whether blocking held and which third parties received data before consent.",
+        ],
+        bullets: [
+          "Cookies, local storage and third-party requests collected with setter attribution through Chrome's initiator chains; raw values never stored",
+          "Leak detection for email addresses, page URLs, screen size, 21 named identifiers such as fbp and gclid, and forwarded cookie values in query strings and POST bodies",
+          "Classification against 2,261 Open Cookie Database patterns and a hand-curated vendor map; unknown cookies get an AI investigation using the customer's own key, wrapped against prompt injection, and a person approves the verdict, which then applies fleet-wide",
+          "A six-point install check: script present, right site key, UI mounted, loads before Google Tag Manager, Consent Mode default set before Google tags read it",
+          "A diff against the previous scan, screenshots per page, and regression emails when something got worse",
+        ],
+      },
+      {
+        h2: "Signals and integrations",
+        bullets: [
+          "Google Consent Mode v2 default fired synchronously at boot before Google Tag Manager, mapped across ad_storage, ad_user_data, ad_personalization, analytics_storage and functionality_storage, with ads data redaction while advertising is denied",
+          "A Google Tag Manager bridge with dataLayer events for initialised, given, updated and loaded consent, each carrying per-category booleans",
+          "A window.CMP API and events for single-page apps, and a CookieFirst compatibility shim for migrations",
+          "A WordPress plugin with three placement methods and a check that warns if a Google, Meta, Clarity or Hotjar tag loads before the script",
+        ],
+      },
+      {
+        h2: "Records you can hand to an auditor",
+        bullets: [
+          "One receipt per choice: visitor id, regime, action, categories, config version, GPC flag, country, browser family and timestamp; no page URL",
+          "Written through a Cloudflare Queue into D1 in batches, with retries and a dead-letter queue so failures are kept",
+          "The config version maps to the exact published banner configuration, including compiled HIPAA rules, so you can show what the visitor was served",
+          "Per-visitor lookup, daily statistics by regime and action, and streamed CSV export per site and date range, formula-safe, available to client-role users",
+          "Rolling three-year retention enforced by a daily edge cron",
+        ],
+      },
+      {
+        h2: "Performance and delivery",
+        bullets: [
+          "A zero-dependency runtime in vanilla TypeScript, under 10 KB gzipped, with a size budget enforced in CI",
+          "A single-request embed: the edge Worker returns the regime, GPC state and configuration together with the runtime in one response, cached per site, version and regime",
+          "Everything renders in a shadow DOM as fixed overlays, so the page does not move; six theme presets, five layouts, custom CSS up to 10 KB",
+          "Dialog roles, focus management, a Tab trap in the preferences layer, a polite live region, reduced-motion support and 44-pixel targets",
         ],
       },
       {
         h2: "How it is built",
         bullets: [
-          "A zero-dependency banner runtime in vanilla TypeScript, about 7 KB gzipped",
-          "An edge Worker that serves site configuration from KV",
-          "Consent receipts written through a queue to D1, with a dead-letter queue for failures",
-          "Shared Zod schemas, a Drizzle data layer and a Playwright crawler",
-          "A cross-browser test matrix that exercises the whole consent path",
-        ],
-      },
-      {
-        h2: "The design decision that matters",
-        paras: [
-          "Consent has to be fast, correct and provable. The runtime is small enough to ignore in a performance budget, the receipts are written reliably even when something fails, and the behaviour is tested in real browsers.",
+          "The edge is a Hono Worker on Cloudflare with KV for configuration, D1 for receipts, Queues for writes and a cron for retention; Zod schemas shared between the dashboard and the edge",
+          "The dashboard is Next.js 15 with one SQLite database per workspace, roles for owner, admin, staff and read-only client, magic-link and OAuth sign-in behind Turnstile, and AI keys encrypted at rest",
+          "Workspaces, sites and clients as the tenancy model; Stripe for annual billing with grace, frozen and stopped states",
+          "Playwright drives the banner tests across Chromium, Firefox and WebKit against a fixture site with real trackers, and the same engine powers the scanner",
         ],
       },
     ],

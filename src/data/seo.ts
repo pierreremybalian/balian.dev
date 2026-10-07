@@ -60,13 +60,13 @@ export const seo: Record<string, Seo> = {
   },
   zonesteward: {
     title: "ZoneSteward: Cloudflare Operations Platform",
-    description: "ZoneSteward is a multi-tenant platform for Cloudflare operations. An AI assistant proposes changes and a person approves each one.",
+    description: "ZoneSteward is a platform for Cloudflare operations across many zones: live traffic, alerts from real data, and AI-proposed changes a person approves.",
     keyword: "cloudflare operations",
   },
   cookiesteward: {
-    title: "CookieSteward: Consent Management Platform",
-    description: "CookieSteward is a consent management platform for GDPR and CCPA/CPRA, with a tiny banner runtime delivered from the edge.",
-    keyword: "consent management platform",
+    title: "CookieSteward: Consent Management, HIPAA Mode",
+    description: "CookieSteward is a consent management platform for GDPR and CCPA with Consent Mode v2, a scanner that verifies blocking and a HIPAA mode for healthcare sites.",
+    keyword: "consent management",
   },
   about: {
     title: "Pierre Balian, Senior Web Engineer",

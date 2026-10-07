@@ -46,11 +46,11 @@ export const copy: Record<string, PageCopy> = {
   },
   zonesteward: {
     h1: "ZoneSteward: Cloudflare operations with a gate in front.",
-    lede: "If you run many Cloudflare sites, you can ask questions in plain English and fix problems safely. The AI proposes changes, and a person approves each one.",
+    lede: "If you run many Cloudflare sites, you can ask what is happening in plain English and get alerted from real traffic. The AI proposes fixes and you approve each one.",
   },
   cookiesteward: {
     h1: "CookieSteward: consent management that stays out of the way.",
-    lede: "A cookie banner that does not slow your site down. It handles GDPR and California rules, and the banner is small enough that you will not notice it loading.",
+    lede: "A cookie banner that blocks trackers until you consent, then scans the site to prove it did. It handles GDPR, California rules and HIPAA healthcare sites.",
   },
   about: {
     h1: "Twenty years of building for the web, most of it inside agencies.",
