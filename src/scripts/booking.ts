@@ -57,13 +57,13 @@ export function initBooking() {
     if (!keys.length) return showEmpty();
     empty.hidden = true;
     days.replaceChildren();
-    keys.forEach((k, i) => {
+    keys.forEach((k) => {
       const first = slots.find((s) => fmtDayKey(new Date(s.start)) === k)!;
       const b = document.createElement("button");
       b.type = "button";
       b.className = "day";
       b.textContent = fmtDay.format(new Date(first.start));
-      b.setAttribute("aria-pressed", String(i === 0));
+      b.setAttribute("aria-pressed", "false");
       b.addEventListener("click", () => {
         days.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", "false"));
         b.setAttribute("aria-pressed", "true");
@@ -71,7 +71,12 @@ export function initBooking() {
       });
       days.appendChild(b);
     });
-    renderDay(keys[0]);
+    // times stay hidden until a day is picked
+    slotsBox.replaceChildren();
+    const hint = document.createElement("span");
+    hint.className = "note";
+    hint.textContent = "Pick a day to see the open times.";
+    slotsBox.appendChild(hint);
   }
 
   function pick(s: Slot) {
