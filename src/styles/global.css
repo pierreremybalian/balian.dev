@@ -59,9 +59,9 @@ p { margin: 0; }
 .mark { font: 800 20px/1 var(--display); letter-spacing: -0.03em; display: flex; align-items: center; gap: 10px; }
 .mark .tld { color: var(--sig); margin-left: -8px; }
 .mark i { width: 10px; height: 10px; background: var(--sig); display: block; border-radius: 50%; box-shadow: 0 0 0 4px rgba(255, 46, 147, 0.18); }
-.rnav { position: relative; display: flex; flex-direction: column; gap: 2px; padding-left: 18px; font: 500 13px/1.2 var(--mono); letter-spacing: 0.04em; }
+.rnav { position: relative; display: flex; flex-direction: column; gap: 2px; padding-left: 18px; font: 500 13px/1.2 var(--mono); letter-spacing: 0.04em; min-height: 0; overflow-y: auto; scrollbar-width: none; margin-block: 24px; }
+.rnav::-webkit-scrollbar { display: none; }
 .rnav::before { content: ""; position: absolute; left: 0; top: 4px; bottom: 4px; width: 1px; background: var(--line); }
-.rnav .fill { position: absolute; left: -1px; top: 4px; bottom: 4px; width: 3px; background: var(--sig); transform-origin: 50% 0; transform: scaleY(0); border-radius: 2px; }
 .rnav a { position: relative; padding: 11px 0; color: var(--mut); transition: color 0.25s, transform 0.25s; }
 .rnav a::before { content: ""; position: absolute; left: -18px; top: 50%; width: 10px; height: 2px; background: var(--sig); transform: translateY(-50%) scaleX(0); transform-origin: left; transition: transform 0.25s; }
 .rnav a:is(:hover, :focus-visible) { color: var(--ink); transform: translateX(6px); }
@@ -72,6 +72,13 @@ p { margin: 0; }
 .rnav a[aria-current="page"], .rnav a.on { color: var(--ink); transform: translateX(6px); }
 .rnav .sub { display: flex; flex-direction: column; margin: 0 0 6px 12px; border-left: 1px solid var(--line); padding-left: 12px; }
 .rnav .sub a { padding: 9px 0; font-size: 12px; }
+/* "On this page": the current page's sections, built from its h2s, with the one in view marked */
+.rnav .idx { display: flex; flex-direction: column; margin: 2px 0 8px 12px; border-left: 1px solid var(--line); padding-left: 12px; }
+.rnav .sub .idx { margin-left: 8px; }
+.rnav .idx a { padding: 6px 0; font-size: 11px; letter-spacing: 0.02em; color: var(--mut); transform: none; }
+.rnav .idx a::before { left: -13px; width: 6px; }
+.rnav .idx a.on { color: var(--sig); transform: none; }
+.rnav .idx a.on::before { transform: translateY(-50%) scaleX(1); }
 .rfoot { display: flex; flex-direction: column; gap: 14px; font-size: 13px; color: var(--mut); }
 .menu-btn { display: none; }
 .mpanel { display: none; }
@@ -362,7 +369,7 @@ footer.site a { padding-block: 6px; display: inline-block; }
   .hero h1 b, .grad { background: none; color: CanvasText; -webkit-text-fill-color: currentColor; }
   .btn, .rbtn, .lg, .related a { border: 1px solid ButtonText; }
   .btn::before, .rbtn::before, .btn::after, .rbtn::after { display: none; }
-  .tl-fill, .rnav .fill { background: Highlight; }
+  .tl-fill { background: Highlight; }
   .st .dot, .st.on .dot { border-color: ButtonText; background: Canvas; }
   .st.on .dot { background: Highlight; }
 }

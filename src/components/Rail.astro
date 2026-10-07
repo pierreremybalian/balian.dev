@@ -8,7 +8,6 @@ const inServices = path.startsWith("/services/");
   <a class="mark" href="/" aria-label={`${site.brand} home`}><i></i>Balian<span class="tld">.dev</span></a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mpanel" id="menu-btn">Menu</button>
   <nav class="rnav" aria-label="Primary">
-    <span class="fill" id="rfill" aria-hidden="true"></span>
     {nav.map((item) => (
       <>
         <a href={item.href} aria-current={isCurrent(item.href) && (item.href !== "/services/" || path === "/services/") ? "page" : undefined} class={isCurrent(item.href) ? "on" : undefined}>{item.label}</a>

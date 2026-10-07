@@ -40,17 +40,44 @@ if (rv.length && "IntersectionObserver" in window && !reduce) {
   rv.forEach((el) => el.classList.add("in-view"));
 }
 
-/* rail progress + timeline fill, on scroll */
-const fill = document.getElementById("rfill");
+/* rail "on this page" index: the current page's h2s, listed under its nav item, with the one in view marked */
+const rail = document.querySelector<HTMLElement>(".rnav");
+const current = rail?.querySelector<HTMLAnchorElement>('a[aria-current="page"]');
+const heads = Array.from(document.querySelectorAll<HTMLElement>("main h2")).filter(
+  (h) => !h.closest(".sr-only, .cta-band, .close, #faq") && h.textContent!.trim() && h.textContent!.trim() !== "Related"
+);
+// a section's short label ("Services", "Process") reads better in the rail than a full headline
+const labelFor = (h: HTMLElement) => h.closest("section")?.querySelector<HTMLElement>(":scope > .in > .label, :scope > .label")?.textContent?.trim() || h.textContent!.trim();
+const idxLinks: HTMLAnchorElement[] = [];
+if (rail && current && heads.length > 1) {
+  const idx = document.createElement("div");
+  idx.className = "idx";
+  idx.setAttribute("aria-label", "On this page");
+  heads.slice(0, 9).forEach((h, i) => {
+    if (!h.id) h.id = "s-" + (h.textContent!.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || String(i));
+    const a = document.createElement("a");
+    a.href = "#" + h.id;
+    a.textContent = labelFor(h);
+    idx.appendChild(a);
+    idxLinks.push(a);
+  });
+  current.insertAdjacentElement("afterend", idx);
+}
+
+/* active section + timeline fill, on scroll */
 const tl = document.getElementById("tl");
 const tlFill = document.getElementById("tlfill");
 const steps = Array.from(document.querySelectorAll<HTMLElement>(".st"));
 let ticking = false;
 function update() {
   ticking = false;
-  const doc = document.documentElement;
-  const max = doc.scrollHeight - window.innerHeight;
-  if (fill && max > 0) fill.style.transform = `scaleY(${Math.min(1, window.scrollY / max)})`;
+  if (idxLinks.length) {
+    const line = window.innerHeight * 0.3;
+    let active = -1;
+    heads.slice(0, idxLinks.length).forEach((h, i) => { if (h.getBoundingClientRect().top <= line) active = i; });
+    // past the last section (CTA, footer) keeps the last one marked
+    idxLinks.forEach((a, i) => a.classList.toggle("on", i === active));
+  }
   if (tl && tlFill) {
     const r = tl.getBoundingClientRect();
     const mark = window.innerHeight * 0.62;
