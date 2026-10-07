@@ -9,11 +9,13 @@ import { aboutPage, breadcrumbs } from "../lib/schema";
 import { seo } from "../data/seo";
 import { copy } from "../data/ledes";
 
+// Past work is described by kind. No employer or client names, no figures. See CONTENT.md, "Proof policy".
 const experience = [
-  { t: "More than fifteen years in agency environments.", p: "I have worked professionally on agency teams since before the current tools existed, taking projects from the first scoping call through design, build, launch and support." },
-  { t: "Many industries and many kinds of client.", p: "Different businesses have different rules, audiences and risks. I have built for a wide range of them, and I start by learning how yours makes money before I choose a tool." },
-  { t: "Still hands on.", p: "I write and read the code myself, in TypeScript, PHP, Python and SQL, on WordPress, Next.js, Astro and Cloudflare. I have not moved into managing other people's work." },
-  { t: "Products of my own.", p: "I build and run ZoneSteward and CookieSteward, so I know what it takes to keep software working after launch." },
+  { t: "Led a web team.", p: "As director of web technology and security at a Minneapolis agency I reviewed the code, set the standards, ran the hosting and the security program, and scoped the larger engagements from feasibility through system design." },
+  { t: "Built and ran stores.", p: "Re-platformed a manufacturer from a proprietary commerce SaaS to WooCommerce with a Sage 100 integration. Moved a specialty retailer off BigCommerce, cleaned up a large catalog, and added QuickBooks and point-of-sale sync. Owned payments, tax and EDI across many stores." },
+  { t: "Kept sites secure and up.", p: "Administered Cloudflare WAF and DNS for a large client portfolio, led incident response and cleanup for compromised sites, and ran cyber-insurance audit remediation." },
+  { t: "Made sites usable and findable.", p: "Dozens of WCAG AA remediations, performance work against Core Web Vitals, SEO rebuilds after migrations, email deliverability, and HIPAA-scoped sites." },
+  { t: "Started on my own.", p: "Before agency life I co-owned a small design and build studio, handling design, development and hosting for long-term clients." },
 ];
 const ai = [
   { t: "AI handles the typing.", p: "Drafting, scaffolding, testing and documentation that once took a team now take one engineer directing capable tools." },
@@ -37,11 +39,12 @@ const ai = [
   <section class="sec">
     <div class="in">
       <span class="label">Experience</span>
-      <h2>What fifteen years in agencies adds up to.</h2>
+      <h2>What I have done.</h2>
       <ul class="items" style="max-width:none;margin-top:48px">
         {experience.map((m) => <li class="rv"><b style="font-size:1.35rem">{m.t}</b><span style="font-size:17px">{m.p}</span></li>)}
       </ul>
-      <ul class="stack" style="margin-top:40px">{stacks.map((s) => <li>{s}</li>)}</ul>
+      <p class="intro" style="margin-top:36px">Clients have included manufacturers, specialty retailers, grocery and regional retail brands, healthcare organisations with HIPAA obligations, and many B2C brands.</p>
+      <ul class="stack" style="margin-top:32px" aria-label="Stacks I work in">{stacks.map((s) => <li>{s}</li>)}</ul>
     </div>
   </section>
 
@@ -58,8 +61,8 @@ const ai = [
 
   <section class="sec">
     <div class="in">
-      <span class="label">How I use AI</span>
-      <h2>Why one person can do the work of a team.</h2>
+      <span class="label">How I work now</span>
+      <h2>Why one person can do what a team did.</h2>
       <ul class="items" style="max-width:none;margin-top:48px">
         {ai.map((m) => <li class="rv"><b style="font-size:1.35rem">{m.t}</b><span style="font-size:17px">{m.p}</span></li>)}
       </ul>
@@ -71,7 +74,7 @@ const ai = [
     <section class="prose">
       <h2>Where this model is not the right fit</h2>
       <div class="body rv">
-        <p>One person is the wrong choice for some work, and I would rather say so than take it.</p>
+        <p>One person is the wrong choice for some work, and I would sooner say so than take it.</p>
         <ul class="plainlist">
           <li>Large programs with many parallel workstreams and hard simultaneous deadlines</li>
           <li>Round-the-clock operations coverage</li>
@@ -85,17 +88,10 @@ const ai = [
         <p>It is the fair question to ask about a solo engineer, and the answer is built into how I work.</p>
         <ul class="plainlist">
           <li>You own the code, the repositories and the accounts</li>
-          <li>Everything is documented for the next engineer, not for me</li>
+          <li>Everything is documented for the next engineer who opens it</li>
           <li>Automated tests protect the behaviour that matters</li>
-          <li>Handover is a defined step, not an afterthought</li>
+          <li>Handover is a stage in the process with its own deliverable</li>
         </ul>
-      </div>
-    </section>
-    <section class="prose">
-      <h2>Why there is not more to show</h2>
-      <div class="body rv">
-        <p>Most of what I built in agency work belongs to the clients and the agencies, so I cannot show it here, and I will not pass it off as my own.</p>
-        <p>What I can show is the software I build on my own time and the way I work. If you want to know what fifteen years of production work looks like, ask me on a call.</p>
       </div>
     </section>
   </div>

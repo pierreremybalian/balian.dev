@@ -69,9 +69,9 @@ export const seo: Record<string, Seo> = {
     keyword: "consent management platform",
   },
   about: {
-    title: "Web Developer with Agency Experience",
-    description: "A web developer with agency experience: more than fifteen years on agency teams across many industries, now working directly with clients.",
-    keyword: "web developer with agency experience",
+    title: "Pierre Balian, Senior Web Engineer",
+    description: "Pierre Balian is a senior web engineer in Minneapolis with more than twenty years of experience, most of it leading technical work inside agencies.",
+    keyword: "senior web engineer",
   },
   process: {
     title: "Web Design Process: Design Before Build",
@@ -81,6 +81,6 @@ export const seo: Record<string, Seo> = {
   contact: {
     title: "Contact a Senior Web Developer",
     description: "Contact a senior web developer by email, phone or LinkedIn, book a 30-minute call, or send a short project brief. Replies come from Pierre.",
-    keyword: "senior web developer",
+    keyword: "contact a senior web developer",
   },
 };

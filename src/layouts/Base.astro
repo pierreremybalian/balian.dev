@@ -17,7 +17,7 @@ const { title, description, schema = [], noindex = false, home = false } = Astro
 const fullTitle = `${title}${TITLE_SUFFIX}`;
 // Per-page share image: public/og/<last path segment>.png (made by `npm run og`), else the site-wide one.
 const slug = Astro.url.pathname.split("/").filter(Boolean).pop();
-const ogFile = slug && existsSync(new URL(`../../public/og/${slug}.png`, import.meta.url)) ? `/og/${slug}.png?v=2` : "/og.png?v=2";
+const ogFile = slug && existsSync(new URL(`../../public/og/${slug}.png`, import.meta.url)) ? `/og/${slug}.png?v=3` : "/og.png?v=2";
 const ogImage = new URL(ogFile, site.url).toString();
 const canonical = new URL(Astro.url.pathname, site.url).toString();
 ---

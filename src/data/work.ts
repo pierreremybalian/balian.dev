@@ -101,13 +101,13 @@ export const caseStudies: CaseStudy[] = [
           "An edge Worker that serves site configuration from KV",
           "Consent receipts written through a queue to D1, with a dead-letter queue for failures",
           "Shared Zod schemas, a Drizzle data layer and a Playwright crawler",
-          "A cross-browser end-to-end test matrix",
+          "A cross-browser test matrix that exercises the whole consent path",
         ],
       },
       {
         h2: "The design decision that matters",
         paras: [
-          "Consent has to be fast, correct and provable. The runtime is small enough to ignore in a performance budget, the receipts are written reliably even when something fails, and the behaviour is tested in real browsers instead of assumed.",
+          "Consent has to be fast, correct and provable. The runtime is small enough to ignore in a performance budget, the receipts are written reliably even when something fails, and the behaviour is tested in real browsers.",
         ],
       },
     ],

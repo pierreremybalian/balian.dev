@@ -10,7 +10,7 @@ export interface PageCopy {
 export const copy: Record<string, PageCopy> = {
   home: {
     h1: "Agency-level web engineering, without the agency.",
-    lede: "I have twenty years of experience and use AI for the heavy lifting. You get an agency team's work faster and cheaper, and you deal with me directly.",
+    lede: "I have spent more than twenty years building websites, stores and web apps, most of it inside agencies. Now you hire me directly and I do the work myself.",
   },
   services: {
     h1: "Websites, stores, apps and AI, built by one person.",
@@ -29,7 +29,7 @@ export const copy: Record<string, PageCopy> = {
     lede: "Is checkout slow, tax a guess, or are orders missing from your ERP? I fix those problems and build what is missing.",
   },
   "web-app-saas-development": {
-    h1: "Web products built to be run, not just shipped.",
+    h1: "Web products you can run after launch.",
     lede: "You have a product idea or a prototype that has outgrown itself. I build the real version, with accounts and payments, and I already run two products of my own.",
   },
   "ai-integration": {
@@ -42,7 +42,7 @@ export const copy: Record<string, PageCopy> = {
   },
   work: {
     h1: "Two products of my own, built and run in production.",
-    lede: "For ten years I was an employee, so most of my best work belongs to other people. Here are two products I built on my own time. They show how I work.",
+    lede: "Most of what I built in twenty years belongs to the agencies' clients, so it is not here. These two products are mine, built on my own time and running in production.",
   },
   zonesteward: {
     h1: "ZoneSteward: Cloudflare operations with a gate in front.",
@@ -53,8 +53,8 @@ export const copy: Record<string, PageCopy> = {
     lede: "A cookie banner that does not slow your site down. It handles GDPR and California rules, and the banner is small enough that you will not notice it loading.",
   },
   about: {
-    h1: "Fifteen years inside agencies, now working for you directly.",
-    lede: "I have spent more than fifteen years in agency environments, building for clients in many industries. Now I do that work on my own, so you deal with me.",
+    h1: "Twenty years of building for the web, most of it inside agencies.",
+    lede: "I am Pierre Balian, a web engineer in Minneapolis. I led the technical side of an agency, and now I do that work for you directly.",
   },
   process: {
     h1: "A process with your sign-off at every gate.",

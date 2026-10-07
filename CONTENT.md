@@ -45,17 +45,26 @@ That is all. It does not introduce the site, explain the process, count the page
 - Specific over impressive. A named tool beats an adjective.
 - No past-employer names, clients, results or internal tools. Years of experience may be stated generally.
 
-## Agency experience
+## Proof policy
 
-More than fifteen years of professional work in agency environments, across many industries and clients, is the lead credential on About. Say it generally; no client or employer names, no industries or results that cannot be shown.
+The lead credential is "more than twenty years building for the web, most of it inside agencies". That is the only year count on the site. Past work is described by kind, so a visitor learns what I have done without anyone else's name or numbers attached.
 
-## The ten employed years
+Say:
+- More than twenty years; most of it inside agencies; "led the technical side of a Minneapolis agency"; "as director of web technology and security". The agency is never named.
+- Kinds of work: re-platformed a manufacturer's store to WooCommerce with a Sage 100 integration; migrated a specialty retailer off BigCommerce with QuickBooks and point-of-sale sync; led incident response and cleanup for compromised sites; ran cyber-insurance audit remediation; administered Cloudflare WAF and DNS for a large portfolio; dozens of WCAG AA remediations; HIPAA-scoped sites; built the team's starter framework and a maintenance hub that watches plugins for vulnerabilities; an alt-text plugin on the Claude API.
+- Industries as categories: manufacturers, specialty retail, grocery and regional retail brands, healthcare with HIPAA obligations, B2C brands.
+- Named systems: Stripe, PayPal, Authorize.net, Avalara, TaxJar, TrueCommerce EDI, Sage 100, QuickBooks, Cloudflare.
 
-For about ten years I worked as an employee at an agency. Most of what I built there belongs to the clients and the company, so it does not appear here, and I do not claim it as mine. The site says this plainly (About, Work, Home) instead of hiding it. What can be shown: my own products, my process, how I work, and the stacks I know.
+Never:
+- Employer or client names. Revenue, growth or savings figures. Counts of sites, zones, launches or team members. Engagement dollar ranges.
+- Any other year count ("fifteen years", "ten years as an employee", "two decades"). The linter fails on these.
+- Apologies for having no client case studies. Work says once, in one sentence, that agency work belongs to the clients. Nowhere else.
 
 ## Banned words and patterns
 
-The linter fails on: rather than, whatever the problem, I choose, accountable (in ledes), end-to-end, leverage, robust, seamless, cutting-edge, solutions, tailored, world-class, passionate, synergy, holistic, elevate, unlock, empower, streamline, delve, "in today's". It also fails on a number-plus-nouns opener ("Six areas", "Three ways"), em dashes, and a lede that mostly repeats its H1.
+The linter fails on: rather than, whatever the problem, I choose, accountable (in ledes), end-to-end, leverage, robust, seamless, cutting-edge, solutions, tailored, world-class, passionate, synergy, holistic, elevate, unlock, empower, streamline, delve, "in today's", game-changing, best-in-class. It also fails on a number-plus-nouns opener ("Six areas", "Three ways"), em dashes, and a lede that mostly repeats its H1.
+
+Since 2026-10-07 the linter also scans every line of copy in `src/data`, `src/pages` and `src/components` for the banned phrases, dashes, "not an afterthought", "not just", the "X, not Y" contrast template, year counts other than twenty, and employer names.
 
 ## Checklist before shipping a lede
 

@@ -11,22 +11,22 @@ export interface ServiceGroup {
 
 export const serviceGroups: ServiceGroup[] = [
   { id: "websites", name: "Websites and content platforms", href: "/services/websites-and-cms/",
-    short: "WordPress, Astro and headless builds, chosen for the problem rather than the habit.",
+    short: "WordPress, Astro or headless, picked for how your team edits and what the site has to do.",
     icon: '<rect x="3" y="6" width="28" height="22" rx="2"/><path d="M3 12h28M8 9h.01M12 9h.01"/>' },
   { id: "commerce", name: "Commerce", href: "/services/woocommerce-development/",
-    short: "WooCommerce and store engineering built around checkout, integrations and speed.",
+    short: "WooCommerce stores with checkout, payments, tax and ERP sync that hold up under real orders.",
     icon: '<path d="M4 6h4l3 15h15l3-11H10"/><circle cx="14" cy="27" r="1.6"/><circle cx="25" cy="27" r="1.6"/>' },
   { id: "apps", name: "Web apps and SaaS", href: "/services/web-app-saas-development/",
-    short: "Multi-tenant products, from architecture to deployment.",
+    short: "Multi-tenant products with accounts, billing and a release process you can run.",
     icon: '<path d="M17 4l12 6v14l-12 6-12-6V10z"/><path d="M17 16l12-6M17 16L5 10M17 16v14"/>' },
   { id: "ai", name: "AI features and agents", href: "/services/ai-integration/",
-    short: "Features where the model proposes and a person approves.",
+    short: "The model proposes, a person approves, and the system checks the result.",
     icon: '<circle cx="17" cy="17" r="5"/><path d="M17 3v6M17 25v6M3 17h6M25 17h6M7 7l4 4M23 23l4 4M27 7l-4 4M11 23l-4 4"/>' },
   { id: "integrations", name: "Integrations and automation", href: "/services/#integrations-and-automation",
-    short: "APIs, back-office sync and internal tools that remove manual work.",
+    short: "Store, ERP, accounting and CRM connected, plus internal tools for the manual jobs.",
     icon: '<path d="M4 12h10M20 12h10M4 22h10M20 22h10"/><circle cx="17" cy="12" r="3"/><circle cx="17" cy="22" r="3"/>' },
   { id: "quality", name: "Security, performance, accessibility", href: "/services/#security-performance-accessibility",
-    short: "Held to a standard on every build, not added at the end.",
+    short: "Hardening, cleanup after a breach, Core Web Vitals and WCAG AA, on new builds and existing sites.",
     icon: '<path d="M17 3l11 4v9c0 7-5 12-11 15C11 28 6 23 6 16V7z"/><path d="M12 17l4 4 7-8"/>' },
 ];
 
@@ -57,7 +57,7 @@ export const servicePages: ServicePage[] = [
     blocks: [
       {
         h2: "Choosing the platform",
-        paras: ["The platform is a decision about people, not technology. Who edits the site, how often, and what else it has to do all point toward one answer."],
+        paras: ["The platform is a decision about people. Who edits the site, how often, and what else it has to do all point toward one answer."],
         items: [
           { title: "WordPress", text: "When editors need flexibility, plugins, forms or commerce, and a familiar admin. Built custom, on native blocks, without page-builder weight." },
           { title: "Astro on Cloudflare", text: "When speed and simplicity matter more than a heavy CMS. Static pages, edge delivery, and content in plain files or a light editor." },
@@ -67,11 +67,20 @@ export const servicePages: ServicePage[] = [
       {
         h2: "What every site gets",
         items: [
-          { title: "Speed", text: "Core Web Vitals treated as a budget from the first commit, not tuned at the end." },
+          { title: "Speed", text: "Core Web Vitals treated as a budget from the first commit." },
           { title: "Accessibility", text: "Built and checked to WCAG AA." },
-          { title: "Search foundations", text: "Clean URLs, structured data, redirects from the old site, and metadata that is written, not auto-generated." },
+          { title: "Search foundations", text: "Clean URLs, structured data, redirects from the old site, and metadata written by hand." },
           { title: "Security", text: "Hardened configuration, security headers, and least-privilege access." },
           { title: "An editing experience", text: "Designed with your team, with documentation and a walkthrough." },
+        ],
+      },
+      {
+        h2: "Work I have done",
+        bullets: [
+          "Dozens of accessibility remediations to verified WCAG AA, for B2C and healthcare clients",
+          "Site SEO rebuilt from scratch after a re-platform, with redirect maps for every URL that changed",
+          "Custom WordPress platforms for manufacturers, retailers and HIPAA-scoped organisations",
+          "This site, on Astro and Cloudflare Pages, with its own content and SEO linters",
         ],
       },
       {
@@ -88,7 +97,7 @@ export const servicePages: ServicePage[] = [
     faq: [
       { q: "Should I use WordPress or something else?", a: "If your team edits often or needs plugins, forms or commerce, WordPress is usually right. If the site is mostly fixed pages and speed matters most, Astro is simpler and faster. I will recommend the one that fits, even when it is less work for me." },
       { q: "Can you rebuild my existing site without losing search traffic?", a: "Yes. I map every existing URL, redirect what changes, carry over the metadata that matters, and check rankings afterward." },
-      { q: "Will my team be able to edit it?", a: "That is a design requirement, not an afterthought. I build the editing experience with the people who will use it, and hand over documentation." },
+      { q: "Will my team be able to edit it?", a: "Yes, and it is a design requirement from the start. I build the editing experience with the people who will use it, and hand over documentation." },
     ],
     related: [
       { label: "WordPress development", href: "/services/wordpress-development/" },
@@ -124,6 +133,15 @@ export const servicePages: ServicePage[] = [
         ],
       },
       {
+        h2: "Work I have done",
+        bullets: [
+          "Built the starter framework a web team used on every WordPress build, with the coding standards to go with it",
+          "Custom Gutenberg blocks on the native block API and ACF, designed around editors' real workflows",
+          "A maintenance hub that watches every installed plugin for known vulnerabilities, alerts, and applies updates across many sites",
+          "Multisite networks, HIPAA-scoped sites, and takeovers of sites other developers built",
+        ],
+      },
+      {
         h2: "When WordPress is the right choice",
         paras: [
           "WordPress fits when editors need flexibility, when you want a large plugin ecosystem, or when commerce through WooCommerce is part of the picture. It is not always the answer. For fast, mostly fixed marketing sites, Astro is often simpler and quicker, and I will say so.",
@@ -134,7 +152,7 @@ export const servicePages: ServicePage[] = [
       { q: "Do you build custom themes or use page builders?", a: "Custom themes on native blocks. Page builders add weight and lock you in, so I avoid them unless a team already relies on one." },
       { q: "Can you take over a site someone else built?", a: "Yes. I start with an audit of the code, security and performance, tell you what I find, and then decide what to keep." },
       { q: "Do you write custom plugins?", a: "Yes, with coding standards, security review, tests, documentation and an upgrade path, so you can maintain them without me." },
-      { q: "Can WordPress be fast?", a: "Yes. Most slow WordPress sites are slow because of plugins and themes, not WordPress itself. A lean custom build can be very fast." },
+      { q: "Can WordPress be fast?", a: "Yes. Most slow WordPress sites are slow because of their plugins and themes. A lean custom build can be very fast." },
     ],
     related: [
       { label: "Websites and CMS", href: "/services/websites-and-cms/" },
@@ -171,9 +189,18 @@ export const servicePages: ServicePage[] = [
         ],
       },
       {
+        h2: "Work I have done",
+        bullets: [
+          "Re-platformed a manufacturer's store from an aging proprietary SaaS to a custom WooCommerce build with a Sage 100 ERP integration",
+          "Migrated a specialty retailer from BigCommerce to WooCommerce, normalised a large and inconsistent catalog, and added QuickBooks and point-of-sale sync",
+          "Owned the commerce stack across many stores: Stripe, PayPal and Authorize.net, PCI-compliant checkout, fraud prevention, abandoned-cart recovery, Avalara and TaxJar, and EDI sync to client ERPs",
+          "Checkout and product-page changes made for conversion, measured after launch",
+        ],
+      },
+      {
         h2: "Moving platforms without losing search traffic",
         paras: [
-          "Most of the risk in a migration is search visibility. I map every product and category URL, carry over the metadata that matters, set up redirects before launch, and check the results afterward. Orders, customers and catalog data are validated in both directions, not assumed.",
+          "Most of the risk in a migration is search visibility. I map every product and category URL, carry over the metadata that matters, set up redirects before launch, and check the results afterward. Orders, customers and catalog data are validated in both directions.",
         ],
       },
     ],
@@ -198,7 +225,7 @@ export const servicePages: ServicePage[] = [
       {
         h2: "What a product build includes",
         items: [
-          { title: "Architecture and data model", text: "The decisions that are expensive to change later, made deliberately." },
+          { title: "Architecture and data model", text: "The decisions that are expensive to change later, made early and written down." },
           { title: "Authentication and tenancy", text: "Accounts, roles and data separation between customers." },
           { title: "Billing and payments", text: "Subscriptions and payments through Stripe, with the failure cases handled." },
           { title: "Deployment and monitoring", text: "A repeatable release process and enough visibility to run the product." },
@@ -206,7 +233,7 @@ export const servicePages: ServicePage[] = [
         ],
       },
       {
-        h2: "How I choose a stack",
+        h2: "How I pick a stack",
         paras: [
           "I do not sell a framework. TypeScript across the app where it makes sense, Next.js and Node for the application, Cloudflare Workers, D1, KV, R2 and Queues for edge work, and a SQL database for the data. When a different tool is a better fit, I use that.",
           "AI handles syntax and API detail across all of it. I make the architecture and security decisions, and I read the code.",
@@ -219,9 +246,12 @@ export const servicePages: ServicePage[] = [
         ],
       },
       {
-        h2: "References",
-        paras: [
-          "I build and run my own products, ZoneSteward and CookieSteward, on the same approach. They are the clearest evidence of how I work.",
+        h2: "Work I have done",
+        bullets: [
+          "ZoneSteward, a multi-tenant Cloudflare operations platform with an AI assistant whose every change a person approves",
+          "CookieSteward, a consent management platform on Cloudflare Workers, D1, KV and Queues, with a tiny edge-delivered banner",
+          "Scoped and architected an agency's larger engagements from feasibility through system design",
+          "Internal platforms in PHP and MySQL that run maintenance and monitoring across a large portfolio of sites",
         ],
       },
     ],
@@ -264,6 +294,14 @@ export const servicePages: ServicePage[] = [
         h2: "The approval-gate pattern",
         paras: [
           "For any AI feature that can change something real, the model proposes, a person approves, and the system verifies the result. The model has no direct write path. This is the pattern ZoneSteward uses, where every change is approved on the server and checked against the live system afterward.",
+        ],
+      },
+      {
+        h2: "Work I have done",
+        bullets: [
+          "An alt-text plugin on the Claude API, deployed across an agency's whole client portfolio",
+          "ZoneSteward's approval gate: the model proposes, the server enforces approval, the live ruleset is checked afterward",
+          "AI-assisted development adopted across a web team, with standards and review to match",
         ],
       },
       {
@@ -324,7 +362,13 @@ export const servicePages: ServicePage[] = [
       {
         h2: "Stack-agnostic by design",
         paras: [
-          "I do not need to know every subtlety of every language and API, because AI is the interface layer for syntax and detail. I do need to know how systems are built, so I work across TypeScript, Next.js, Node, PHP and WordPress, Python, SQL, Astro and Cloudflare, and I choose the tool that fits the problem.",
+          "I do not need to know every subtlety of every language and API, because AI is the interface layer for syntax and detail. I do need to know how systems are built, so I work across TypeScript, Next.js, Node, PHP and WordPress, Python, SQL, Astro and Cloudflare, and I pick the tool that fits the problem.",
+        ],
+      },
+      {
+        h2: "Where this comes from",
+        paras: [
+          "I led the adoption of AI-assisted development across an agency web team: the tooling, the standards, and the review that keeps it honest. This site, ZoneSteward and CookieSteward are all built this way.",
         ],
       },
       {
@@ -351,7 +395,7 @@ export const hubSections: { id: string; name: string; text: string; bullets: str
   {
     id: "integrations-and-automation",
     name: "Integrations and automation",
-    text: "Most businesses run on several systems that do not talk to each other, and people fill the gaps by hand. I connect the systems and build small internal tools that remove that manual work.",
+    text: "Most businesses run on several systems that do not talk to each other, and people fill the gaps by hand. I connect the systems and build small internal tools that remove that manual work. I have connected WooCommerce to Sage 100, QuickBooks, point-of-sale systems and EDI partners, and built tools that watch a whole portfolio of sites for vulnerable plugins.",
     bullets: [
       "API integrations between your store, ERP, accounting and CRM",
       "Data sync with proper error handling and a record of what happened",
@@ -362,7 +406,7 @@ export const hubSections: { id: string; name: string; text: string; bullets: str
   {
     id: "security-performance-accessibility",
     name: "Security, performance and accessibility",
-    text: "These are not extras. Every build is held to the same standard, and I also work on existing sites that need to catch up.",
+    text: "Every build is held to the same standard, and I also work on existing sites that need to catch up. I have led incident response for compromised sites, run cyber-insurance audit remediation, and administered Cloudflare WAF and DNS for a large portfolio.",
     bullets: [
       "Security headers, firewall configuration and least-privilege access",
       "Hardening and cleanup for sites that have been compromised",
