@@ -1,6 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
 import CtaBand from "../../components/CtaBand.astro";
+import Since from "../../components/Since.astro";
 import { caseStudies } from "../../data/work";
 import { breadcrumbs, collectionPage } from "../../lib/schema";
 import { copy } from "../../data/ledes";
@@ -16,6 +17,7 @@ import { seo } from "../../data/seo";
       <p class="crumb">Work</p>
       <h1>{copy.work.h1}</h1>
       <p class="lede">{copy.work.lede}</p>
+      <Since />
     </div>
   </section>
 

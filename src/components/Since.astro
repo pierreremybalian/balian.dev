@@ -1,0 +1,15 @@
+---
+// "Freelancing again for ..." line under a page hero. Rendered at build time, ticks every second with JS.
+import { SINCE, sinceText } from "../lib/since";
+---
+<p class="since">For the record, I have been freelancing again for <span class="since-n" data-since={SINCE}>{sinceText(new Date())}</span>.</p>
+
+<script>
+  import { sinceText } from "../lib/since";
+  document.querySelectorAll<HTMLElement>(".since-n").forEach((el) => {
+    const start = new Date(el.dataset.since!);
+    const tick = () => { el.textContent = sinceText(new Date(), start); };
+    tick();
+    setInterval(tick, 1000);
+  });
+</script>

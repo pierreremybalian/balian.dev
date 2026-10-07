@@ -8,7 +8,7 @@ import { generalFaq } from "../data/faq";
 import { aboutPage, breadcrumbs } from "../lib/schema";
 import { seo } from "../data/seo";
 import { copy } from "../data/ledes";
-import { SINCE, sinceText } from "../lib/since";
+import Since from "../components/Since.astro";
 
 // Past work is described by kind. No employer or client names, no figures. See CONTENT.md, "Proof policy".
 const experience = [
@@ -34,7 +34,7 @@ const ai = [
       <p class="crumb">About</p>
       <h1>{copy.about.h1}</h1>
       <p class="lede">{copy.about.lede}</p>
-      <p class="since">For the record, I have been freelancing again for <span id="since" data-since={SINCE}>{sinceText(new Date())}</span>.</p>
+      <Since />
     </div>
   </section>
 
@@ -100,16 +100,4 @@ const ai = [
 
   <Faq items={generalFaq} />
   <CtaBand />
-
-  <script>
-    import { sinceText } from "../lib/since";
-    // the build-time value is right for anyone without JS; with JS it ticks
-    const el = document.getElementById("since");
-    if (el) {
-      const start = new Date(el.dataset.since!);
-      const tick = () => { el.textContent = sinceText(new Date(), start); };
-      tick();
-      setInterval(tick, 1000);
-    }
-  </script>
 </Base>
