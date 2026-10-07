@@ -132,7 +132,7 @@ export function initBooking() {
       const r = await fetch("/api/book", {
         method: "POST",
         headers: { "content-type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ start: picked.start, name: fd.get("name"), email: fd.get("email"), note: fd.get("note"), website: fd.get("website") }),
+        body: JSON.stringify({ start: picked.start, name: fd.get("name"), email: fd.get("email"), company: fd.get("company"), site: fd.get("site"), phone: fd.get("phone"), kind: fd.get("kind"), note: fd.get("note"), fax: fd.get("fax") }),
       });
       const data = (await r.json().catch(() => ({}))) as { ok?: boolean; meet?: string | null; error?: string };
       if (r.ok && data.ok) {

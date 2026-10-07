@@ -330,6 +330,8 @@ footer.site a { padding-block: 6px; display: inline-block; }
 .book { margin-top: 28px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
 .book > * { min-width: 0; }
 .book .group { display: grid; gap: 12px; }
+.form .two-up { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+@media (max-width: 560px) { .form .two-up { grid-template-columns: minmax(0, 1fr); } }
 .book .days { display: flex; flex-wrap: wrap; gap: 8px; }
 .book .day, .book .slot { display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; min-height: 44px; border: 1px solid var(--ctl); background: transparent; color: var(--ink); padding: 8px 14px; font: 500 13.5px/1.2 var(--mono); border-radius: 3px; cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s; }
 .book .day:is(:hover, :focus-visible), .book .slot:is(:hover, :focus-visible) { border-color: var(--sig); transform: translateY(-1px); }

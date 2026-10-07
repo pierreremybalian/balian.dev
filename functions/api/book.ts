@@ -1,4 +1,4 @@
-// Cloudflare Pages Function: POST /api/book  { start, name, email, note?, website? }
+// Cloudflare Pages Function: POST /api/book  { start, name, email, company?, site?, phone?, kind?, note?, fax? (honeypot) }
 // Re-checks the slot against the availability calendar and busy time, creates the call with a Google Meet link
 // and the visitor as a guest (Google emails the invite), then sends Pierre a note through Resend.
 import { booking } from "../lib/config";
@@ -23,11 +23,16 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
     return json({ error: "That request could not be read." }, 400);
   }
   // Honeypot: bots fill the hidden field. Pretend success.
-  if (clean(body.website, 200)) return json({ ok: true });
+  if (clean(body.fax, 200)) return json({ ok: true });
 
   const name = clean(body.name, 120);
   const email = clean(body.email, 200);
   const note = clean(body.note, 2000);
+  const company = clean(body.company, 120);
+  const site = clean(body.site, 200);
+  const phone = clean(body.phone, 40);
+  const kind = clean(body.kind, 120);
+  const details = [company && `Company: ${company}`, site && `Website: ${site}`, phone && `Phone: ${phone}`, kind && `Looking for: ${kind}`].filter(Boolean).join("\n");
   const start = Date.parse(clean(body.start, 40));
   const end = start + booking.durationMin * 60_000;
   if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || !Number.isFinite(start) || start % (booking.stepMin * 60_000) !== 0) {
@@ -50,7 +55,7 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
         method: "POST",
         body: JSON.stringify({
           summary: `Call with ${name} · Balian.dev`,
-          description: `Booked from balian.dev/contact.\n\nName: ${name}\nEmail: ${email}${note ? `\n\n${note}` : ""}`,
+          description: `Booked from balian.dev/contact.\n\nName: ${name}\nEmail: ${email}${details ? `\n${details}` : ""}${note ? `\n\n${note}` : ""}`,
           start: { dateTime: new Date(start).toISOString(), timeZone: booking.timeZone },
           end: { dateTime: new Date(end).toISOString(), timeZone: booking.timeZone },
           attendees: [{ email, displayName: name }],
@@ -74,8 +79,8 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
           from: env.CONTACT_FROM,
           to: [env.CONTACT_TO],
           reply_to: `${name} <${email}>`,
-          subject: `Call booked: ${name}, ${when}`,
-          text: `${name} booked a 30-minute call.\n\nWhen: ${when} (${booking.timeZone})\nEmail: ${email}\nMeet: ${ev.body.hangoutLink ?? "see calendar"}\nEvent: ${ev.body.htmlLink ?? ""}\n\n${note || "(no note)"}`,
+          subject: `Call booked: ${name}${company ? ` (${company})` : ""}, ${when}`,
+          text: `${name} booked a 30-minute call.\n\nWhen: ${when} (${booking.timeZone})\nEmail: ${email}${details ? `\n${details}` : ""}\nMeet: ${ev.body.hangoutLink ?? "see calendar"}\nEvent: ${ev.body.htmlLink ?? ""}\n\n${note || "(no note)"}`,
         }),
       }).catch((e) => console.error("book: resend", (e as Error).message));
     }
