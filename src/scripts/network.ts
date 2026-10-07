@@ -210,16 +210,21 @@ export function initNetwork() {
     if (c >= 0) go(1, now, reduce);
     else { nextAt = now + 1.4; if (reduce) go(0, now, true); }
   }
+  // hover and keyboard focus preview a discipline; a click pins it until it is clicked again
+  let pinned = -1;
   btns.forEach((b, i) => {
     const on = () => setHL(i, clock());
     const off = () => setHL(-1, clock());
     // touch fires an emulated mouseenter before click, which made a tap select then immediately deselect
     const canHover = window.matchMedia("(hover: hover)");
-    b.addEventListener("mouseenter", () => { if (canHover.matches) on(); });
-    b.addEventListener("mouseleave", () => { if (canHover.matches) off(); });
-    b.addEventListener("focus", () => { if (b.matches(":focus-visible")) on(); });
-    b.addEventListener("blur", () => { if (hl === i) off(); });
-    b.addEventListener("click", () => (hl === i ? off() : on()));
+    b.addEventListener("mouseenter", () => { if (canHover.matches && pinned < 0) on(); });
+    b.addEventListener("mouseleave", () => { if (canHover.matches && pinned < 0) off(); });
+    b.addEventListener("focus", () => { if (pinned < 0 && b.matches(":focus-visible")) on(); });
+    b.addEventListener("blur", () => { if (pinned < 0 && hl === i) off(); });
+    b.addEventListener("click", () => {
+      if (pinned === i) { pinned = -1; off(); }
+      else { pinned = i; on(); }
+    });
   });
 
   const isOff = () => document.documentElement.dataset.motion === "off";
@@ -288,7 +293,7 @@ export function initNetwork() {
   window.addEventListener("resize", () => { size(); if (reduce) frame(10, 1.4); });
   if (reduce) {
     frame(10, 1.4);
-    btns.forEach((b) => b.addEventListener("mouseenter", () => setTimeout(() => frame(10, 1.4), 30)));
+    btns.forEach((b) => ["mouseenter", "mouseleave", "click"].forEach((ev) => b.addEventListener(ev, () => setTimeout(() => frame(10, 1.4), 30))));
     return;
   }
   window.addEventListener("pointermove", (e) => {
