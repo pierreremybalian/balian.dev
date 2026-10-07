@@ -17,11 +17,13 @@ for (const f of walk(dist).filter((f) => f.endsWith(".html"))) {
 
 const csp = [
   "default-src 'self'",
-  `script-src 'self' ${[...hashes].join(" ")}`,
+  // Cloudflare Pages injects its Web Analytics beacon; allow it rather than log a CSP error on every page.
+  `script-src 'self' https://static.cloudflareinsights.com ${[...hashes].join(" ")}`,
   "style-src 'self' 'unsafe-inline'", // inline style attributes
   "img-src 'self' data:",
   "font-src 'self'",
-  "connect-src 'self'",
+  "media-src 'self'",
+  "connect-src 'self' https://cloudflareinsights.com",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",

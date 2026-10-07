@@ -36,8 +36,8 @@ const meta = seo[c.slug];
         <figure class="plate rv" style="margin-top:48px">
           {c.media.webm ? (
             <video autoplay muted loop playsinline preload="metadata" width={c.media.width} height={c.media.height} poster={c.media.src} aria-label={c.media.alt}>
-              <source src={c.media.webm} type="video/webm" />
               <source src={c.media.mp4} type="video/mp4" />
+              <source src={c.media.webm} type="video/webm" />
             </video>
           ) : (
             <img src={c.media.src} alt={c.media.alt} width={c.media.width} height={c.media.height} loading="eager" decoding="async" />
@@ -59,8 +59,8 @@ const meta = seo[c.slug];
             <figure class="plate">
               {s.figure.webm ? (
                 <video autoplay muted loop playsinline preload="metadata" width={s.figure.width} height={s.figure.height} poster={s.figure.src} aria-label={s.figure.alt}>
-                  <source src={s.figure.webm} type="video/webm" />
                   <source src={s.figure.mp4} type="video/mp4" />
+                  <source src={s.figure.webm} type="video/webm" />
                 </video>
               ) : (
                 <img src={s.figure.src} alt={s.figure.alt} width={s.figure.width} height={s.figure.height} loading="lazy" decoding="async" />
