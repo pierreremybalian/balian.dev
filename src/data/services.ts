@@ -59,7 +59,7 @@ export const servicePages: ServicePage[] = [
         h2: "Choosing the platform",
         paras: ["The platform is a decision about people. Who edits the site, how often, and what else it has to do all point toward one answer."],
         items: [
-          { title: "WordPress", text: "When editors need flexibility, plugins, forms or commerce, and a familiar admin. Built custom, on native blocks, without page-builder weight." },
+          { title: "WordPress", text: "When editors need flexibility, plugins, forms or commerce, and a familiar admin. Built custom, with blocks designed to your brand, and no page builder." },
           { title: "Astro on Cloudflare", text: "When speed and simplicity matter more than a heavy CMS. Static pages, edge delivery, and content in plain files or a light editor." },
           { title: "Headless", text: "When the same content feeds more than one place, such as a website and an app. More moving parts, so only when it earns them." },
         ],
@@ -115,7 +115,7 @@ export const servicePages: ServicePage[] = [
       {
         h2: "What I build",
         items: [
-          { title: "Custom themes", text: "Native Gutenberg blocks and ACF, designed around how your editors work." },
+          { title: "Custom themes and blocks", text: "Every block built to the design, so editors assemble pages from pieces that already follow the brand and cannot drift from it." },
           { title: "Plugins and integrations", text: "Custom features, admin tools and connections to the other systems you run." },
           { title: "Multisite", text: "Networks of related sites that share a codebase and stay manageable." },
           { title: "Migrations and rebuilds", text: "Moving to WordPress, or rebuilding an aging site, without losing what already works." },
@@ -129,14 +129,14 @@ export const servicePages: ServicePage[] = [
           "Version control and a staging site for every project",
           "Automated tests where they pay off, and browser tests on what matters most",
           "Documentation written for the person who inherits the site",
-          "Page builders avoided unless a team already depends on one, because they add weight and lock-in",
+          "No page builders. If a site runs on one, my recommendation is a rebuild",
         ],
       },
       {
         h2: "Work I have done",
         bullets: [
           "Built the starter framework a web team used on every WordPress build, with the coding standards to go with it",
-          "Custom Gutenberg blocks on the native block API and ACF, designed around editors' real workflows",
+          "Custom blocks built to each design with ACF, so editors cannot stray from the brand guidelines",
           "A maintenance hub that watches every installed plugin for known vulnerabilities, alerts, and applies updates across many sites",
           "Multisite networks, HIPAA-scoped sites, and takeovers of sites other developers built",
         ],
@@ -149,7 +149,7 @@ export const servicePages: ServicePage[] = [
       },
     ],
     faq: [
-      { q: "Do you build custom themes or use page builders?", a: "Custom themes on native blocks. Page builders add weight and lock you in, so I avoid them unless a team already relies on one." },
+      { q: "Do you use page builders?", a: "No. I build custom blocks to the design, so editors work from pieces that already follow the brand and cannot drift from it. Page builders are slow, fragile and lock you in. If your site runs on one, my recommendation is a rebuild." },
       { q: "Can you take over a site someone else built?", a: "Yes. I start with an audit of the code, security and performance, tell you what I find, and then decide what to keep." },
       { q: "Do you write custom plugins?", a: "Yes, with coding standards, security review, tests, documentation and an upgrade path, so you can maintain them without me." },
       { q: "Can WordPress be fast?", a: "Yes. Most slow WordPress sites are slow because of their plugins and themes. A lean custom build can be very fast." },
