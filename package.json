@@ -10,6 +10,7 @@
     "check": "astro check",
     "pages:dev": "npm run build && wrangler pages dev dist --port 8788",
     "deploy": "npm run build && wrangler pages deploy dist --project-name balian-dev --branch main",
+    "og": "node scripts/og.mjs",
     "lint:copy": "node --experimental-strip-types scripts/lint-copy.ts",
     "lint:seo": "node --experimental-strip-types scripts/lint-seo.ts"
   },
