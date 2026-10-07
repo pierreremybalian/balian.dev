@@ -32,6 +32,19 @@ const meta = seo[c.slug];
       <ul class="items" style="max-width:none">
         {c.facts.map((f) => <li><b>{f.k}</b><span>{f.v}</span></li>)}
       </ul>
+      {c.media && (
+        <figure class="plate rv" style="margin-top:48px">
+          {c.media.webm ? (
+            <video autoplay muted loop playsinline preload="metadata" width={c.media.width} height={c.media.height} poster={c.media.src} aria-label={c.media.alt}>
+              <source src={c.media.webm} type="video/webm" />
+              <source src={c.media.mp4} type="video/mp4" />
+            </video>
+          ) : (
+            <img src={c.media.src} alt={c.media.alt} width={c.media.width} height={c.media.height} loading="eager" decoding="async" />
+          )}
+          <figcaption>{c.media.caption}</figcaption>
+        </figure>
+      )}
     </div>
   </section>
 
@@ -42,6 +55,12 @@ const meta = seo[c.slug];
         <div class="body rv">
           {s.paras?.map((p) => <p>{p}</p>)}
           {s.bullets && <ul class="plainlist">{s.bullets.map((b) => <li>{b}</li>)}</ul>}
+          {s.figure && (
+            <figure class="plate">
+              <img src={s.figure.src} alt={s.figure.alt} width={s.figure.width} height={s.figure.height} loading="lazy" decoding="async" />
+              <figcaption>{s.figure.caption}</figcaption>
+            </figure>
+          )}
         </div>
       </section>
     ))}
@@ -97,4 +116,11 @@ const meta = seo[c.slug];
   </section>
 
   <CtaBand heading="Want a product built this way?" />
+
+  <script>
+    // the globe video stays on its poster for anyone who asked for less motion
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.querySelectorAll<HTMLVideoElement>(".plate video").forEach((v) => { v.removeAttribute("autoplay"); v.pause(); v.controls = true; });
+    }
+  </script>
 </Base>

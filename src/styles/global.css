@@ -278,6 +278,13 @@ footer.site a { padding-block: 6px; display: inline-block; }
 .statusbar { display: flex; flex-wrap: wrap; gap: 8px; }
 .pill { font: 500 11px var(--mono); letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid var(--line); padding: 5px 10px; color: var(--mut); }
 .pill.sig { border-color: var(--sig); color: var(--sig); }
+/* product media on case studies */
+.plate { margin: 0; border: 1px solid var(--line); background: var(--surface); overflow: hidden; border-radius: 4px; }
+.plate img, .plate video { display: block; width: 100%; height: auto; }
+.plate figcaption { font: 500 12.5px/1.5 var(--mono); letter-spacing: 0.02em; color: var(--mut); padding: 12px 16px; border-top: 1px solid var(--line); }
+.prose .body .plate { margin-top: 10px; max-width: none; }
+.prose .body:has(.plate) { max-width: none; }
+.prose .body:has(.plate) > :not(.plate) { max-width: 62ch; }
 .diagram { border: 1px solid var(--line); background: var(--surface); padding: 28px; }
 .diagram svg { width: 100%; height: auto; display: block; }
 .diagram .bx { fill: var(--bg); stroke: #3a4258; stroke-width: 1.5; }

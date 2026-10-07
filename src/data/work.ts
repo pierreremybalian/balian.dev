@@ -1,5 +1,7 @@
 import { copy } from "./ledes";
 
+export interface Figure { src: string; alt: string; caption: string; width: number; height: number }
+
 export interface CaseStudy {
   slug: string;
   name: string;
@@ -9,7 +11,9 @@ export interface CaseStudy {
   lede: string;
   external?: { label: string; href: string };
   facts: { k: string; v: string }[];
-  sections: { h2: string; paras?: string[]; bullets?: string[] }[];
+  // Real product media. A video or a still after the facts, and an optional figure per section.
+  media?: Figure & { webm?: string; mp4?: string };
+  sections: { h2: string; paras?: string[]; bullets?: string[]; figure?: Figure }[];
   related: { label: string; href: string }[];
 }
 
@@ -31,6 +35,12 @@ export const caseStudies: CaseStudy[] = [
       { k: "Platform", v: "Cloudflare GraphQL Analytics and REST APIs, one Node process on a VPS behind Caddy" },
       { k: "Size", v: "About 76,000 lines of TypeScript, 53 test files, a 25-question evaluation harness" },
     ],
+    media: {
+      src: "/work/zonesteward/globe-modes-poster.webp", webm: "/work/zonesteward/globe-modes.webm", mp4: "/work/zonesteward/globe-modes.mp4",
+      width: 1160, height: 1032,
+      alt: "The live globe showing a fleet's request traffic as arcs to Cloudflare data centres, cycling through its display modes: Flow, Bundle, Heat, Trace, Pulse and Bars",
+      caption: "The live globe, cycling through its six display modes. Real traffic from my own fleet.",
+    },
     sections: [
       {
         h2: "What it is",
@@ -48,6 +58,7 @@ export const caseStudies: CaseStudy[] = [
           "Nineteen chart types, twelve flat and seven in 3D, that the AI can suggest and you can save",
           "Google Analytics 4 read in beside the Cloudflare data, plus read-only panels for certificates, DNSSEC, Logpush, health checks, load balancers, waiting rooms, Turnstile, Workers routes and Access",
         ],
+        figure: { src: "/work/zonesteward/see-live.webp", width: 1600, height: 1257, alt: "The Live view: a globe with request arcs, filters for country, user agent, path and status, a requests-per-minute counter and a replay scrubber", caption: "Live view with filters and the 24-hour replay scrubber." },
       },
       {
         h2: "Ask questions and get numbers you can trace",
@@ -60,6 +71,7 @@ export const caseStudies: CaseStudy[] = [
           "A blast-radius preview that runs a proposed firewall rule against the last 24 hours of real traffic and warns when it would hit traffic that was being served, or good crawlers, or more than a fifth of all requests",
           "A question library of presets and saved questions",
         ],
+        figure: { src: "/work/zonesteward/tour-ask.webp", width: 1600, height: 889, alt: "A chat answer about firewall activity beside an AI-suggested stacked bar chart of blocks and challenges by source", caption: "An answer with its figures, and the chart the AI suggested for it. The cost of the answer is printed under it." },
       },
       {
         h2: "Alerts from real traffic",
@@ -74,6 +86,7 @@ export const caseStudies: CaseStudy[] = [
           "Delivery to email, Slack, Microsoft Teams, SMS, PagerDuty and signed webhooks, each with a minimum severity, retries and a delivery record; plus an in-app stream and alert bell",
           "Incidents can be acknowledged, resolved or marked false positive, with cooldowns so one problem does not page you ten times",
         ],
+        figure: { src: "/work/zonesteward/tour-alerts.webp", width: 1600, height: 1134, alt: "Alert rules screen: a box to describe a rule in plain English, and two armed rules for 5xx error rate and origin down with their thresholds and channels", caption: "Alert rules. Describe one in a sentence and review the query and threshold before it arms." },
       },
       {
         h2: "Changes with a gate in front",
@@ -86,6 +99,7 @@ export const caseStudies: CaseStudy[] = [
           "High-impact changes such as a whole-site lockdown or an apex DNS deletion need an explicit acknowledgement; DNS and bulk changes are admin only",
           "Per-class write rate limits with an audited break-glass override",
         ],
+        figure: { src: "/work/zonesteward/gate-card.webp", width: 1600, height: 1322, alt: "An approval card for a WAF rule showing how many requests it would have matched in the last 24 hours, broken down by path, network, country and user agent, with a map and Approve and Reject buttons", caption: "The approval card, with the blast-radius preview run against the last 24 hours of real traffic." },
       },
       {
         h2: "Governance and sharing",
@@ -130,6 +144,11 @@ export const caseStudies: CaseStudy[] = [
       { k: "Platform", v: "Cloudflare Workers, KV, D1, Queues and R2 for the edge; a Next.js dashboard behind Caddy" },
       { k: "Tests", v: "Banner tests in real Chromium, Firefox and WebKit, scan and full-stack suites, about 190 unit tests" },
     ],
+    media: {
+      src: "/work/cookiesteward/banner-eu.webp", width: 1600, height: 1000,
+      alt: "A clinic website with the CookieSteward banner in the corner: We value your privacy, with Accept all, Reject all and Preferences buttons",
+      caption: "The banner on a demo clinic site under the EU regime. Accept all and Reject all have equal prominence, enforced at publish.",
+    },
     sections: [
       {
         h2: "What it is",
@@ -156,6 +175,7 @@ export const caseStudies: CaseStudy[] = [
           "Re-consent when the configuration changes or consent expires, a withdraw action, and a reopen widget",
           "Blocked-embed placeholders that name the provider, for YouTube, Vimeo, Google Maps, Calendly, HubSpot and a dozen others, sized to the embed so accepting does not shift the page",
         ],
+        figure: { src: "/work/cookiesteward/banner-us.webp", width: 1600, height: 1000, alt: "The same clinic site for a US visitor: no banner, a persistent Your Privacy Choices link with the California opt-out icon, and a cookie reopen widget", caption: "A US visitor gets the opt-out model: no gate, a persistent Your Privacy Choices link with the California icon, and the reopen widget." },
       },
       {
         h2: "A scanner that checks its own work",
@@ -197,6 +217,7 @@ export const caseStudies: CaseStudy[] = [
           "Everything renders in a shadow DOM as fixed overlays, so the page does not move; six theme presets, five layouts, custom CSS up to 10 KB",
           "Dialog roles, focus management, a Tab trap in the preferences layer, a polite live region, reduced-motion support and 44-pixel targets",
         ],
+        figure: { src: "/work/cookiesteward/banner-prefs.webp", width: 1600, height: 1000, alt: "The preferences dialog with toggles for strictly necessary, functional, analytics and advertising, each with a cookie count, and Save preferences, Accept all and Reject all buttons", caption: "The preferences layer: per-category toggles, the cookie declaration under each, and a focus trap while it is open." },
       },
       {
         h2: "How it is built",
