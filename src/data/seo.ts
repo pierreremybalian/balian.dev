@@ -69,9 +69,9 @@ export const seo: Record<string, Seo> = {
     keyword: "consent management platform",
   },
   about: {
-    title: "One Person Web Agency: How It Works",
-    description: "How a one person web agency works: one senior engineer covering strategy, design, build and launch, with AI directed and every change reviewed.",
-    keyword: "one person web agency",
+    title: "Web Developer with Agency Experience",
+    description: "A web developer with agency experience: more than fifteen years on agency teams across many industries, now working directly with clients.",
+    keyword: "web developer with agency experience",
   },
   process: {
     title: "Web Design Process: Design Before Build",

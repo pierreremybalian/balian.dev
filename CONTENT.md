@@ -45,6 +45,10 @@ That is all. It does not introduce the site, explain the process, count the page
 - Specific over impressive. A named tool beats an adjective.
 - No past-employer names, clients, results or internal tools. Years of experience may be stated generally.
 
+## Agency experience
+
+More than fifteen years of professional work in agency environments, across many industries and clients, is the lead credential on About. Say it generally; no client or employer names, no industries or results that cannot be shown.
+
 ## The ten employed years
 
 For about ten years I worked as an employee at an agency. Most of what I built there belongs to the clients and the company, so it does not appear here, and I do not claim it as mine. The site says this plainly (About, Work, Home) instead of hiding it. What can be shown: my own products, my process, how I work, and the stacks I know.

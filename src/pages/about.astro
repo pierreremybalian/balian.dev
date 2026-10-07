@@ -3,16 +3,22 @@ import Base from "../layouts/Base.astro";
 import Faq from "../components/Faq.astro";
 import CtaBand from "../components/CtaBand.astro";
 import { stacks } from "../data/skills";
+import { serviceGroups } from "../data/services";
 import { generalFaq } from "../data/faq";
 import { aboutPage, breadcrumbs } from "../lib/schema";
 import { seo } from "../data/seo";
 import { copy } from "../data/ledes";
 
-const moves = [
-  { t: "Agencies bill for a team.", p: "Strategists, designers, developers, project managers and account managers each add hours and handoffs to what you pay." },
-  { t: "AI changed what one person can deliver.", p: "Drafting, scaffolding, testing and documentation that once took a team now take one engineer directing capable tools." },
-  { t: "Experience is what makes it safe.", p: "I wrote software before these tools existed. I can read the code, see when the AI is heading the wrong way, and correct it." },
-  { t: "The result is better for you.", p: "Faster delivery, a lower cost, and the person doing the work in every conversation." },
+const experience = [
+  { t: "More than fifteen years in agency environments.", p: "I have worked professionally on agency teams since before the current tools existed, taking projects from the first scoping call through design, build, launch and support." },
+  { t: "Many industries and many kinds of client.", p: "Different businesses have different rules, audiences and risks. I have built for a wide range of them, and I start by learning how yours makes money before I choose a tool." },
+  { t: "Still hands on.", p: "I write and read the code myself, in TypeScript, PHP, Python and SQL, on WordPress, Next.js, Astro and Cloudflare. I have not moved into managing other people's work." },
+  { t: "Products of my own.", p: "I build and run ZoneSteward and CookieSteward, so I know what it takes to keep software working after launch." },
+];
+const ai = [
+  { t: "AI handles the typing.", p: "Drafting, scaffolding, testing and documentation that once took a team now take one engineer directing capable tools." },
+  { t: "Experience keeps it safe.", p: "I can read the code, see when the AI is heading the wrong way, and correct it." },
+  { t: "You get the benefit.", p: "Faster delivery, a lower cost, and the person doing the work in every conversation." },
 ];
 ---
 <Base
@@ -30,22 +36,38 @@ const moves = [
 
   <section class="sec">
     <div class="in">
-      <span class="label">The argument</span>
-      <h2>Why one person can do what a team does.</h2>
+      <span class="label">Experience</span>
+      <h2>What fifteen years in agencies adds up to.</h2>
       <ul class="items" style="max-width:none;margin-top:48px">
-        {moves.map((m) => <li class="rv"><b style="font-size:1.35rem">{m.t}</b><span style="font-size:17px">{m.p}</span></li>)}
+        {experience.map((m) => <li class="rv"><b style="font-size:1.35rem">{m.t}</b><span style="font-size:17px">{m.p}</span></li>)}
+      </ul>
+      <ul class="stack" style="margin-top:40px">{stacks.map((s) => <li>{s}</li>)}</ul>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="in">
+      <span class="label">What I offer</span>
+      <h2>What you can hire me for.</h2>
+      <p class="intro">Most projects mix two or three of these, and I do all of them myself, from the first call to launch and support.</p>
+      <ul class="items" style="max-width:none;margin-top:40px">
+        {serviceGroups.map((g) => <li class="rv"><a href={g.href}><b style="font-size:1.2rem">{g.name}</b></a><span style="font-size:17px">{g.short}</span></li>)}
       </ul>
     </div>
   </section>
 
+  <section class="sec">
+    <div class="in">
+      <span class="label">How I use AI</span>
+      <h2>Why one person can do the work of a team.</h2>
+      <ul class="items" style="max-width:none;margin-top:48px">
+        {ai.map((m) => <li class="rv"><b style="font-size:1.35rem">{m.t}</b><span style="font-size:17px">{m.p}</span></li>)}
+      </ul>
+      <p class="intro" style="margin-top:36px">Every project follows the same stages an agency would run, with your approval at each gate. <a class="lnk" href="/process/">See the process</a></p>
+    </div>
+  </section>
+
   <div class="in">
-    <section class="prose">
-      <h2>What one person covers</h2>
-      <div class="body rv">
-        <p>Discovery and research, content strategy, design, development, quality checks, launch and support. You talk to the person doing the work, so decisions are not relayed through an account manager, and the person who designed it is the one who builds it.</p>
-        <p>The process is the same one an agency would run, with the same approval gates. What changes is who is in it.</p>
-      </div>
-    </section>
     <section class="prose">
       <h2>Where this model is not the right fit</h2>
       <div class="body rv">
@@ -72,15 +94,8 @@ const moves = [
     <section class="prose">
       <h2>Why there is not more to show</h2>
       <div class="body rv">
-        <p>For about ten years I was an employee at an agency. Nearly everything I built there belongs to the clients and the company, so I cannot show it here, and I will not pass it off as my own.</p>
-        <p>What I can show is the software I build on my own time, the process I follow and the way I work. If you want to know what a decade of production work looks like, ask me on a call.</p>
-      </div>
-    </section>
-    <section class="prose">
-      <h2>The person</h2>
-      <div class="body rv">
-        <p>I am Pierre Balian, a web engineer in Minneapolis with more than twenty years of experience building websites, commerce systems and web applications. I work across TypeScript, PHP, Python and SQL, on WordPress, Next.js, Astro and Cloudflare, and I build and run my own products, ZoneSteward and CookieSteward.</p>
-        <ul class="stack" style="margin-top:8px">{stacks.map((s) => <li>{s}</li>)}</ul>
+        <p>Most of what I built in agency work belongs to the clients and the agencies, so I cannot show it here, and I will not pass it off as my own.</p>
+        <p>What I can show is the software I build on my own time and the way I work. If you want to know what fifteen years of production work looks like, ask me on a call.</p>
       </div>
     </section>
   </div>

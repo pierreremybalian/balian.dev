@@ -53,8 +53,8 @@ export const copy: Record<string, PageCopy> = {
     lede: "A cookie banner that does not slow your site down. It handles GDPR and California rules, and the banner is small enough that you will not notice it loading.",
   },
   about: {
-    h1: "What an agency of one actually means.",
-    lede: "I am one engineer doing work that usually takes a team. Here is how that works, where it does not, and what happens if I am ever unavailable.",
+    h1: "Fifteen years inside agencies, now working for you directly.",
+    lede: "I have spent more than fifteen years in agency environments, building for clients in many industries. Now I do that work on my own, so you deal with me.",
   },
   process: {
     h1: "A process with your sign-off at every gate.",
