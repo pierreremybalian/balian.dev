@@ -4,7 +4,6 @@ import { site } from "../data/site";
 import { contactPage, breadcrumbs } from "../lib/schema";
 import { seo } from "../data/seo";
 import { copy } from "../data/ledes";
-const external = site.bookingUrl.startsWith("http");
 ---
 <Base
   title={seo.contact.title}
@@ -16,7 +15,30 @@ const external = site.bookingUrl.startsWith("http");
       <p class="crumb">Contact</p>
       <h1>{copy.contact.h1}</h1>
       <p class="lede">{copy.contact.lede}</p>
-      {external && <div class="btns"><a class="btn" href={site.bookingUrl} rel="noopener">Book a 30-minute call</a></div>}
+      <div class="btns"><a class="btn" href="#book">Book a 30-minute call</a></div>
+    </div>
+  </section>
+
+  <section class="sec" id="book">
+    <div class="in">
+      <span class="label">Book a call</span>
+      <h2 style="margin-bottom:12px">Pick a 30-minute slot.</h2>
+      <p class="note" id="book-note">Times are shown in your time zone. Calls are on Google Meet.</p>
+      <div class="book">
+        <div class="days" id="book-days" aria-label="Days with open slots"></div>
+        <div class="slots" id="book-slots" aria-label="Open slots"><span class="note">Loading open slots...</span></div>
+        <p class="note" id="book-empty" hidden>No open slots in the next three weeks. Email me and we will find one.</p>
+        <form class="form" id="book-form" hidden novalidate>
+          <p class="chosen" id="book-chosen"></p>
+          <div class="field"><label for="book-name">Name <span class="req" aria-hidden="true">*</span></label><input id="book-name" name="name" type="text" autocomplete="name" required aria-required="true" /></div>
+          <div class="field"><label for="book-email">Email <span class="req" aria-hidden="true">*</span></label><input id="book-email" name="email" type="email" autocomplete="email" required aria-required="true" /></div>
+          <div class="field"><label for="book-note-text">What should we talk about? (optional)</label><textarea id="book-note-text" name="note" style="min-height:100px"></textarea></div>
+          <div class="hp" aria-hidden="true"><label for="book-website">Website</label><input id="book-website" name="website" type="text" tabindex="-1" autocomplete="off" /></div>
+          <div class="btns"><button class="btn" type="submit" style="border:0;cursor:pointer">Confirm the call</button><a class="lnk" href="#book" id="book-change">Pick another time</a><span id="book-status" class="note" role="status" aria-live="polite" aria-atomic="true"></span></div>
+          <p class="note">The invite comes from Google Calendar with a Meet link. I use your details only for the call.</p>
+        </form>
+        <p class="done" id="book-done" hidden tabindex="-1" role="status" aria-live="polite"></p>
+      </div>
     </div>
   </section>
 
@@ -60,6 +82,9 @@ const external = site.bookingUrl.startsWith("http");
   </section>
 
   <script>
+    import { initBooking } from "../scripts/booking";
+    initBooking();
+
     const form = document.getElementById("contact-form") as HTMLFormElement | null;
     const status = document.getElementById("form-status");
     form?.addEventListener("submit", async (e) => {
@@ -81,10 +106,10 @@ const external = site.bookingUrl.startsWith("http");
           form.reset();
           if (status) status.textContent = "Sent. I will reply personally.";
         } else if (status) {
-          status.textContent = data.error || "That did not send. Please try again, or use the booking link.";
+          status.textContent = data.error || "That did not send. Please try again, or book a call above.";
         }
       } catch {
-        if (status) status.textContent = "That did not send. Please try again, or use the booking link.";
+        if (status) status.textContent = "That did not send. Please try again, or book a call above.";
       }
     });
   </script>

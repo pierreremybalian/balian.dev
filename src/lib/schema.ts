@@ -77,6 +77,7 @@ export const contactPage = () => ({
   name: `Contact ${site.brand}`,
   url: abs("/contact/"),
   mainEntity: { "@type": "ProfessionalService", name: site.brand, url: site.url, email: site.contact.email, telephone: site.contact.phoneHref },
+  potentialAction: { "@type": "ReserveAction", name: "Book a 30-minute call", target: abs("/contact/#book") },
 });
 
 export const collectionPage = (items: { name: string; path: string }[]) => ({

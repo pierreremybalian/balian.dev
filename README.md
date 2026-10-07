@@ -22,7 +22,7 @@ npm run preview
 
 ## Deploy
 
-Nothing has been deployed yet. Preflight is done: lints, type check, build, and a local Pages run (`npm run pages:dev`) that checked the headers, CSP, 404, trailing-slash redirects and the contact function.
+The site is live at https://balian.dev. Preflight is done: lints, type check, build, and a local Pages run (`npm run pages:dev`) that checked the headers, CSP, 404, trailing-slash redirects and the contact function.
 
 `npm run build` runs the copy lint, the SEO lint, `astro build`, then `scripts/headers.mjs`, which writes `dist/_headers` (security headers, a Content-Security-Policy with script hashes computed from the built HTML, and immutable caching for `/_astro/*`).
 
@@ -71,3 +71,16 @@ Then add the custom domain in the Cloudflare dashboard (Workers & Pages, balian-
 ## Content rules
 
 Calm, precise, first person singular. No figures, client names or tools from past agency work. No invented statistics. Outcomes for commerce stay in plain words.
+
+## Booking
+
+"Book a 30-minute call" on the contact page is backed by Google Calendar through two Pages Functions, `GET /api/slots` and `POST /api/book`. Nothing from Google runs in the browser.
+
+- **Availability** is whatever events exist on the Google calendar named **Balian.dev availability** (pierre@baliandesign.com). Put an event on it, any title, and that window becomes bookable in 30-minute slots on :00 and :30. Delete the event to close the window. All-day events are ignored.
+- **Busy time** on the primary calendar is subtracted, so existing calls and meetings never double-book. Booked calls are created on the primary calendar with a Google Meet link and the visitor as a guest; Google sends the invite, and Resend sends Pierre a note.
+- **Rules** (lead time 24 h, horizon 21 days, slot length) live in `functions/lib/config.ts`. Slot arithmetic is in `functions/lib/slots.ts` and tested by `npm run test:slots`, which the build runs.
+- **Secrets** on the Pages project and in `.dev.vars`: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REFRESH_TOKEN`, `BOOKING_AVAILABILITY_CALENDAR_ID`, `BOOKING_CALENDAR_ID`.
+- **Setup scripts** (macOS Keychain holds the OAuth client and refresh token; nothing is printed):
+  - `node scripts/google-auth.mjs` opens the Google consent screen and stores the refresh token.
+  - `node scripts/booking-setup.mjs --dev-vars --secrets` finds or creates the availability calendar, writes `.dev.vars` and pushes the Pages secrets. `--open 2026-10-09T10:00 2026-10-09T12:00` adds a window (Central time); `--list` shows windows and booked calls.
+- The Calendar API must be enabled on the Google Cloud project that owns the OAuth client.

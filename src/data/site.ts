@@ -16,8 +16,8 @@ export const site = {
     linkedin: "https://www.linkedin.com/in/pierre-remy-balian",
     linkedinLabel: "linkedin.com/in/pierre-remy-balian",
   },
-  // Replace with the real scheduling link. Falls back to the contact page.
-  bookingUrl: import.meta.env.PUBLIC_BOOKING_URL || "/contact/",
+  // Booking lives on the contact page (Google Calendar behind /api/slots and /api/book). PUBLIC_BOOKING_URL overrides it.
+  bookingUrl: import.meta.env.PUBLIC_BOOKING_URL || "/contact/#book",
 };
 
 export interface NavItem {

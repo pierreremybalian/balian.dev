@@ -3,7 +3,7 @@
 //   RESEND_API_KEY   secret
 //   CONTACT_TO       where briefs are delivered
 //   CONTACT_FROM     a sender on a domain verified in Resend, e.g. "balian.dev <contact@balian.dev>"
-// Until they are set, the function answers 503 and the page tells the visitor to use the booking link.
+// Until they are set, the function answers 503 and the page tells the visitor to book a call instead.
 
 interface Env {
   RESEND_API_KEY?: string;
@@ -34,7 +34,7 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
     return json({ error: "Please add your name, a valid email and a few lines about the project." }, 422);
   }
   if (!env.RESEND_API_KEY || !env.CONTACT_TO || !env.CONTACT_FROM) {
-    return json({ error: "The form is not connected yet. Please use the booking link instead." }, 503);
+    return json({ error: "The form is not connected yet. Please book a call above or email me." }, 503);
   }
 
   const res = await fetch("https://api.resend.com/emails", {
@@ -48,6 +48,6 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
       text: `Name: ${name}\nEmail: ${email}\nLooking for: ${kind}\n\n${message}`,
     }),
   });
-  if (!res.ok) return json({ error: "That did not send. Please try again, or use the booking link." }, 502);
+  if (!res.ok) return json({ error: "That did not send. Please try again, or book a call above." }, 502);
   return json({ ok: true });
 };
