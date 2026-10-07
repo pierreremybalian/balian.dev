@@ -129,9 +129,16 @@ const meta = seo[c.slug];
     // and shows controls if the browser refuses autoplay, so it can always be played by hand.
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     document.querySelectorAll<HTMLVideoElement>(".plate video").forEach((v) => {
-      if (reduce) { v.removeAttribute("autoplay"); v.pause(); v.controls = true; return; }
+      const manual = () => {
+        v.removeAttribute("autoplay"); v.pause(); v.controls = true;
+        const b = document.createElement("button");
+        b.type = "button"; b.className = "play"; b.textContent = "Play video";
+        b.addEventListener("click", () => { b.remove(); v.play().catch(() => {}); });
+        v.parentElement!.insertBefore(b, v.nextSibling);
+      };
+      if (reduce) return manual();
       const p = v.play();
-      if (p) p.catch(() => { v.controls = true; });
+      if (p) p.catch(manual);
     });
   </script>
 </Base>
