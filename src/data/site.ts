@@ -10,7 +10,7 @@ export const site = {
   region: "MN",
   // Direct contact details, from resume v5. Confirm the LinkedIn URL: the portfolio uses /in/pierre-balian instead.
   contact: {
-    email: "pierre@baliandesign.com",
+    email: "pierre@balian.dev",
     phone: "(612) 469-5535",
     phoneHref: "+16124695535",
     linkedin: "https://www.linkedin.com/in/pierre-remy-balian",

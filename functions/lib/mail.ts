@@ -75,7 +75,7 @@ ${opts.title ? `<h1 style="margin:0 0 20px;font-family:${F.display};font-size:26
 ${opts.bodyHtml}
 </td></tr>
 <tr><td style="padding:18px 4px 0;font-family:${F.mono};font-size:11px;line-height:1.7;letter-spacing:.04em;color:${C.mut}">
-Pierre Balian · Minneapolis, MN · <a href="mailto:pierre@baliandesign.com" style="color:${C.mut}">pierre@baliandesign.com</a> · <a href="https://balian.dev" style="color:${C.mut}">balian.dev</a>${opts.footnote ? `<br>${esc(opts.footnote)}` : ""}
+Pierre Balian · Minneapolis, MN · <a href="mailto:pierre@balian.dev" style="color:${C.mut}">pierre@balian.dev</a> · <a href="https://balian.dev" style="color:${C.mut}">balian.dev</a>${opts.footnote ? `<br>${esc(opts.footnote)}` : ""}
 </td></tr>
 </table></td></tr></table></body></html>`;
 }

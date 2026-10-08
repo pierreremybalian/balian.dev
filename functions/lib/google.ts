@@ -1,4 +1,4 @@
-// Google Calendar access for the booking functions. Server-side only: a refresh token for pierre@baliandesign.com
+// Google Calendar access for the booking functions. Server-side only: a refresh token for the Google Workspace account (pierre@balian.dev)
 // is exchanged for a short-lived access token. Secrets are Pages project secrets (see README, "Booking").
 import type { Range } from "./slots";
 

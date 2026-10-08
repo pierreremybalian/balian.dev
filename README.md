@@ -76,7 +76,7 @@ Calm, precise, first person singular. No figures, client names or tools from pas
 
 "Book a 30-minute call" on the contact page is backed by Google Calendar through two Pages Functions, `GET /api/slots` and `POST /api/book`. Nothing from Google runs in the browser.
 
-- **Availability** is whatever events exist on the Google calendar named **Balian.dev availability** (pierre@baliandesign.com). Put an event on it, any title, and that window becomes bookable in 30-minute slots on :00 and :30. Delete the event to close the window. All-day events are ignored.
+- **Availability** is whatever events exist on the Google calendar named **Balian.dev availability** (pierre@balian.dev, the Google Workspace account). Put an event on it, any title, and that window becomes bookable in 30-minute slots on :00 and :30. Delete the event to close the window. All-day events are ignored.
 - **Busy time** on the primary calendar is subtracted, so existing calls and meetings never double-book. Booked calls are created on the primary calendar with a Google Meet link and the visitor as a guest; Google sends the invite, and Resend sends Pierre a note.
 - **Rules** (lead time 24 h, horizon 21 days, slot length) live in `functions/lib/config.ts`. Slot arithmetic is in `functions/lib/slots.ts` and tested by `npm run test:slots`, which the build runs.
 - **Secrets** on the Pages project and in `.dev.vars`: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REFRESH_TOKEN`, `BOOKING_AVAILABILITY_CALENDAR_ID`, `BOOKING_CALENDAR_ID`.

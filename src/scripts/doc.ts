@@ -18,7 +18,7 @@ export function initDoc() {
       meta.textContent = `Accepted by ${d.accepted_name} on ${fmt(d.accepted_at!)}.`;
       done.hidden = false; done.textContent = `This document was accepted by ${d.accepted_name} on ${fmt(d.accepted_at!)}. A copy was emailed to both parties.`;
     } else {
-      meta.textContent = "Read it through, then accept at the bottom if it is right. Questions go to pierre@baliandesign.com.";
+      meta.textContent = "Read it through, then accept at the bottom if it is right. Questions go to pierre@balian.dev.";
       form.hidden = false;
     }
   })();
