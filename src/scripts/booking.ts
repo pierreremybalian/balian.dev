@@ -141,7 +141,7 @@ export function initBooking() {
         days.hidden = true;
         slotsBox.hidden = true;
         done.hidden = false;
-        done.innerHTML = `<b>Booked.</b> ${fmtDayLong.format(d)} at ${fmtTime.format(d)} ${tzName(localTz)}. The invite with the Google Meet link is on its way to ${String(fd.get("email"))}.`;
+        done.innerHTML = `<b>Booked.</b> ${fmtDayLong.format(d)} at ${fmtTime.format(d)} ${tzName(localTz)}. The invite with the Google Meet link is on its way to ${String(fd.get("email"))}. Before we talk, <a class="lnk" href="/intake/">the project questionnaire</a> gives me a head start.`;
         done.focus();
       } else if (r.status === 409) {
         status.textContent = data.error || "That time was just taken. Please pick another.";

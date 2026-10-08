@@ -121,7 +121,7 @@ import { copy } from "../data/ledes";
         const data = await res.json().catch(() => ({}));
         if (res.ok) {
           form.reset();
-          if (status) status.textContent = "Sent. I will reply personally.";
+          if (status) status.innerHTML = 'Sent. I will reply personally. While you wait, <a class="lnk" href="/intake/">the project questionnaire</a> tells me most of what I need.';
         } else if (status) {
           status.textContent = data.error || "That did not send. Please try again, or book a call above.";
         }

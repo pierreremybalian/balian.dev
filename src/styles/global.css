@@ -344,6 +344,30 @@ footer.site a { padding-block: 6px; display: inline-block; }
 .book .done b { color: var(--ink); }
 .book [hidden] { display: none !important; }
 
+/* intake questionnaire: steps, progress, choice grids */
+.intake .form { max-width: 720px; }
+.intake .progress { height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.intake .progress span { display: block; height: 100%; background: var(--sig); transition: width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.intake .step { border: 0; padding: 0; margin: 0; display: grid; gap: 22px; min-width: 0; }
+.intake .step[hidden] { display: none; }
+.intake .step > legend { display: grid; gap: 10px; margin-bottom: 8px; padding: 0; }
+.intake .step h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); letter-spacing: -0.035em; font-weight: 800; line-height: 1.1; }
+.intake .step h2:focus { outline: none; }
+.intake .step .intro { margin-top: 0; }
+.intake .help { font-size: 14px; color: var(--mut); line-height: 1.5; }
+.intake .choices { border: 0; padding: 0; margin: 0; display: grid; gap: 10px; }
+.intake .choices > legend { font: 500 13px var(--mono); letter-spacing: 0.04em; color: var(--soft); padding: 0; margin-bottom: 2px; }
+.intake .choices.bad > legend { color: var(--bad); }
+.intake .opts { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+.intake .opt { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 10px 14px; border: 1px solid var(--ctl); border-radius: 3px; background: var(--surface); cursor: pointer; font: 400 15px/1.35 var(--sans); letter-spacing: 0; color: var(--ink); transition: border-color 0.2s; }
+.intake .opt:hover, .intake .opt:focus-within { border-color: var(--sig); }
+.intake .opt:has(input:checked) { border-color: var(--sig); background: rgba(255, 46, 147, 0.08); }
+.intake .opt input { width: 18px; height: 18px; accent-color: var(--sig); margin: 0; flex: none; }
+.intake .stepnav { margin-top: 8px; }
+.intake .done { font-size: 1.1rem; color: var(--soft); max-width: 52ch; padding: 20px; border: 1px solid var(--line); background: var(--surface); }
+.intake .done b { color: var(--ink); }
+.intake [hidden] { display: none !important; }
+
 /* reveal: content is visible by default; the class only softens the entrance */
 .rv { opacity: 1; transform: none; }
 .js .rv { opacity: 0.9; transform: translateY(16px); transition: opacity 0.7s ease, transform 0.7s ease; }

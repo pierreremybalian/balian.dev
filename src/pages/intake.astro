@@ -1,0 +1,70 @@
+---
+import Base from "../layouts/Base.astro";
+import { intakeSteps } from "../data/intake";
+import { site } from "../data/site";
+const total = intakeSteps.length;
+---
+<Base title="Project Questionnaire" description="The questions I ask before a project starts. About twenty minutes, saved as you go." noindex>
+  <section class="phero">
+    <div class="in">
+      <p class="crumb">Questionnaire</p>
+      <h1>Tell me about the business.</h1>
+      <p class="lede">This takes about twenty minutes and saves us a week. Answer what you can, skip what you cannot, and write the way you talk. It saves as you go.</p>
+    </div>
+  </section>
+
+  <section class="sec intake">
+    <div class="in">
+      <form id="intake" class="form" novalidate>
+        <div class="progress" aria-hidden="true"><span id="intake-bar" style={`width:${100 / total}%`}></span></div>
+        <p class="label" id="intake-where" aria-live="polite">Step 1 of {total}</p>
+
+        {intakeSteps.map((step, i) => (
+          <fieldset class="step" data-step={i} hidden={i !== 0}>
+            <legend>
+              <h2>{step.title}</h2>
+              <p class="intro">{step.intro}</p>
+            </legend>
+            {step.questions.map((q) => {
+              const id = `q-${q.id}`;
+              const req = q.required ? <span class="req" aria-hidden="true"> *</span> : null;
+              if (q.type === "textarea") return (
+                <div class="field"><label for={id}>{q.label}{req}</label>{q.help && <span class="help" id={`${id}-help`}>{q.help}</span>}<textarea id={id} name={q.id} required={q.required} aria-required={q.required ? "true" : undefined} aria-describedby={q.help ? `${id}-help` : undefined} style="min-height:110px" /></div>
+              );
+              if (q.type === "select") return (
+                <div class="field"><label for={id}>{q.label}{req}</label>{q.help && <span class="help" id={`${id}-help`}>{q.help}</span>}
+                  <select id={id} name={q.id} required={q.required} aria-describedby={q.help ? `${id}-help` : undefined}><option value="">Choose one</option>{q.options!.map((o) => <option>{o}</option>)}</select></div>
+              );
+              if (q.type === "checks" || q.type === "radio") return (
+                <fieldset class="field choices" data-required={q.required ? "true" : undefined}><legend>{q.label}{req}</legend>{q.help && <span class="help">{q.help}</span>}
+                  <div class="opts">{q.options!.map((o, k) => (
+                    <label class="opt"><input type={q.type === "checks" ? "checkbox" : "radio"} name={q.id} value={o} id={`${id}-${k}`} /><span>{o}</span></label>
+                  ))}</div></fieldset>
+              );
+              return (
+                <div class="field"><label for={id}>{q.label}{req}</label>{q.help && <span class="help" id={`${id}-help`}>{q.help}</span>}<input id={id} name={q.id} type={q.type === "url" ? "url" : q.type === "email" ? "email" : "text"} inputmode={q.type === "url" ? "url" : undefined} placeholder={q.placeholder} required={q.required} aria-required={q.required ? "true" : undefined} aria-describedby={q.help ? `${id}-help` : undefined} autocomplete={q.id === "email" ? "email" : q.id === "name" ? "name" : q.id === "company" ? "organization" : q.id === "website" ? "url" : "off"} /></div>
+              );
+            })}
+          </fieldset>
+        ))}
+
+        <div class="hp" aria-hidden="true"><label for="intake-fax">Fax</label><input id="intake-fax" name="fax" type="text" tabindex="-1" autocomplete="off" /></div>
+
+        <div class="btns stepnav">
+          <button class="btn ghost" type="button" id="intake-back" hidden>Back</button>
+          <button class="btn" type="button" id="intake-next">Next</button>
+          <button class="btn" type="submit" id="intake-send" hidden>Send it to Pierre</button>
+          <span id="intake-status" class="note" role="status" aria-live="polite" aria-atomic="true"></span>
+        </div>
+        <p class="note"><span class="req" aria-hidden="true">*</span> Required. Everything else is optional. Your answers stay between us and go only to {site.contact.email}.</p>
+      </form>
+
+      <div id="intake-done" class="done" hidden tabindex="-1" role="status" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <script>
+    import { initIntake } from "../scripts/intake";
+    initIntake();
+  </script>
+</Base>

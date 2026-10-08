@@ -8,7 +8,7 @@ export default defineConfig({
   trailingSlash: "always",
   build: { inlineStylesheets: "auto" },
   devToolbar: { enabled: false },
-  integrations: [sitemap({ lastmod: new Date() })],
+  integrations: [sitemap({ lastmod: new Date(), filter: (page) => !page.includes("/intake/") })], // the questionnaire is sent by link, never indexed
   // Pre-bundle three up front so the dev server does not re-optimise it mid-session.
   vite: {
     optimizeDeps: { include: ["three"] },
