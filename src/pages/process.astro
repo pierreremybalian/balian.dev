@@ -12,7 +12,9 @@ import type { Faq as FaqItem } from "../data/faq";
 const faq: FaqItem[] = [
   { q: "How long does a project take?", a: "It depends on scope, and the proposal states a timeline you can approve. The gates are there so that timeline is based on decisions you have already made." },
   { q: "What if I do not like any of the three directions?", a: "Say so and say why. The feedback shapes the next round, and you are not charged for being specific about what is wrong. Often the answer is a mix of parts from two directions." },
-  { q: "How many revision rounds do I get?", a: "Refinement continues until the design is right. The proposal sets the expectations, and in practice a clear approver on your side keeps rounds short." },
+  { q: "How many revision rounds do I get?", a: "Two, on the staging site, each one a single consolidated list from your approver. The rounds are for fixing anything that does not match the design you approved. New requests are welcome and go on the Phase 2 list, to be quoted after launch." },
+  { q: "What is the difference between a fix and a change?", a: "A fix is something that does not match what you approved, like a wrong colour or a block that does not behave as designed. A change is a new preference or a new feature. Fixes are included. Changes are quoted, and most of them are better done after launch anyway, when you have seen the site in use." },
+  { q: "What if we think of something halfway through?", a: "Tell me. It goes on the Phase 2 list with a rough estimate, the build keeps moving, and once the site is live and paid for I quote the list. Scope creep is how projects go over, so I treat it as a separate phase instead of pretending it is free." },
   { q: "Can we skip stages?", a: "Some projects compress them, but design before build and your approval at the gates stay. They are what keep the cost of changes low." },
   { q: "Does this work for a web app as well as a website?", a: "Yes. Content and copy stages give way to product scoping and iterative delivery, and the design gates stay the same." },
 ];
@@ -45,7 +47,7 @@ const gates = stages.filter((s) => s.gate).length;
       <h2>Why the design stages come first.</h2>
       <div class="pgrid rv" style="margin-top:48px">
         <div class="pcell"><h3>Three real choices</h3><p>The styleframes use your actual content and differ in mood, type and layout. You react to something concrete instead of a mood board.</p></div>
-        <div class="pcell"><h3>Feedback goes into the system</h3><p>When you say what to change, it is applied to the design system, so the fix shows up everywhere it applies.</p></div>
+        <div class="pcell"><h3>A system and its blocks</h3><p>I design the system and the blocks pages are built from, then let the build produce the pages. Mocking up every page is where projects drown in preference.</p></div>
         <div class="pcell"><h3>Cheap to change, then expensive</h3><p>Changing a design is quick. Changing a built site is not. The gates put the decisions where changes cost least.</p></div>
       </div>
     </div>
