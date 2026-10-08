@@ -20,7 +20,7 @@ export const seo: Record<string, Seo> = {
   },
   services: {
     title: "Web Development Services",
-    description: "Web development services from one senior engineer: websites, WooCommerce, web apps, AI features, integrations, security and performance.",
+    description: "Web development services for whatever you came with: websites, stores, software, compliance letters, integrations, consulting, hosting and marketing.",
     keyword: "web development services",
   },
   "websites-and-cms": {
@@ -35,7 +35,7 @@ export const seo: Record<string, Seo> = {
   },
   "woocommerce-development": {
     title: "WooCommerce Developer for Growing Stores",
-    description: "WooCommerce developer for checkout, payments, tax, ERP integration, speed and migration. Engineering for stores that need to convert and scale.",
+    description: "WooCommerce developer, Shopify builds and migrations from any platform: checkout, payments, tax, ERP sync and stores that run themselves.",
     keyword: "woocommerce developer",
   },
   "web-app-saas-development": {
@@ -52,6 +52,16 @@ export const seo: Record<string, Seo> = {
     title: "AI-Assisted Software Development, Reviewed",
     description: "AI-assisted software development where a senior engineer reads every change. Stack-agnostic, faster and more affordable than a team.",
     keyword: "ai-assisted software development",
+  },
+  "compliance-and-remediation": {
+    title: "Website Compliance Remediation: ADA and WCAG",
+    description: "Website compliance remediation for ADA and WCAG complaints, cyber-insurance questionnaires, cookie consent and HIPAA tracking rules, by one senior engineer.",
+    keyword: "website compliance remediation",
+  },
+  "technology-consulting": {
+    title: "Fractional Technical Lead for Your Business",
+    description: "A fractional technical lead for businesses with a website, store or product and nobody senior to own the decisions: audits, vendor review, rescue.",
+    keyword: "fractional technical lead",
   },
   work: {
     title: "SaaS Products Built and Run in Production",

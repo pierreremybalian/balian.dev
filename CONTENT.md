@@ -43,6 +43,7 @@ That is all. It does not introduce the site, explain the process, count the page
 - Calm, a little dry. Contractions are fine. No exclamation marks.
 - Honest about limits. Say what this model is not good for.
 - Specific over impressive. A named tool beats an adjective.
+- Write to the visitor's situation first and name tools second. A service blurb that opens with a platform name is written for a hiring manager. Breadth is shown by the range of situations, never by claiming to do everything, and every list ends with a named catch-all.
 - AI is the hands, Pierre is the engineer. Languages share the same fundamentals and he reads any codebase; AI fills in dialect (API signatures, framework idiom, boilerplate). Never write a sentence where AI knows something Pierre does not, or where he "does not need to know" something.
 - No past-employer names, clients, results or internal tools. Years of experience may be stated generally.
 

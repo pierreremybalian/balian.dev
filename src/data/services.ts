@@ -10,24 +10,34 @@ export interface ServiceGroup {
 }
 
 export const serviceGroups: ServiceGroup[] = [
-  { id: "websites", name: "Websites and content platforms", href: "/services/websites-and-cms/",
-    short: "WordPress, Astro or headless, picked for how your team edits and what the site has to do.",
+  // Each card names the visitor's situation first and the tools second. See CONTENT.md, "Voice".
+  { id: "websites", name: "Your website needs to be built, rebuilt or fixed.", href: "/services/websites-and-cms/",
+    short: "Marketing sites, content platforms and migrations. Fast, editable by your team, on whatever platform fits.",
     icon: '<rect x="3" y="6" width="28" height="22" rx="2"/><path d="M3 12h28M8 9h.01M12 9h.01"/>' },
-  { id: "commerce", name: "Commerce", href: "/services/woocommerce-development/",
-    short: "WooCommerce stores with checkout, payments, tax and ERP sync that hold up under real orders.",
+  { id: "commerce", name: "Your store needs to sell and run itself.", href: "/services/woocommerce-development/",
+    short: "WooCommerce, Shopify and migrations from any platform. Checkout, payments, tax, shipping, and orders that reach your ERP or accounting.",
     icon: '<path d="M4 6h4l3 15h15l3-11H10"/><circle cx="14" cy="27" r="1.6"/><circle cx="25" cy="27" r="1.6"/>' },
-  { id: "apps", name: "Web apps and SaaS", href: "/services/web-app-saas-development/",
-    short: "Multi-tenant products with accounts, billing and a release process you can run.",
+  { id: "apps", name: "You need software built.", href: "/services/web-app-saas-development/",
+    short: "Web apps, customer portals, SaaS products and internal tools, from the data model to the release.",
     icon: '<path d="M17 4l12 6v14l-12 6-12-6V10z"/><path d="M17 16l12-6M17 16L5 10M17 16v14"/>' },
-  { id: "ai", name: "AI features and agents", href: "/services/ai-integration/",
-    short: "Data processing, dashboards and system integrations where AI does the tedious part and a person checks what matters.",
-    icon: '<circle cx="17" cy="17" r="5"/><path d="M17 3v6M17 25v6M3 17h6M25 17h6M7 7l4 4M23 23l4 4M27 7l-4 4M11 23l-4 4"/>' },
-  { id: "integrations", name: "Integrations and automation", href: "/services/#integrations-and-automation",
-    short: "Store, ERP, accounting and CRM connected, plus internal tools for the manual jobs.",
-    icon: '<path d="M4 12h10M20 12h10M4 22h10M20 22h10"/><circle cx="17" cy="12" r="3"/><circle cx="17" cy="22" r="3"/>' },
-  { id: "quality", name: "Security, performance, accessibility", href: "/services/#security-performance-accessibility",
-    short: "Hardening, cleanup after a breach, Core Web Vitals and WCAG AA, on new builds and existing sites.",
+  { id: "compliance", name: "You got a letter, an audit or a questionnaire.", href: "/services/compliance-and-remediation/",
+    short: "ADA and WCAG remediation, cyber-insurance requirements, cookie consent, HIPAA tracking cleanup, hardening after a breach.",
     icon: '<path d="M17 3l11 4v9c0 7-5 12-11 15C11 28 6 23 6 16V7z"/><path d="M12 17l4 4 7-8"/>' },
+  { id: "integrations", name: "Your systems do not talk to each other.", href: "/services/ai-integration/",
+    short: "CRM, ERP, accounting, EDI and email platforms connected, with AI doing the tedious data work in between.",
+    icon: '<path d="M4 12h10M20 12h10M4 22h10M20 22h10"/><circle cx="17" cy="12" r="3"/><circle cx="17" cy="22" r="3"/>' },
+  { id: "consulting", name: "You need a technical lead without hiring one.", href: "/services/technology-consulting/",
+    short: "Audits, platform and vendor decisions, code review, rescuing a stalled project, running your web operations.",
+    icon: '<circle cx="17" cy="17" r="12"/><path d="M22 12l-3 8-5 2 2-5z"/>' },
+  { id: "hosting", name: "Your site needs to be kept running.", href: "/services/#hosting-and-care",
+    short: "Hosting, servers, DNS and Cloudflare. Monitoring, updates, incident response, and a named engineer on call.",
+    icon: '<rect x="4" y="6" width="26" height="9" rx="2"/><rect x="4" y="19" width="26" height="9" rx="2"/><path d="M9 10.5h.01M9 23.5h.01"/>' },
+  { id: "marketing", name: "Your marketing systems need to work.", href: "/services/#marketing-systems",
+    short: "Email deliverability, transactional and marketing email, GA4 and Tag Manager, Consent Mode, dashboards you can trust.",
+    icon: '<rect x="4" y="8" width="26" height="18" rx="2"/><path d="M4 10l13 9 13-9"/>' },
+  { id: "else", name: "Something not on this list.", href: "/contact/",
+    short: "If it runs on the web and it is broken, slow, risky or missing, ask. Twenty years covers a lot.",
+    icon: '<circle cx="17" cy="17" r="13"/><path d="M13 13a4 4 0 1 1 6 3.5c-1.5.9-2 1.7-2 3.5M17 24h.01"/>' },
 ];
 
 export interface Block {
@@ -185,7 +195,8 @@ export const servicePages: ServicePage[] = [
           "ERP, accounting, point-of-sale and EDI integration",
           "Performance and caching for catalogs of any size",
           "Security and PCI-conscious configuration",
-          "Migration from BigCommerce, Shopify and other platforms",
+          "Shopify builds and theme work, and Shopify to WooCommerce or the other way",
+          "Migration from any platform or SaaS cart",
         ],
       },
       {
@@ -198,8 +209,9 @@ export const servicePages: ServicePage[] = [
         ],
       },
       {
-        h2: "Moving platforms without losing search traffic",
+        h2: "Migrations from any platform",
         paras: [
+          "I have moved stores off proprietary SaaS carts, BigCommerce and custom systems, and I will move yours off whatever it runs on now: Magento, Shopify, a legacy cart, or a platform that is about to be switched off. The catalog is normalised, customers and order history come along, every URL gets a redirect, and the integrations are retested before cutover.",
           "Most of the risk in a migration is search visibility. I map every product and category URL, carry over the metadata that matters, set up redirects before launch, and check the results afterward. Orders, customers and catalog data are validated in both directions.",
         ],
       },
@@ -406,29 +418,140 @@ export const servicePages: ServicePage[] = [
       { label: "About", href: "/about/" },
     ],
   },
+  {
+    slug: "compliance-and-remediation",
+    h1: copy["compliance-and-remediation"].h1,
+    lede: copy["compliance-and-remediation"].lede,
+    serviceName: "Website compliance and remediation",
+    blocks: [
+      {
+        h2: "What usually arrives",
+        items: [
+          { title: "An ADA or WCAG complaint", text: "A demand letter or a lawsuit threat about the website. The fix is an audit against WCAG 2.2 AA, remediation in priority order, and evidence you can hand to your lawyer." },
+          { title: "A cyber-insurance questionnaire", text: "The insurer wants MFA, patching, backups, headers, a WAF and proof. I have run that remediation across a whole client portfolio and I know what the underwriters actually check." },
+          { title: "A privacy or cookie complaint", text: "GDPR, CCPA and the state laws that followed. Consent that blocks trackers until it is given, and receipts that prove it. I built CookieSteward for exactly this." },
+          { title: "HIPAA tracking guidance", text: "Healthcare sites with Google Analytics, the Meta Pixel or session replay on them. Tracking removed or hard-blocked, and the site checked afterward." },
+          { title: "A hacked site", text: "Containment, forensics, cleanup, re-hardening, and the awkward conversation with your customers. I have done this more times than I would like." },
+        ],
+      },
+      {
+        h2: "What I do",
+        bullets: [
+          "Audit against the actual standard or the actual questionnaire, in plain language, with findings ranked by risk",
+          "Fix the worst problems first, on the live site, with your approval at each step",
+          "Document what changed and why, so you have evidence for the lawyer, insurer or auditor",
+          "Keep it from regressing: monitoring, scheduled checks and a care plan if you want one",
+        ],
+      },
+      {
+        h2: "Work I have done",
+        bullets: [
+          "Dozens of accessibility remediations to verified WCAG AA, for B2C and healthcare clients",
+          "Cyber-insurance audit remediation across a large client portfolio, including CSP, HSTS and WAF hardening",
+          "Incident response and cleanup for compromised sites, from containment through client communication",
+          "HIPAA-scoped sites, and CookieSteward with its HIPAA mode that keeps tracking pixels off healthcare pages",
+        ],
+      },
+      {
+        h2: "What you get",
+        bullets: [
+          "A findings report written in plain English",
+          "The fixes, with before and after evidence",
+          "A statement of what was done, written for the insurer, lawyer or auditor who asked",
+          "A plan for keeping it that way",
+        ],
+      },
+    ],
+    faq: [
+      { q: "Is this a certification?", a: "No. Nobody certifies a website as compliant. What you get is work done against the standard and evidence of it, which is what lawyers, insurers and auditors actually ask for." },
+      { q: "How fast can you start?", a: "Letters have deadlines, so audits start within days. The first findings and the highest-risk fixes come first; the rest follows a plan we agree." },
+      { q: "Will it change how the site looks?", a: "Rarely, and never without your approval. Most accessibility and security fixes are invisible to visitors." },
+      { q: "Do you work with our lawyer or insurer?", a: "Yes. I write the technical side in their terms and join the call if it helps." },
+    ],
+    related: [
+      { label: "Hosting and care", href: "/services/#hosting-and-care" },
+      { label: "CookieSteward", href: "/work/cookiesteward/" },
+      { label: "How a project runs", href: "/process/" },
+    ],
+  },
+  {
+    slug: "technology-consulting",
+    h1: copy["technology-consulting"].h1,
+    lede: copy["technology-consulting"].lede,
+    serviceName: "Technology consulting",
+    blocks: [
+      {
+        h2: "When this fits",
+        items: [
+          { title: "You have to choose a platform or a vendor", text: "WordPress, Shopify or custom. This agency or that one. I spent years writing those proposals, so I know what they leave out." },
+          { title: "A project stalled or went over", text: "I read the code and the contract, tell you where it stands, and either get it over the line or plan the handover." },
+          { title: "You cannot evaluate your developer", text: "A review of the work, the process and the invoices, in plain language, so you know whether you are getting what you pay for." },
+          { title: "Nobody understands the codebase", text: "An audit that produces a map: what it does, where it is fragile, what it would cost to fix or replace." },
+          { title: "Your team needs standards and review", text: "Coding standards, code review, a starter framework and the habits that keep a team consistent. I have done this for a web team as its technical lead." },
+        ],
+      },
+      {
+        h2: "What I do",
+        bullets: [
+          "Fixed-scope audits of a site, a store, a codebase or a vendor, with findings you can act on",
+          "Architecture and build plans before anyone writes code",
+          "Vendor and proposal review, and help running the selection",
+          "Code review and standards for your in-house or agency developers",
+          "Rescue and handover of stalled projects",
+          "A fractional technical lead on a monthly retainer: your senior technical person, without the hire",
+        ],
+      },
+      {
+        h2: "Work I have done",
+        bullets: [
+          "Led a web team as director of web technology and security at a Minneapolis agency",
+          "Scoped and architected the agency's larger engagements from feasibility through system design",
+          "Set the coding standards and built the starter framework the team used on every build",
+          "Served as the technical resource for UX, strategy, SEO and development teams",
+        ],
+      },
+      {
+        h2: "How it works",
+        paras: [
+          "Most engagements start with a fixed-scope audit, so you get something useful whether or not we continue. After that it is hourly for advice and review, or a monthly retainer when you want a technical lead in the room every week.",
+        ],
+      },
+    ],
+    faq: [
+      { q: "Do you need to build it to advise on it?", a: "No. Advice and build are separate engagements. If you want me to build what I recommended, that is a new proposal you can take elsewhere." },
+      { q: "Can you work with our existing agency?", a: "Yes. Often the most useful thing I do is translate between a business and its developers." },
+      { q: "What does a fractional technical lead cost?", a: "A set number of hours a month at a monthly rate, agreed in the proposal. It is a fraction of a senior hire and you can stop when you no longer need it." },
+    ],
+    related: [
+      { label: "AI-assisted engineering", href: "/services/ai-assisted-engineering/" },
+      { label: "About", href: "/about/" },
+      { label: "How a project runs", href: "/process/" },
+    ],
+  },
 ];
 
 export const hubSections: { id: string; name: string; text: string; bullets: string[] }[] = [
   {
-    id: "integrations-and-automation",
-    name: "Integrations and automation",
-    text: "Most businesses run on several systems that do not talk to each other, and people fill the gaps by hand. I connect the systems and build small internal tools that remove that manual work. I have connected WooCommerce to Sage 100, QuickBooks, point-of-sale systems and EDI partners, and built tools that watch a whole portfolio of sites for vulnerable plugins.",
+    id: "hosting-and-care",
+    name: "Hosting and care",
+    text: "A site is never finished. I set up and run the hosting, keep it patched and watched, and answer when something breaks. I have run the hosting and security for a large portfolio of client sites, so this is routine work.",
     bullets: [
-      "API integrations between your store, ERP, accounting and CRM",
-      "Data sync with proper error handling and a record of what happened",
-      "Internal tools for the repetitive jobs your team does every week",
-      "Webhooks, scheduled jobs and queues, built to recover from failure",
+      "Moves between hosts, and server tuning on CloudLinux, Nginx, Apache and LiteSpeed",
+      "Cloudflare setup: DNS, WAF, caching and bot rules",
+      "Uptime and vulnerability monitoring, with updates applied on a schedule",
+      "Incident response when a site is down or compromised",
+      "Monthly care plans with a named engineer and a set number of hours",
     ],
   },
   {
-    id: "security-performance-accessibility",
-    name: "Security, performance and accessibility",
-    text: "Every build is held to the same standard, and I also work on existing sites that need to catch up. I have led incident response for compromised sites, run cyber-insurance audit remediation, and administered Cloudflare WAF and DNS for a large portfolio.",
+    id: "marketing-systems",
+    name: "Marketing systems",
+    text: "Email that actually lands in the inbox, and tracking you can trust. I have fixed deliverability for client domains that were being flagged, and I have run transactional and marketing email for stores that depend on it.",
     bullets: [
-      "Security headers, firewall configuration and least-privilege access",
-      "Hardening and cleanup for sites that have been compromised",
-      "Core Web Vitals improvements and caching",
-      "WCAG AA review and remediation",
+      "SPF, DKIM and DMARC, and deliverability repair for domains that have been flagged",
+      "Transactional and marketing email on Mailgun, SendGrid, Resend, Klaviyo, Mailchimp or HubSpot",
+      "GA4 and Google Tag Manager, Consent Mode v2, and server-side tagging where it pays off",
+      "Dashboards and reports that match what the business actually measures",
     ],
   },
 ];

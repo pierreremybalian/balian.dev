@@ -38,6 +38,8 @@ export const nav: NavItem[] = [
       { label: "Web apps and SaaS", href: "/services/web-app-saas-development/" },
       { label: "AI integration", href: "/services/ai-integration/" },
       { label: "AI-assisted engineering", href: "/services/ai-assisted-engineering/" },
+      { label: "Compliance", href: "/services/compliance-and-remediation/" },
+      { label: "Consulting", href: "/services/technology-consulting/" },
     ],
   },
   { label: "Work", href: "/work/" },

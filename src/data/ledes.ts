@@ -13,8 +13,8 @@ export const copy: Record<string, PageCopy> = {
     lede: "I have spent more than twenty years building websites, stores and web apps, most of it inside agencies. Now you hire me directly and I do the work myself.",
   },
   services: {
-    h1: "Websites, stores, apps and AI, built by one person.",
-    lede: "Find the kind of work you need help with below. Most projects mix two or three of these, and I do all of them myself.",
+    h1: "Bring me the problem. I will bring the stack.",
+    lede: "You do not need to know which platform you need. Tell me what is broken, slow or missing and I will pick the tools and do the work.",
   },
   "websites-and-cms": {
     h1: "Websites your team can edit and your customers can use.",
@@ -25,8 +25,8 @@ export const copy: Record<string, PageCopy> = {
     lede: "WordPress is easy to start and easy to get wrong. I build custom sites, plugins and integrations that stay fast, stay secure and make sense to the next developer.",
   },
   "woocommerce-development": {
-    h1: "WooCommerce engineering for stores that need to convert and scale.",
-    lede: "Is checkout slow, tax a guess, or are orders missing from your ERP? I fix those problems and build what is missing.",
+    h1: "Stores that sell and run themselves.",
+    lede: "Checkout that converts and orders that reach accounting on their own. WooCommerce or Shopify, or a move from whatever system you have now.",
   },
   "web-app-saas-development": {
     h1: "Web products you can run after launch.",
@@ -39,6 +39,14 @@ export const copy: Record<string, PageCopy> = {
   "ai-assisted-engineering": {
     h1: "Twenty years of engineering, with AI as a very fast pair of hands.",
     lede: "I use AI to build your site. I design the system, direct the work and read every line, and AI types faster than any team could. You pay for the result.",
+  },
+  "compliance-and-remediation": {
+    h1: "Someone sent you a letter. Here is what happens next.",
+    lede: "ADA demand letters, cyber-insurance questionnaires, privacy complaints and HIPAA tracking rules all land on the website. I fix the site so the answer is yes.",
+  },
+  "technology-consulting": {
+    h1: "A technical lead for your business, by the hour or by the month.",
+    lede: "You have a website, a store or a product and nobody senior to own the technical decisions. I can be that person without the hire.",
   },
   work: {
     h1: "Two products of my own, built and run in production.",
