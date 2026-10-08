@@ -44,9 +44,14 @@ export function textToHtml(text: string): string {
       out.push(`<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;margin:0 0 16px">${tr}</table>`); continue;
     }
     if (/^-{3,}$/.test(line.trim())) { out.push(`<hr style="border:0;border-top:1px solid ${C.line};margin:24px 0">`); i++; continue; }
+    const btn = line.trim().match(/^\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)$/);
+    if (btn) {
+      out.push(`<table role="presentation" cellpadding="0" cellspacing="0" style="margin:6px 0 22px"><tr><td style="background:${C.sig};border-radius:3px"><a href="${esc(btn[2])}" style="display:inline-block;padding:13px 22px;font-family:${F.sans};font-size:15px;font-weight:600;color:#0a0c18;text-decoration:none">${esc(btn[1])}&nbsp;&rarr;</a></td></tr></table>`);
+      i++; continue;
+    }
     // paragraph: consecutive non-blank lines; single line breaks are kept (signatures, addresses)
     const para: string[] = [];
-    while (i < lines.length && lines[i].trim() && !/^(#{1,3}\s|\s*[-*]\s|\s*\d+\.\s|\||-{3,}$)/.test(lines[i])) { para.push(inline(lines[i].trim())); i++; }
+    while (i < lines.length && lines[i].trim() && !/^(#{1,3}\s|\s*[-*]\s|\s*\d+\.\s|\||-{3,}$)/.test(lines[i]) && !/^\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)$/.test(lines[i].trim())) { para.push(inline(lines[i].trim())); i++; }
     out.push(`<p style="${body}">${para.join("<br>")}</p>`);
   }
   return out.join("\n");

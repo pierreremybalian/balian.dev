@@ -63,7 +63,7 @@ export const onRequestPost = async ({ request, env, waitUntil }: { request: Requ
   const first = name.split(/\s+/)[0];
   waitUntil(sendMail(env, {
     to: email, replyTo: env.CONTACT_TO, subject: "Got your note", title: `Got it, ${first}.`, preheader: "I read every brief myself and reply within a business day.",
-    text: `Thanks for writing. I read every brief myself and will reply within a business day${site ? `, after a look at ${site}` : ""}.\n\nIf you want to move faster, two things help:\n\n- **Book a call:** https://balian.dev/contact/#book\n- **Tell me about the business:** https://balian.dev/intake/${site ? `?site=${encodeURIComponent(new URL(site).hostname)}` : ""} (about twenty minutes, and it saves us a week)\n\nWhat you sent:\n\n${message}\n\nPierre`,
+    text: `Thanks for writing. I read every brief myself and will reply within a business day${site ? `, after a look at ${site}` : ""}.\n\nIf you want to move faster, two things help. A call is the quickest.\n\n[Book a 30-minute call](https://balian.dev/contact/#book)\n\nAnd this questionnaire takes about twenty minutes and saves us a week.\n\n[Tell me about the business](https://balian.dev/intake/${site ? `?site=${encodeURIComponent(new URL(site).hostname)}` : ""})\n\n**What you sent**\n\n${message}\n\nPierre`,
   }).catch(() => {}));
   let leadId: string | undefined;
   await record(env, async (db) => {

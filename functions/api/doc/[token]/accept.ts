@@ -25,7 +25,7 @@ export const onRequestPost = async ({ request, env, params }: { request: Request
     const record = `Accepted by ${name} on ${new Intl.DateTimeFormat("en-US", { dateStyle: "long", timeStyle: "short", timeZone: "America/Chicago" }).format(new Date(t))} (Central)${ip ? ` from ${ip}` : ""}.`;
     await sendMail(env, {
       to: lead.email, bcc: env.CONTACT_TO, replyTo: env.CONTACT_TO, subject: `Accepted: ${doc.title}`, title: `Accepted: ${doc.title}`, preheader: record,
-      text: `Hi ${name},\n\nThank you. Here is the document you accepted, with the acceptance record, for your files.\n\n**${record}**\n\n---\n\n${doc.body_md.replace(/^#\s+[^\n]*\n+/, "")}`,
+      text: `Hi ${name},\n\nThank you. Here is the document you accepted, with the acceptance record, for your files.\n\n**${record}**\n\n[Open the document](https://balian.dev/d/?t=${params.token})\n\n---\n\n${doc.body_md.replace(/^#\s+[^\n]*\n+/, "")}`,
     }).catch((e) => console.error("accept email:", (e as Error).message));
   }
   return json({ ok: true, accepted_at: t, accepted_name: name });

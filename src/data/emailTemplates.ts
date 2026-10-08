@@ -16,9 +16,13 @@ Thanks for writing. I read your note and had a look at {{website}} before replyi
 -
 -
 
-The quickest next step is a call. Pick a time that suits you: https://balian.dev/contact/#book
+The quickest next step is a call.
 
-Before we talk, this questionnaire takes about twenty minutes and saves us a week: {{questionnaire_link}}
+[Book a 30-minute call](https://balian.dev/contact/#book)
+
+Before we talk, this questionnaire takes about twenty minutes and saves us a week.
+
+[Tell me about the business]({{questionnaire_link}})
 
 If a call is premature, reply with a couple of lines about what is going on and I will tell you honestly whether I am the right person for it.
 
@@ -29,11 +33,15 @@ Pierre`,
     subject: "The questionnaire for {{company}}",
     body: `Hi {{first}},
 
-No pressure, just making sure the link did not get buried: {{questionnaire_link}}
+No pressure, just making sure the link did not get buried.
+
+[Open the questionnaire]({{questionnaire_link}})
 
 It saves as you go, so ten minutes now and ten later is fine. The parts that matter most are the first two steps and the goals. Skip anything you do not know.
 
-If you would rather just talk, book a slot and we will cover it on the call: https://balian.dev/contact/#book
+If you would rather just talk, book a slot and we will cover it on the call.
+
+[Book a call](https://balian.dev/contact/#book)
 
 Pierre`,
   },
@@ -42,7 +50,9 @@ Pierre`,
     subject: "Our call on {{slot}}",
     body: `Hi {{first}},
 
-Looking forward to talking on {{slot}}. The Meet link is in the calendar invite, and here it is again: {{meet}}
+Looking forward to talking on {{slot}}. The Meet link is in the calendar invite, and here it is again.
+
+[Join on Google Meet]({{meet}})
 
 Bring whatever is on your mind about the business as well as the website. The useful projects usually come from the problems behind it.
 
@@ -73,7 +83,7 @@ Pierre`,
     subject: "Proposal: {{doc_title}}",
     body: `Hi {{first}},
 
-The proposal is here: {{doc_link}}
+[Read the proposal]({{doc_link}})
 
 It covers what we agreed, what it costs, how payment follows the approval gates, and what is deliberately out of scope so there are no surprises later. Read it when you have a quiet half hour and send me every question in one go.
 
@@ -86,7 +96,9 @@ Pierre`,
     subject: "Agreement: {{doc_title}}",
     body: `Hi {{first}},
 
-Thanks for accepting the proposal. The agreement is here: {{doc_link}}
+Thanks for accepting the proposal.
+
+[Read the agreement]({{doc_link}})
 
 It is short and in plain English: you own the code and the accounts, payment follows the approval gates, two revision rounds, and anything new goes on the Phase 2 list. Accept at the bottom when you are ready and I will send the first invoice and we will book the discovery call.
 
@@ -110,7 +122,7 @@ Two things I need from you now:
 - One named approver on your side, so feedback arrives from one direction.
 - The materials you already have: logo, brand guidelines, brochures, old copy, photos. Send what exists; rough is fine.
 
-Book the discovery call here when you are ready: https://balian.dev/contact/#book
+[Book the discovery call](https://balian.dev/contact/#book)
 
 Pierre`,
   },
@@ -132,7 +144,7 @@ Pierre`,
     subject: "{{company}} is live",
     body: `Hi {{first}},
 
-It is live: {{website}}
+[See it live]({{website}})
 
 Documentation, logins and the handover notes are in your shared folder, and everything is in your name: the code, the hosting, the domain and the analytics.
 

@@ -84,7 +84,7 @@ export const onRequestPost = async ({ request, env, waitUntil }: { request: Requ
       const first = name.split(/\s+/)[0], host = normalizeUrl(site) ? new URL(normalizeUrl(site)!).hostname : "";
       waitUntil(sendMail(env, {
         to: email, replyTo: env.CONTACT_TO, subject: `Our call on ${when}`, title: `Booked, ${first}.`, preheader: `${when} Central, on Google Meet.`,
-        text: `We are on for **${when}** (Central time). The calendar invite from Google has the Meet link, and here it is again: ${ev.body.hangoutLink ?? "in the invite"}\n\nBring whatever is on your mind about the business as well as the website. The useful projects usually come from the problems behind it.\n\nIf you have twenty minutes before we talk, this questionnaire gives me a head start: https://balian.dev/intake/${host ? `?site=${encodeURIComponent(host)}` : ""}\n\nNeed to move it? Reply to this email.\n\nPierre`,
+        text: `We are on for **${when}** (Central time). The calendar invite from Google has the Meet link, and here it is again.\n\n${ev.body.hangoutLink ? `[Join on Google Meet](${ev.body.hangoutLink})` : "The link is in the invite."}\n\nBring whatever is on your mind about the business as well as the website. The useful projects usually come from the problems behind it.\n\nIf you have twenty minutes before we talk, this questionnaire gives me a head start.\n\n[Tell me about the business](https://balian.dev/intake/${host ? `?site=${encodeURIComponent(host)}` : ""})\n\nNeed to move it? Reply to this email.\n\nPierre`,
       }).catch(() => {}));
     }
 
