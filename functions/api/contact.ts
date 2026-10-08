@@ -5,6 +5,8 @@
 //   CONTACT_FROM     a sender on a domain verified in Resend, e.g. "balian.dev <contact@balian.dev>"
 // Until they are set, the function answers 503 and the page tells the visitor to book a call instead.
 
+import { prescan, normalizeUrl } from "../lib/prescan";
+
 interface Env {
   RESEND_API_KEY?: string;
   CONTACT_TO?: string;
@@ -16,7 +18,23 @@ const json = (body: unknown, status = 200) =>
 
 const clean = (v: FormDataEntryValue | null, max: number) => String(v ?? "").trim().slice(0, max);
 
-export const onRequestPost = async ({ request, env }: { request: Request; env: Env }) => {
+/** A second email with the pre-scan of the prospect's site, sent after the reply so the form never waits on it. */
+export async function sendPrescan(env: Env, site: string, who: string) {
+  try {
+    const scan = await prescan(site);
+    await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "content-type": "application/json" },
+      body: JSON.stringify({
+        from: env.CONTACT_FROM, to: [env.CONTACT_TO],
+        subject: `Pre-scan: ${new URL(site).hostname} for ${who}`,
+        text: `Pre-scan of ${site}\n\n${scan.summary.map((l) => `  ${l}`).join("\n")}${scan.error ? `\n\n  ${scan.error}` : ""}`,
+      }),
+    });
+  } catch (e) { console.error("prescan email:", (e as Error).message); }
+}
+
+export const onRequestPost = async ({ request, env, waitUntil }: { request: Request; env: Env; waitUntil: (p: Promise<unknown>) => void }) => {
   let form: FormData;
   try {
     form = await request.formData();
@@ -30,6 +48,7 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
   const email = clean(form.get("email"), 200);
   const kind = clean(form.get("kind"), 120);
   const message = clean(form.get("message"), 5000);
+  const site = normalizeUrl(clean(form.get("site"), 200));
   if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || message.length < 10) {
     return json({ error: "Please add your name, a valid email and a few lines about the project." }, 422);
   }
@@ -45,9 +64,10 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
       to: [env.CONTACT_TO],
       reply_to: `${name} <${email}>`,
       subject: `New brief: ${kind || "project"} from ${name}`,
-      text: `Name: ${name}\nEmail: ${email}\nLooking for: ${kind}\n\n${message}`,
+      text: `Name: ${name}\nEmail: ${email}${site ? `\nWebsite: ${site}` : ""}\nLooking for: ${kind}\n\n${message}`,
     }),
   });
   if (!res.ok) return json({ error: "That did not send. Please try again, or book a call above." }, 502);
+  if (site) waitUntil(sendPrescan(env, site, `${name} (${kind || "brief"})`));
   return json({ ok: true });
 };

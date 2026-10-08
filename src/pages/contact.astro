@@ -80,6 +80,7 @@ import { copy } from "../data/ledes";
       <form class="form" id="contact-form" method="post" action="/api/contact" novalidate>
         <div class="field"><label for="name">Name <span class="req" aria-hidden="true">*</span></label><input id="name" name="name" type="text" autocomplete="name" required aria-required="true" /></div>
         <div class="field"><label for="email">Email <span class="req" aria-hidden="true">*</span></label><input id="email" name="email" type="email" autocomplete="email" required aria-required="true" /></div>
+        <div class="field"><label for="website-url">Your website, if there is one</label><input id="website-url" name="site" type="url" inputmode="url" autocomplete="url" placeholder="https://" /></div>
         <div class="field"><label for="kind">What are you looking for?</label>
           <select id="kind" name="kind">
             <option>A new website or rebuild</option>

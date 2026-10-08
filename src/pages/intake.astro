@@ -15,6 +15,13 @@ const total = intakeSteps.length;
 
   <section class="sec intake">
     <div class="in">
+      <section class="report" id="intake-report" hidden aria-live="polite">
+        <span class="label">What I can already see</span>
+        <h2 id="intake-report-h">Your site at a glance</h2>
+        <p class="note">Read from the public web, nothing private. Where a question below is already filled in, that came from here. Correct anything that is wrong.</p>
+        <dl id="intake-report-rows"></dl>
+      </section>
+
       <form id="intake" class="form" novalidate>
         <div class="progress" aria-hidden="true"><span id="intake-bar" style={`width:${100 / total}%`}></span></div>
         <p class="label" id="intake-where" aria-live="polite">Step 1 of {total}</p>

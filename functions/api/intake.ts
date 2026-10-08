@@ -1,6 +1,7 @@
 // Cloudflare Pages Function: POST /api/intake  { answers: { [questionId]: string | string[] }, fax?: honeypot }
 // Formats the questionnaire in step order and emails it to Pierre through Resend, with a copy to the person who filled it in.
 import { intakeSteps, matches } from "../../src/data/intake";
+import { prescan, normalizeUrl } from "../lib/prescan";
 
 interface Env {
   RESEND_API_KEY?: string;
@@ -31,8 +32,14 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
     return json({ error: "The questionnaire is not connected yet. Please email me your answers instead." }, 503);
   }
 
-  // Plain text, in the order the questions were asked. Unanswered questions are listed so the gaps are visible.
+  // Pre-scan of their site goes at the head of the email, then the answers in the order the questions were asked.
   const lines: string[] = [`Project questionnaire from ${name} (${company})`, `Email: ${email}`, ""];
+  const website = normalizeUrl(clean(a.website, 200)[0] ?? "");
+  if (website) {
+    const scan = await Promise.race([prescan(website), new Promise<null>((r) => setTimeout(() => r(null), 12_000))]);
+    lines.push(`== PRE-SCAN OF ${new URL(website).hostname.toUpperCase()} ==`, "");
+    lines.push(...(scan ? scan.summary.map((l) => `  ${l}`) : ["  (scan timed out)"]), "");
+  }
   let answered = 0, total = 0;
   for (const step of intakeSteps) {
     if (!step.questions.some((q) => matches(a, q.showIf))) continue;

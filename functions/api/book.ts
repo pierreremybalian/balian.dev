@@ -4,6 +4,8 @@
 import { booking } from "../lib/config";
 import { windowsToSlots, subtractBusy, overlaps } from "../lib/slots";
 import { accessToken, availability, busy, configured, gcal, type GoogleEnv } from "../lib/google";
+import { normalizeUrl } from "../lib/prescan";
+import { sendPrescan } from "./contact";
 
 interface Env extends GoogleEnv {
   RESEND_API_KEY?: string;
@@ -15,7 +17,7 @@ const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 const clean = (v: unknown, max: number) => String(v ?? "").trim().slice(0, max);
 
-export const onRequestPost = async ({ request, env }: { request: Request; env: Env }) => {
+export const onRequestPost = async ({ request, env, waitUntil }: { request: Request; env: Env; waitUntil: (p: Promise<unknown>) => void }) => {
   let body: Record<string, unknown>;
   try {
     body = (await request.json()) as Record<string, unknown>;
@@ -85,6 +87,8 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
       }).catch((e) => console.error("book: resend", (e as Error).message));
     }
 
+    const siteUrl = normalizeUrl(site);
+    if (siteUrl && env.RESEND_API_KEY && env.CONTACT_TO && env.CONTACT_FROM) waitUntil(sendPrescan(env, siteUrl, `${name}${company ? ` (${company})` : ""}, call booked`));
     return json({ ok: true, start: new Date(start).toISOString(), end: new Date(end).toISOString(), meet: ev.body.hangoutLink ?? null });
   } catch (e) {
     console.error("book:", (e as Error).message);

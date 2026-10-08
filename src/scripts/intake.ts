@@ -144,5 +144,59 @@ export function initIntake() {
     }
   });
 
+  /* pre-scan: fill what the site already tells us, and show it at the top */
+  const report = document.getElementById("intake-report");
+  const rows = document.getElementById("intake-report-rows");
+  const reportH = document.getElementById("intake-report-h");
+  const site = form.querySelector<HTMLInputElement>('[name="website"]');
+  const setIfEmpty = (name: string, value: string) => {
+    const el = form.querySelector<HTMLInputElement | HTMLTextAreaElement>(`[name="${name}"]`);
+    if (el && !el.value.trim()) { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }
+  };
+  let scanned = "";
+  async function scan(raw: string) {
+    const v = raw.trim();
+    if (!v || v === scanned || !report || !rows) return;
+    scanned = v;
+    try {
+      const r = await fetch("/api/prescan?url=" + encodeURIComponent(v));
+      const d = (await r.json()) as Record<string, unknown> & { error?: string; summary?: string[] };
+      if (!r.ok || d.error) return;
+      const host = (() => { try { return new URL(String(d.finalUrl || d.url)).hostname; } catch { return v; } })();
+      if (reportH) reportH.textContent = `${host} at a glance`;
+      const arr = (k: string) => (Array.isArray(d[k]) ? (d[k] as string[]) : []);
+      const sec = d.securityHeaders as Record<string, boolean> | undefined;
+      const missing = sec ? Object.entries(sec).filter(([, ok]) => !ok).map(([k]) => k) : [];
+      const items: [string, string][] = [
+        ["Domain", [d.registrar && `registrar ${d.registrar}`, d.registered && `registered ${d.registered}`, d.expires && `expires ${d.expires}`].filter(Boolean).join(", ") || "no registry record found"],
+        ["Nameservers", `${d.dnsProvider || "unknown provider"}${arr("nameservers").length ? ` (${arr("nameservers").join(", ")})` : ""}`],
+        ["Email", `${d.mailProvider || "no mail records"}. SPF ${d.spf ? "present" : "missing"}, DMARC ${d.dmarc ? "present" : "missing"}`],
+        ["Platform", arr("platform").length ? `${arr("platform").join(", ")}${d.theme ? `, theme "${d.theme}"` : ""}${arr("builders").length ? `, built with ${arr("builders").join(", ")}` : ""}` : "not recognised"],
+        ["Cloudflare", d.cloudflare ? "yes" : "no"],
+        ["Web server", [...arr("hosting"), d.server && `server "${d.server}"`].filter(Boolean).join("; ") || "no identifying headers"],
+        ["Integrations", arr("trackers").length ? arr("trackers").join(", ") : "no common third-party scripts seen"],
+        ["Cookie consent", String(d.cookieBanner || "none detected")],
+        ["Security headers", missing.length ? `missing ${missing.join(", ")}` : "all common ones present"],
+        ["Pages", `${d.sitemapUrls !== undefined ? `${d.sitemapUrls} in the sitemap` : "no sitemap"}, responded in ${d.ttfbMs} ms`],
+      ];
+      rows.replaceChildren(...items.flatMap(([k, val]) => { const dt = document.createElement("dt"); dt.textContent = k; const dd = document.createElement("dd"); dd.textContent = val; return [dt, dd]; }));
+      report.hidden = false;
+      // pre-fill, leaving anything the person already typed alone
+      if (arr("platform").length) setIfEmpty("platform", `${arr("platform").join(", ")}${d.theme ? `, theme "${d.theme}"` : ""}${arr("builders").length ? `, ${arr("builders").join(", ")}` : ""} (found automatically; correct me if that is wrong)`);
+      const hostBits = [...arr("hosting"), d.server && `server ${d.server}`, d.dnsProvider && `DNS at ${d.dnsProvider}`].filter(Boolean);
+      if (hostBits.length) setIfEmpty("hosting", `${hostBits.join(", ")} (found automatically; add who has the logins)`);
+      const storeP = arr("platform").filter((p) => /Shopify|WooCommerce|BigCommerce|Magento|PrestaShop|OpenCart/.test(p));
+      if (storeP.length) setIfEmpty("store_platform", storeP.join(", "));
+      if (arr("trackers").length) setIfEmpty("integrations", `Seen on the site: ${arr("trackers").join(", ")}. Add anything behind the scenes: CRM, ERP, accounting, email, payments.`);
+      save();
+    } catch { /* the questionnaire works without it */ }
+  }
+  const fromQuery = qs.get("site");
+  if (site) {
+    site.addEventListener("change", () => scan(site.value));
+    if (fromQuery && !site.value) { site.value = fromQuery; save(); }
+    if (site.value) scan(site.value);
+  }
+
   show(i, false);
 }
