@@ -85,7 +85,7 @@ export const seo: Record<string, Seo> = {
   },
   process: {
     title: "Web Design Process: Design Before Build",
-    description: "A 13-stage web design process with six approval gates: three styleframes, a design system you approve, a first draft on staging and two revision rounds.",
+    description: "A 13-stage web design process with six approval gates: styleframes, a design system you approve, content written for you, and two revision rounds.",
     keyword: "web design process",
   },
   contact: {

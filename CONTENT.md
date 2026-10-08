@@ -61,6 +61,7 @@ Never:
 - Employer or client names. Revenue, growth or savings figures. Counts of sites, zones, launches or team members. Engagement dollar ranges.
 - Any other year count ("fifteen years", "ten years as an employee", "two decades"). The linter fails on these.
 - On product case studies: exact counts that describe the implementation (pattern totals, rule counts, identifier lists, page caps, poll intervals, size figures), rate limits, cron schedules, hosting topology, process managers, encryption schemes, auth mechanics and queue internals. Say what it does and roughly how; never give a map of the infrastructure.
+- Content is included in every site build, written from the client's recorded interview and existing materials, with the client correcting facts on staging. Say so plainly; the line is "You will never be handed a blank page."
 - Apologies for having no client case studies. Work says once, in one sentence, that agency work belongs to the clients. Nowhere else.
 
 ## Banned words and patterns

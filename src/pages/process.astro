@@ -15,6 +15,7 @@ const faq: FaqItem[] = [
   { q: "How many revision rounds do I get?", a: "Two, on the staging site, each one a single consolidated list from your approver. The rounds are for fixing anything that does not match the design you approved. New requests are welcome and go on the Phase 2 list, to be quoted after launch." },
   { q: "What is the difference between a fix and a change?", a: "A fix is something that does not match what you approved, like a wrong colour or a block that does not behave as designed. A change is a new preference or a new feature. Fixes are included. Changes are quoted, and most of them are better done after launch anyway, when you have seen the site in use." },
   { q: "What if we think of something halfway through?", a: "Tell me. It goes on the Phase 2 list with a rough estimate, the build keeps moving, and once the site is live and paid for I quote the list. Scope creep is how projects go over, so I treat it as a separate phase instead of pretending it is free." },
+  { q: "Do we have to write the content?", a: "No. I write it from a recorded interview and the materials you already have, and you correct facts on the staging site. If you have a writer you trust, they work inside the page briefs and I edit for fit." },
   { q: "Can we skip stages?", a: "Some projects compress them, but design before build and your approval at the gates stay. They are what keep the cost of changes low." },
   { q: "Does this work for a web app as well as a website?", a: "Yes. Content and copy stages give way to product scoping and iterative delivery, and the design gates stay the same." },
 ];
@@ -52,6 +53,16 @@ const gates = stages.filter((s) => s.gate).length;
       </div>
     </div>
   </section>
+
+  <div class="in">
+    <section class="prose">
+      <h2>You will never be handed a blank page.</h2>
+      <div class="body rv">
+        <p>Most websites stall on the words. Copywriting is expensive, so the job goes to whoever on your team seems to have time. That person turns out not to have the time, has never written a website, was not in the room when the goals were set, and does not know the block system the pages are built from. Three weeks later I get a Word document and a question about how to center a section.</p>
+        <p>So I write it. I ran discovery, I know what the site is for, and AI drafts faster than anyone types. You give me an hour on a recorded call and whatever you already have: brochures, decks, the old site, sales emails, reviews. I turn that into every page, fitted to the blocks, and you correct facts on the staging site. If you have a writer you trust, they work inside the page briefs and I edit for fit.</p>
+      </div>
+    </section>
+  </div>
 
   <Faq items={faq} />
   <CtaBand heading="Ready to start with a call?" />

@@ -12,7 +12,7 @@ export interface ServiceGroup {
 export const serviceGroups: ServiceGroup[] = [
   // Each card names the visitor's situation first and the tools second. See CONTENT.md, "Voice".
   { id: "websites", name: "Your website needs to be built, rebuilt or fixed.", href: "/services/websites-and-cms/",
-    short: "Marketing sites, content platforms and migrations. Fast, editable by your team, on whatever platform fits.",
+    short: "Marketing sites, content platforms and migrations, with the content written for you. Fast, editable by your team, on whatever platform fits.",
     icon: '<rect x="3" y="6" width="28" height="22" rx="2"/><path d="M3 12h28M8 9h.01M12 9h.01"/>' },
   { id: "commerce", name: "Your store needs to sell and run itself.", href: "/services/woocommerce-development/",
     short: "WooCommerce, Shopify and migrations from any platform. Checkout, payments, tax, shipping, and orders that reach your ERP or accounting.",
@@ -82,6 +82,7 @@ export const servicePages: ServicePage[] = [
           { title: "Search foundations", text: "Clean URLs, structured data, redirects from the old site, and metadata written by hand." },
           { title: "Security", text: "Hardened configuration, security headers, and least-privilege access." },
           { title: "An editing experience", text: "Designed with your team, with documentation and a walkthrough." },
+          { title: "The words", text: "Written from an interview with you and the materials you already have, fitted to the blocks. Included in every build." },
         ],
       },
       {
@@ -108,6 +109,7 @@ export const servicePages: ServicePage[] = [
       { q: "Should I use WordPress or something else?", a: "If your team edits often or needs plugins, forms or commerce, WordPress is usually right. If the site is mostly fixed pages and speed matters most, Astro is simpler and faster. I will recommend the one that fits, even when it is less work for me." },
       { q: "Can you rebuild my existing site without losing search traffic?", a: "Yes. I map every existing URL, redirect what changes, carry over the metadata that matters, and check rankings afterward." },
       { q: "Will my team be able to edit it?", a: "Yes, and it is a design requirement from the start. I build the editing experience with the people who will use it, and hand over documentation." },
+      { q: "Do we have to write the content?", a: "No. I write it from an interview with you and the materials you already have, and you correct facts on staging. A writer of your own is welcome to work inside the page briefs." },
     ],
     related: [
       { label: "WordPress development", href: "/services/wordpress-development/" },
