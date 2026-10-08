@@ -1,0 +1,28 @@
+---
+import Base from "../../layouts/Base.astro";
+---
+<Base title="Document" description="A proposal or agreement from Balian.dev." noindex>
+  <section class="phero" style="padding-bottom:40px">
+    <div class="in">
+      <p class="crumb">Balian.dev</p>
+      <h1 id="doc-title" style="font-size:clamp(1.8rem,3.6vw,3rem)">Loading the document...</h1>
+      <p class="note" id="doc-meta"></p>
+    </div>
+  </section>
+  <section class="sec" style="padding-top:20px">
+    <div class="in">
+      <article class="doc" id="doc-body"></article>
+      <form class="form accept" id="doc-accept" hidden novalidate>
+        <h2 style="font-size:1.5rem">Accept this document</h2>
+        <p class="note">Type your full name. Accepting records your name, the time and your connection's address, and emails both of us a copy.</p>
+        <div class="field"><label for="accept-name">Full name <span class="req" aria-hidden="true">*</span></label><input id="accept-name" name="name" type="text" autocomplete="name" required /></div>
+        <div class="btns"><button class="btn" type="submit" style="border:0;cursor:pointer">I accept</button><span id="accept-status" class="note" role="status" aria-live="polite"></span></div>
+      </form>
+      <p class="done" id="doc-done" hidden role="status"></p>
+    </div>
+  </section>
+  <script>
+    import { initDoc } from "../../scripts/doc";
+    initDoc();
+  </script>
+</Base>

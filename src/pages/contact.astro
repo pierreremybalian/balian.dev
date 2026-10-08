@@ -119,7 +119,7 @@ import { copy } from "../data/ledes";
       if (status) status.textContent = "Sending...";
       try {
         const res = await fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
-        const data = await res.json().catch(() => ({}));
+        const data = (await res.json().catch(() => ({}))) as { error?: string };
         if (res.ok) {
           form.reset();
           if (status) status.innerHTML = 'Sent. I will reply personally. While you wait, <a class="lnk" href="/intake/">the project questionnaire</a> tells me most of what I need.';

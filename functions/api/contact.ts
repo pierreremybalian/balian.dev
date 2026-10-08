@@ -6,8 +6,9 @@
 // Until they are set, the function answers 503 and the page tells the visitor to book a call instead.
 
 import { prescan, normalizeUrl } from "../lib/prescan";
+import { record, upsertLead, addSubmission, addEvent, setPrescan, type DbEnv } from "../lib/db";
 
-interface Env {
+interface Env extends DbEnv {
   RESEND_API_KEY?: string;
   CONTACT_TO?: string;
   CONTACT_FROM?: string;
@@ -19,9 +20,10 @@ const json = (body: unknown, status = 200) =>
 const clean = (v: FormDataEntryValue | null, max: number) => String(v ?? "").trim().slice(0, max);
 
 /** A second email with the pre-scan of the prospect's site, sent after the reply so the form never waits on it. */
-export async function sendPrescan(env: Env, site: string, who: string) {
+export async function sendPrescan(env: Env, site: string, who: string, leadId?: string) {
   try {
     const scan = await prescan(site);
+    if (leadId) await record(env, (db) => setPrescan(db, leadId, scan));
     await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "content-type": "application/json" },
@@ -68,6 +70,13 @@ export const onRequestPost = async ({ request, env, waitUntil }: { request: Requ
     }),
   });
   if (!res.ok) return json({ error: "That did not send. Please try again, or book a call above." }, 502);
-  if (site) waitUntil(sendPrescan(env, site, `${name} (${kind || "brief"})`));
+  let leadId: string | undefined;
+  await record(env, async (db) => {
+    const lead = await upsertLead(db, { email, name, website: site ?? "", kind, source: "contact", stage: "new" });
+    leadId = lead.id;
+    await addSubmission(db, lead.id, "contact", { name, email, kind, message, site }, `Looking for: ${kind}\n\n${message}`);
+    await addEvent(db, lead.id, "submission", "Sent a brief from the contact form");
+  });
+  if (site) waitUntil(sendPrescan(env, site, `${name} (${kind || "brief"})`, leadId));
   return json({ ok: true });
 };

@@ -1,0 +1,37 @@
+---
+// Admin pages: no rail, no footer, never indexed. Everything on the page is rendered by src/scripts/admin.ts from /api/admin/*.
+import "../styles/global.css";
+interface Props { title: string; page: string }
+const { title, page } = Astro.props;
+const nav = [["/admin/", "Pipeline"], ["/admin/leads/", "Leads"], ["/admin/submissions/", "Submissions"], ["/admin/templates/", "Templates"]];
+const path = Astro.url.pathname;
+---
+<!doctype html>
+<html lang="en" class="admin-html">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · Admin · Balian.dev</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#090b10" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script is:inline>document.documentElement.classList.add("js");</script>
+  </head>
+  <body class="admin" data-page={page}>
+    <header class="abar">
+      <a class="mark" href="/admin/"><i></i>Balian<span class="tld">.dev</span> <span class="amode">admin</span></a>
+      <nav class="anav" aria-label="Admin">
+        {nav.map(([href, label]) => <a href={href} aria-current={path === href || (href !== "/admin/" && path.startsWith(href)) ? "page" : undefined}>{label}</a>)}
+      </nav>
+      <div class="atools"><span id="admin-who" class="note"></span><button type="button" class="btn ghost small" id="admin-logout">Sign out</button></div>
+    </header>
+    <main id="main" class="amain">
+      <slot />
+      <div id="admin-status" class="note" role="status" aria-live="polite"></div>
+    </main>
+    <script>
+      import { initAdmin } from "../scripts/admin";
+      initAdmin();
+    </script>
+  </body>
+</html>

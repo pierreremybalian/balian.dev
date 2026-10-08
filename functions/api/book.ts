@@ -6,8 +6,10 @@ import { windowsToSlots, subtractBusy, overlaps } from "../lib/slots";
 import { accessToken, availability, busy, configured, gcal, type GoogleEnv } from "../lib/google";
 import { normalizeUrl } from "../lib/prescan";
 import { sendPrescan } from "./contact";
+import { record, upsertLead, addSubmission, addEvent } from "../lib/db";
 
-interface Env extends GoogleEnv {
+import type { DbEnv } from "../lib/db";
+interface Env extends GoogleEnv, DbEnv {
   RESEND_API_KEY?: string;
   CONTACT_TO?: string;
   CONTACT_FROM?: string;
@@ -88,7 +90,15 @@ export const onRequestPost = async ({ request, env, waitUntil }: { request: Requ
     }
 
     const siteUrl = normalizeUrl(site);
-    if (siteUrl && env.RESEND_API_KEY && env.CONTACT_TO && env.CONTACT_FROM) waitUntil(sendPrescan(env, siteUrl, `${name}${company ? ` (${company})` : ""}, call booked`));
+    let leadId: string | undefined;
+    await record(env, async (db) => {
+      const lead = await upsertLead(db, { email, name, company, phone, website: siteUrl ?? "", kind, source: "booking", stage: "call_booked" });
+      leadId = lead.id;
+      const when = new Intl.DateTimeFormat("en-US", { dateStyle: "full", timeStyle: "short", timeZone: booking.timeZone }).format(start);
+      await addSubmission(db, lead.id, "booking", { start: new Date(start).toISOString(), end: new Date(end).toISOString(), meet: ev.body.hangoutLink, event: ev.body.htmlLink, name, email, company, phone, kind, note, site: siteUrl }, `Call booked for ${when}\nMeet: ${ev.body.hangoutLink ?? ""}${details ? `\n${details}` : ""}${note ? `\n\n${note}` : ""}`);
+      await addEvent(db, lead.id, "booking", `Booked a call for ${when}`);
+    });
+    if (siteUrl && env.RESEND_API_KEY && env.CONTACT_TO && env.CONTACT_FROM) waitUntil(sendPrescan(env, siteUrl, `${name}${company ? ` (${company})` : ""}, call booked`, leadId));
     return json({ ok: true, start: new Date(start).toISOString(), end: new Date(end).toISOString(), meet: ev.body.hangoutLink ?? null });
   } catch (e) {
     console.error("book:", (e as Error).message);

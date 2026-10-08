@@ -1,0 +1,23 @@
+---
+import "../../styles/global.css";
+---
+<!doctype html>
+<html lang="en" class="admin-html">
+  <head>
+    <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign in · Admin · Balian.dev</title><meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="admin">
+    <main class="amain alogin">
+      <a class="mark" href="/"><i></i>Balian<span class="tld">.dev</span></a>
+      <h1>Admin</h1>
+      <p class="note">Sign in with the GitHub account on the admin list.</p>
+      <div class="btns"><a class="btn" href="/api/admin/login">Sign in with GitHub</a><a class="lnk" id="dev-login" href="/api/admin/dev-login" hidden>Local dev sign-in</a></div>
+    </main>
+    <script>
+      const d = document.getElementById("dev-login");
+      if (d && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) d.hidden = false;
+    </script>
+  </body>
+</html>

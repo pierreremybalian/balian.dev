@@ -1,3 +1,10 @@
 name = "balian-dev"
 compatibility_date = "2025-10-01"
 pages_build_output_dir = "./dist"
+
+# Admin area storage (leads, submissions, documents, invoices). Migrations live in db/migrations.
+[[d1_databases]]
+binding = "DB"
+database_name = "balian-dev"
+database_id = "8885d697-ad3f-4e13-bdba-7a27eca77e8e"
+migrations_dir = "db/migrations"

@@ -2,8 +2,9 @@
 // Formats the questionnaire in step order and emails it to Pierre through Resend, with a copy to the person who filled it in.
 import { intakeSteps, matches } from "../../src/data/intake";
 import { prescan, normalizeUrl } from "../lib/prescan";
+import { record, upsertLead, addSubmission, addEvent, type DbEnv } from "../lib/db";
 
-interface Env {
+interface Env extends DbEnv {
   RESEND_API_KEY?: string;
   CONTACT_TO?: string;
   CONTACT_FROM?: string;
@@ -35,8 +36,10 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
   // Pre-scan of their site goes at the head of the email, then the answers in the order the questions were asked.
   const lines: string[] = [`Project questionnaire from ${name} (${company})`, `Email: ${email}`, ""];
   const website = normalizeUrl(clean(a.website, 200)[0] ?? "");
+  let scanResult: unknown = null;
   if (website) {
     const scan = await Promise.race([prescan(website), new Promise<null>((r) => setTimeout(() => r(null), 12_000))]);
+    scanResult = scan;
     lines.push(`== PRE-SCAN OF ${new URL(website).hostname.toUpperCase()} ==`, "");
     lines.push(...(scan ? scan.summary.map((l) => `  ${l}`) : ["  (scan timed out)"]), "");
   }
@@ -54,6 +57,11 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
   }
   lines.push(`${answered} of ${total} answered.`);
   const text = lines.join("\n");
+  await record(env, async (db) => {
+    const lead = await upsertLead(db, { email, name, company, website: website ?? "", phone: clean(a.phone, 40)[0] ?? "", source: "intake", stage: "questionnaire", prescan_json: scanResult ? JSON.stringify(scanResult) : undefined });
+    await addSubmission(db, lead.id, "intake", { answers: a, prescan: scanResult }, text);
+    await addEvent(db, lead.id, "submission", `Completed the questionnaire (${answered} of ${total})`);
+  });
 
   const send = (to: string, subject: string, body: string, replyTo?: string) =>
     fetch("https://api.resend.com/emails", {

@@ -84,3 +84,14 @@ Calm, precise, first person singular. No figures, client names or tools from pas
   - `node scripts/google-auth.mjs` opens the Google consent screen and stores the refresh token.
   - `node scripts/booking-setup.mjs --dev-vars --secrets` finds or creates the availability calendar, writes `.dev.vars` and pushes the Pages secrets. `--open 2026-10-09T10:00 2026-10-09T12:00` adds a window (Central time); `--list` shows windows and booked calls.
 - The Calendar API must be enabled on the Google Cloud project that owns the OAuth client.
+
+## Admin
+
+`/admin/` is a private area behind GitHub sign-in (only the GitHub ids in `ADMIN_GITHUB_IDS`). It shows the pipeline (leads by stage), every submission, each lead's pre-scan, timeline, emails, documents and invoices.
+
+- **Data** lives in the D1 database `balian-dev` (binding `DB`). Migrations are in `db/migrations`; apply with `npm run db:migrate` (remote) or `npm run db:migrate:local`.
+- **Leads** are created automatically by the contact form, the booking form and the questionnaire, matched on email. Stages move forward on their own (new, contacted, call booked, questionnaire in, proposal sent, agreed) and can be set by hand.
+- **Emails** are the templates in `src/data/emailTemplates.ts`, filled from the lead, editable before sending through Resend; each send is logged on the lead.
+- **Documents** (proposal, agreement, statement of work) come from `src/data/docTemplates.ts`. Create a draft from a lead, edit the Markdown, press Send: the client gets a private link (`/d/?t=...`), the first view and the acceptance (name, time, IP) are recorded, both parties are emailed the accepted text, and the lead moves to Agreed.
+- **Invoices** are simple records (number `BD-YYYY-NNN`, amount, due date, link, status); overdue is computed.
+- **Sign-in**: a GitHub OAuth App with callback `https://balian.dev/api/admin/callback`. Secrets `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `ADMIN_SESSION_SECRET`, `ADMIN_GITHUB_IDS`, pushed with `node scripts/admin-setup.mjs --secrets` after pasting the GitHub pair into `.dev.vars`. Locally, `ADMIN_DEV_LOGIN=1` in `.dev.vars` enables `/api/admin/dev-login` on localhost only.

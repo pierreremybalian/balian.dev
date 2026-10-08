@@ -1,0 +1,7 @@
+---
+import Admin from "../../layouts/Admin.astro";
+---
+<Admin title="Leads" page="leads">
+  <div class="ahead"><h1>Leads</h1><form class="arow" id="lead-filter"><input name="q" type="search" placeholder="search name, email, company" /><select name="stage"><option value="">All stages</option></select></form></div>
+  <div id="leads" class="alist"><p class="note">Loading...</p></div>
+</Admin>
