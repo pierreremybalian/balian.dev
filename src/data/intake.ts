@@ -10,7 +10,16 @@ export interface Question {
   options?: string[];
   required?: boolean;
   placeholder?: string;
+  /** Only shown when the answer to question `q` includes any of these values. Hidden questions are skipped in validation and in the email. */
+  showIf?: { q: string; any: string[] };
 }
+
+export const matches = (answers: Record<string, unknown>, cond?: { q: string; any: string[] }) => {
+  if (!cond) return true;
+  const v = answers[cond.q];
+  const have = Array.isArray(v) ? v.map(String) : v ? [String(v)] : [];
+  return cond.any.some((x) => have.includes(x));
+};
 
 export interface Step {
   id: string;
@@ -31,12 +40,54 @@ export const intakeSteps: Step[] = [
       { id: "company", label: "Company", type: "text", required: true },
       { id: "website", label: "Current website, if there is one", type: "url", placeholder: "https://" },
       { id: "what_you_do", label: "What does the business do?", help: "A sentence or two, said the way you would say it to someone at a party.", type: "textarea", required: true },
+      { id: "business_type", label: "Which of these describe the business?", help: "Tick everything that applies. It decides which questions you see later.", type: "checks", required: true, options: ["We sell to other businesses", "We sell to consumers", "We sell online", "We make software", "We sell services or expertise", "We are a nonprofit or public body", "We work in healthcare"] },
+      { id: "project_type", label: "What brought you here?", help: "Tick everything that applies.", type: "checks", required: true, options: ["A new website", "A rebuild of the current site", "An online store", "Software, an app or a portal", "Connecting systems or automating work", "A letter, an audit or a questionnaire", "Something is broken", "Ongoing help or a technical lead", "Not sure yet"] },
       { id: "years", label: "How long has it been around?", type: "select", options: ["Under 2 years", "2 to 5 years", "5 to 15 years", "More than 15 years"] },
       { id: "team", label: "How many people work there?", type: "select", options: ["Just me", "2 to 10", "11 to 50", "51 to 200", "More than 200"] },
       { id: "reach", label: "Where are your customers?", type: "radio", options: ["Local or regional", "National", "International"] },
       { id: "revenue_model", label: "How does the business make money?", help: "One-time sales, repeat orders, contracts, subscriptions, retainers, referrals from partners. Be specific.", type: "textarea" },
       { id: "competitors", label: "Who do you lose deals to, and who do you win them from?", help: "Two or three names, and a line on why.", type: "textarea" },
       { id: "different", label: "When a customer picks you over them, what reason do they give?", type: "textarea" },
+    ],
+  },
+  {
+    id: "closer",
+    title: "A closer look",
+    intro: "Based on what you ticked. If a question does not apply, skip it.",
+    questions: [
+      // selling to businesses
+      { id: "b2b_buyers", label: "Who is involved in a purchase on the customer's side, and who signs?", help: "The person who finds you is rarely the person who pays.", type: "textarea", showIf: { q: "business_type", any: ["We sell to other businesses"] } },
+      { id: "b2b_needs", label: "Does the site need any of these?", type: "checks", options: ["Quote requests", "Account or dealer pricing", "A customer or dealer portal", "Spec sheets or downloads", "Distributor or location finder", "None of these"], showIf: { q: "business_type", any: ["We sell to other businesses"] } },
+      // selling to consumers
+      { id: "b2c_where", label: "Where do people buy from you?", type: "checks", options: ["Online", "In person", "Over the phone", "Through retailers or marketplaces"], showIf: { q: "business_type", any: ["We sell to consumers"] } },
+      { id: "b2c_reviews", label: "Where do your reviews live, and how are they?", type: "text", showIf: { q: "business_type", any: ["We sell to consumers"] } },
+      // online store
+      { id: "store_platform", label: "What does the store run on today?", type: "text", placeholder: "Shopify, WooCommerce, BigCommerce, Magento, something custom", showIf: { q: "business_type", any: ["We sell online"] } },
+      { id: "store_size", label: "Roughly how many products, and how many orders a month?", type: "text", showIf: { q: "business_type", any: ["We sell online"] } },
+      { id: "store_aov", label: "Average order value, and the margin on a typical order", type: "text", showIf: { q: "business_type", any: ["We sell online"] } },
+      { id: "store_flow", label: "After someone pays, where does the order go?", help: "Accounting, ERP, a warehouse, a fulfilment partner, a spreadsheet, a person.", type: "textarea", showIf: { q: "business_type", any: ["We sell online"] } },
+      { id: "store_pain", label: "What goes wrong most often with orders, shipping, tax or returns?", type: "textarea", showIf: { q: "business_type", any: ["We sell online"] } },
+      // software
+      { id: "saas_what", label: "What does the software do, and who uses it?", type: "textarea", showIf: { q: "business_type", any: ["We make software"] } },
+      { id: "saas_stage", label: "Where is it?", type: "radio", options: ["An idea", "A prototype", "Live with users", "Live with paying customers"], showIf: { q: "business_type", any: ["We make software"] } },
+      { id: "saas_stack", label: "What is it built with, who built it, and where does it run?", type: "textarea", showIf: { q: "business_type", any: ["We make software"] } },
+      { id: "saas_pricing", label: "How is it priced?", type: "text", placeholder: "Subscription, per seat, usage, one-off licence, free for now", showIf: { q: "business_type", any: ["We make software"] } },
+      { id: "saas_worry", label: "What is the biggest technical worry right now?", type: "textarea", showIf: { q: "business_type", any: ["We make software"] } },
+      // services
+      { id: "svc_pricing", label: "How is your work scoped and priced?", type: "text", placeholder: "Hourly, fixed project, retainer, a mix", showIf: { q: "business_type", any: ["We sell services or expertise"] } },
+      { id: "svc_intake", label: "How does a new client get started with you today, and should the site do any of that?", help: "Booking, an intake form, a quote request, a phone call.", type: "textarea", showIf: { q: "business_type", any: ["We sell services or expertise"] } },
+      { id: "svc_proof", label: "What proof can you show? Credentials, case studies, named clients, results.", type: "textarea", showIf: { q: "business_type", any: ["We sell services or expertise"] } },
+      // nonprofit
+      { id: "npo_needs", label: "Does the site need any of these?", type: "checks", options: ["Donations", "Volunteer sign-up", "Events or ticketing", "Membership", "Grant or impact reporting", "None of these"], showIf: { q: "business_type", any: ["We are a nonprofit or public body"] } },
+      // healthcare
+      { id: "hc_phi", label: "Does the website touch patient information anywhere?", help: "Appointment forms, a patient portal, intake forms, chat, anything someone types that is about their health.", type: "textarea", showIf: { q: "business_type", any: ["We work in healthcare"] } },
+      { id: "hc_tracking", label: "Do you know what tracking is on the site today?", type: "radio", options: ["Yes, and it has been reviewed for HIPAA", "Yes, but it has not been reviewed", "No idea"], showIf: { q: "business_type", any: ["We work in healthcare"] } },
+      // project types
+      { id: "letter", label: "What arrived, who sent it, and is there a deadline?", help: "An ADA or accessibility complaint, a cyber-insurance questionnaire, a privacy complaint, an audit finding.", type: "textarea", showIf: { q: "project_type", any: ["A letter, an audit or a questionnaire"] } },
+      { id: "broken", label: "What is broken, since when, and who last touched it?", type: "textarea", showIf: { q: "project_type", any: ["Something is broken"] } },
+      { id: "connect", label: "Which systems need to talk, and what should flow between them?", help: "For example: orders from the store into QuickBooks, leads from the site into HubSpot, inventory from the ERP onto the site.", type: "textarea", showIf: { q: "project_type", any: ["Connecting systems or automating work"] } },
+      { id: "ongoing", label: "What would you hand off first, and roughly how many hours a month do you have in mind?", type: "textarea", showIf: { q: "project_type", any: ["Ongoing help or a technical lead"] } },
+      { id: "software_need", label: "What should the software, app or portal do, and for whom?", type: "textarea", showIf: { q: "project_type", any: ["Software, an app or a portal"] } },
     ],
   },
   {

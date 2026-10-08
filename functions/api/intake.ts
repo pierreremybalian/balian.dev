@@ -1,6 +1,6 @@
 // Cloudflare Pages Function: POST /api/intake  { answers: { [questionId]: string | string[] }, fax?: honeypot }
 // Formats the questionnaire in step order and emails it to Pierre through Resend, with a copy to the person who filled it in.
-import { intakeSteps } from "../../src/data/intake";
+import { intakeSteps, matches } from "../../src/data/intake";
 
 interface Env {
   RESEND_API_KEY?: string;
@@ -35,8 +35,10 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
   const lines: string[] = [`Project questionnaire from ${name} (${company})`, `Email: ${email}`, ""];
   let answered = 0, total = 0;
   for (const step of intakeSteps) {
+    if (!step.questions.some((q) => matches(a, q.showIf))) continue;
     lines.push(`== ${step.title.toUpperCase()} ==`, "");
     for (const q of step.questions) {
+      if (!matches(a, q.showIf)) continue;
       total++;
       const vals = clean(a[q.id], 4000);
       if (vals.length) answered++;

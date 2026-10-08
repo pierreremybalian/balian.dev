@@ -28,21 +28,22 @@ const total = intakeSteps.length;
             {step.questions.map((q) => {
               const id = `q-${q.id}`;
               const req = q.required ? <span class="req" aria-hidden="true"> *</span> : null;
+              const cond = q.showIf ? JSON.stringify(q.showIf) : undefined;
               if (q.type === "textarea") return (
-                <div class="field"><label for={id}>{q.label}{req}</label>{q.help && <span class="help" id={`${id}-help`}>{q.help}</span>}<textarea id={id} name={q.id} required={q.required} aria-required={q.required ? "true" : undefined} aria-describedby={q.help ? `${id}-help` : undefined} style="min-height:110px" /></div>
+                <div class="field" data-showif={cond}><label for={id}>{q.label}{req}</label>{q.help && <span class="help" id={`${id}-help`}>{q.help}</span>}<textarea id={id} name={q.id} required={q.required} aria-required={q.required ? "true" : undefined} aria-describedby={q.help ? `${id}-help` : undefined} style="min-height:110px" /></div>
               );
               if (q.type === "select") return (
-                <div class="field"><label for={id}>{q.label}{req}</label>{q.help && <span class="help" id={`${id}-help`}>{q.help}</span>}
+                <div class="field" data-showif={cond}><label for={id}>{q.label}{req}</label>{q.help && <span class="help" id={`${id}-help`}>{q.help}</span>}
                   <select id={id} name={q.id} required={q.required} aria-describedby={q.help ? `${id}-help` : undefined}><option value="">Choose one</option>{q.options!.map((o) => <option>{o}</option>)}</select></div>
               );
               if (q.type === "checks" || q.type === "radio") return (
-                <fieldset class="field choices" data-required={q.required ? "true" : undefined}><legend>{q.label}{req}</legend>{q.help && <span class="help">{q.help}</span>}
+                <fieldset class="field choices" data-required={q.required ? "true" : undefined} data-showif={cond}><legend>{q.label}{req}</legend>{q.help && <span class="help">{q.help}</span>}
                   <div class="opts">{q.options!.map((o, k) => (
                     <label class="opt"><input type={q.type === "checks" ? "checkbox" : "radio"} name={q.id} value={o} id={`${id}-${k}`} /><span>{o}</span></label>
                   ))}</div></fieldset>
               );
               return (
-                <div class="field"><label for={id}>{q.label}{req}</label>{q.help && <span class="help" id={`${id}-help`}>{q.help}</span>}<input id={id} name={q.id} type={q.type === "url" ? "url" : q.type === "email" ? "email" : "text"} inputmode={q.type === "url" ? "url" : undefined} placeholder={q.placeholder} required={q.required} aria-required={q.required ? "true" : undefined} aria-describedby={q.help ? `${id}-help` : undefined} autocomplete={q.id === "email" ? "email" : q.id === "name" ? "name" : q.id === "company" ? "organization" : q.id === "website" ? "url" : "off"} /></div>
+                <div class="field" data-showif={cond}><label for={id}>{q.label}{req}</label>{q.help && <span class="help" id={`${id}-help`}>{q.help}</span>}<input id={id} name={q.id} type={q.type === "url" ? "url" : q.type === "email" ? "email" : "text"} inputmode={q.type === "url" ? "url" : undefined} placeholder={q.placeholder} required={q.required} aria-required={q.required ? "true" : undefined} aria-describedby={q.help ? `${id}-help` : undefined} autocomplete={q.id === "email" ? "email" : q.id === "name" ? "name" : q.id === "company" ? "organization" : q.id === "website" ? "url" : "off"} /></div>
               );
             })}
           </fieldset>

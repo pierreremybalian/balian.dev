@@ -14,6 +14,20 @@ export function initIntake() {
   if (!form || !steps.length || !back || !next || !send || !bar || !where || !status || !done) return;
 
   let i = 0;
+  /* conditional questions: hidden (and disabled, so they neither validate nor post) unless their condition holds */
+  const conds = Array.from(form.querySelectorAll<HTMLElement>("[data-showif]"));
+  const answered = (q: string): string[] => Array.from(form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(`[name="${q}"]`))
+    .filter((el) => !(el instanceof HTMLInputElement && (el.type === "checkbox" || el.type === "radio")) || el.checked)
+    .map((el) => el.value).filter(Boolean);
+  function applyConds() {
+    for (const el of conds) {
+      const c = JSON.parse(el.dataset.showif!) as { q: string; any: string[] };
+      const on = c.any.some((x) => answered(c.q).includes(x));
+      el.hidden = !on;
+      el.querySelectorAll<HTMLInputElement>("input, select, textarea").forEach((f) => { f.disabled = !on; });
+    }
+  }
+  const stepHasQuestions = (n: number) => Array.from(steps[n].querySelectorAll<HTMLElement>(".field")).some((f) => !f.hidden);
   // ?step=3 opens that step directly and ?all=1 shows every step at once, so the questionnaire can be reviewed without filling it in.
   const qs = new URLSearchParams(location.search);
   const showAll = qs.get("all") === "1";
@@ -46,7 +60,8 @@ export function initIntake() {
     }
   } catch { /* ignore a bad draft */ }
   form.addEventListener("input", save);
-  form.addEventListener("change", save);
+  form.addEventListener("change", () => { applyConds(); save(); });
+  applyConds();
   if (Number.isInteger(fromUrl) && fromUrl >= 1 && fromUrl <= steps.length) i = fromUrl - 1;
 
   function show(n: number, focus = true) {
@@ -78,11 +93,13 @@ export function initIntake() {
     const step = steps[n];
     let first: HTMLElement | null = null;
     step.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>("[required]").forEach((f) => {
+      if (f.disabled) return;
       const ok = f.checkValidity() && f.value.trim() !== "";
       f.setAttribute("aria-invalid", String(!ok));
       if (!ok && !first) first = f;
     });
     step.querySelectorAll<HTMLFieldSetElement>(".choices[data-required]").forEach((g) => {
+      if (g.hidden) return;
       const ok = g.querySelector("input:checked") !== null;
       g.classList.toggle("bad", !ok);
       if (!ok && !first) first = g.querySelector("input");
@@ -95,12 +112,13 @@ export function initIntake() {
     return true;
   }
 
-  back.addEventListener("click", () => show(i - 1));
-  next.addEventListener("click", () => { if (valid(i)) show(i + 1); });
+  const nearest = (from: number, dir: 1 | -1) => { let n = from + dir; while (n > 0 && n < steps.length - 1 && !stepHasQuestions(n)) n += dir; return Math.max(0, Math.min(steps.length - 1, n)); };
+  back.addEventListener("click", () => show(nearest(i, -1)));
+  next.addEventListener("click", () => { if (valid(i)) show(nearest(i, 1)); });
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    for (let n = 0; n < steps.length; n++) if (!valid(n)) { show(n); return; }
+    for (let n = 0; n < steps.length; n++) if (stepHasQuestions(n) && !valid(n)) { show(n); return; }
     send.disabled = true;
     status.textContent = "Sending...";
     try {
