@@ -14,6 +14,10 @@ export function initIntake() {
   if (!form || !steps.length || !back || !next || !send || !bar || !where || !status || !done) return;
 
   let i = 0;
+  // ?step=3 opens that step directly and ?all=1 shows every step at once, so the questionnaire can be reviewed without filling it in.
+  const qs = new URLSearchParams(location.search);
+  const showAll = qs.get("all") === "1";
+  const fromUrl = Number(qs.get("step"));
 
   /* draft: restore, then save on every change */
   const read = (): Record<string, string | string[]> => {
@@ -43,9 +47,17 @@ export function initIntake() {
   } catch { /* ignore a bad draft */ }
   form.addEventListener("input", save);
   form.addEventListener("change", save);
+  if (Number.isInteger(fromUrl) && fromUrl >= 1 && fromUrl <= steps.length) i = fromUrl - 1;
 
   function show(n: number, focus = true) {
     i = n;
+    if (showAll) {
+      steps.forEach((s) => { s.hidden = false; });
+      back.hidden = true; next.hidden = true; send.hidden = false;
+      bar.style.width = "100%";
+      where.textContent = `All ${steps.length} steps`;
+      return;
+    }
     steps.forEach((s, k) => { s.hidden = k !== n; });
     back.hidden = n === 0;
     next.hidden = n === steps.length - 1;
@@ -53,6 +65,7 @@ export function initIntake() {
     bar.style.width = `${((n + 1) / steps.length) * 100}%`;
     where.textContent = `Step ${n + 1} of ${steps.length}`;
     status.textContent = "";
+    try { history.replaceState(null, "", n === 0 ? location.pathname : `?step=${n + 1}`); } catch { /* ignore */ }
     save();
     if (focus) {
       const h = steps[n].querySelector<HTMLElement>("h2");
