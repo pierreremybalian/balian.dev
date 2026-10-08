@@ -5,6 +5,7 @@ import { booking } from "../lib/config";
 import { windowsToSlots, subtractBusy, overlaps } from "../lib/slots";
 import { accessToken, availability, busy, configured, gcal, type GoogleEnv } from "../lib/google";
 import { normalizeUrl } from "../lib/prescan";
+import { sendMail } from "../lib/mail";
 import { sendPrescan } from "./contact";
 import { record, upsertLead, addSubmission, addEvent } from "../lib/db";
 
@@ -76,17 +77,15 @@ export const onRequestPost = async ({ request, env, waitUntil }: { request: Requ
     // A note to Pierre. The visitor's invite comes from Google, so a failure here does not fail the booking.
     if (env.RESEND_API_KEY && env.CONTACT_TO && env.CONTACT_FROM) {
       const when = new Intl.DateTimeFormat("en-US", { dateStyle: "full", timeStyle: "short", timeZone: booking.timeZone }).format(start);
-      await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "content-type": "application/json" },
-        body: JSON.stringify({
-          from: env.CONTACT_FROM,
-          to: [env.CONTACT_TO],
-          reply_to: `${name} <${email}>`,
-          subject: `Call booked: ${name}${company ? ` (${company})` : ""}, ${when}`,
-          text: `${name} booked a 30-minute call.\n\nWhen: ${when} (${booking.timeZone})\nEmail: ${email}${details ? `\n${details}` : ""}\nMeet: ${ev.body.hangoutLink ?? "see calendar"}\nEvent: ${ev.body.htmlLink ?? ""}\n\n${note || "(no note)"}`,
-        }),
+      await sendMail(env, {
+        to: env.CONTACT_TO, replyTo: `${name} <${email}>`, subject: `Call booked: ${name}${company ? ` (${company})` : ""}, ${when}`, title: `${name} booked a call`,
+        text: `**When:** ${when} (${booking.timeZone})\n**Email:** ${email}${details ? `\n${details.split("\n").map((l) => "**" + l.replace(": ", ":** ")).join("\n")}` : ""}\n**Meet:** ${ev.body.hangoutLink ?? "see calendar"}\n**Event:** ${ev.body.htmlLink ?? ""}\n\n${note || "(no note)"}`,
       }).catch((e) => console.error("book: resend", (e as Error).message));
+      const first = name.split(/\s+/)[0], host = normalizeUrl(site) ? new URL(normalizeUrl(site)!).hostname : "";
+      waitUntil(sendMail(env, {
+        to: email, replyTo: env.CONTACT_TO, subject: `Our call on ${when}`, title: `Booked, ${first}.`, preheader: `${when} Central, on Google Meet.`,
+        text: `We are on for **${when}** (Central time). The calendar invite from Google has the Meet link, and here it is again: ${ev.body.hangoutLink ?? "in the invite"}\n\nBring whatever is on your mind about the business as well as the website. The useful projects usually come from the problems behind it.\n\nIf you have twenty minutes before we talk, this questionnaire gives me a head start: https://balian.dev/intake/${host ? `?site=${encodeURIComponent(host)}` : ""}\n\nNeed to move it? Reply to this email.\n\nPierre`,
+      }).catch(() => {}));
     }
 
     const siteUrl = normalizeUrl(site);

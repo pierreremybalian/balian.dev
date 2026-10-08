@@ -3,6 +3,7 @@
 import { intakeSteps, matches } from "../../src/data/intake";
 import { prescan, normalizeUrl } from "../lib/prescan";
 import { record, upsertLead, addSubmission, addEvent, type DbEnv } from "../lib/db";
+import { sendMail } from "../lib/mail";
 
 interface Env extends DbEnv {
   RESEND_API_KEY?: string;
@@ -63,16 +64,12 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
     await addEvent(db, lead.id, "submission", `Completed the questionnaire (${answered} of ${total})`);
   });
 
-  const send = (to: string, subject: string, body: string, replyTo?: string) =>
-    fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "content-type": "application/json" },
-      body: JSON.stringify({ from: env.CONTACT_FROM, to: [to], ...(replyTo ? { reply_to: replyTo } : {}), subject, text }),
-    });
-
-  const r = await send(env.CONTACT_TO, `Questionnaire: ${company}, ${name} (${answered}/${total})`, text, `${name} <${email}>`);
+  // Section headings become Markdown headings in the branded layout; the plain-text part keeps the == MARKERS ==.
+  const md = text.replace(/^== (.+) ==$/gm, (_, h: string) => `## ${h[0] + h.slice(1).toLowerCase()}`);
+  const r = await sendMail(env, { to: env.CONTACT_TO, replyTo: `${name} <${email}>`, subject: `Questionnaire: ${company}, ${name} (${answered}/${total})`, title: `Questionnaire from ${name}, ${company}`, text: md });
   if (!r.ok) return json({ error: "That did not send. Your answers are still here. Please try again." }, 502);
   // The copy to the client is a courtesy; its failure does not fail the submission.
-  await send(email, `Your answers for Balian.dev: ${company}`, `Thanks, ${name}. Here is a copy of what you sent me. I will read it properly and come back with questions and a time to talk.\n\n${text}`).catch(() => {});
+  const first = name.split(/\s+/)[0];
+  await sendMail(env, { to: email, replyTo: env.CONTACT_TO, subject: `Your answers for Balian.dev: ${company}`, title: `Thanks, ${first}.`, preheader: "A copy of what you sent, for your files.", text: `Here is a copy of what you sent me. I will read it properly, do some digging, and come back with questions and a time to talk.\n\nPierre\n\n---\n\n${md}` }).catch(() => {});
   return json({ ok: true });
 };

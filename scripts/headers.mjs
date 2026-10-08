@@ -24,6 +24,7 @@ const csp = [
   "font-src 'self'",
   "media-src 'self'",
   "connect-src 'self' https://cloudflareinsights.com",
+  "frame-src 'self'", // the admin's email preview is a srcdoc frame of our own HTML
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",

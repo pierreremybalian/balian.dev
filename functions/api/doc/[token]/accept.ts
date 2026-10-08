@@ -1,6 +1,7 @@
 // POST /api/doc/:token/accept { name }  the client accepts the document. Records who, when, from where; emails both sides.
 import { json } from "../../../lib/session";
 import { addEvent, now, type DbEnv, type Lead } from "../../../lib/db";
+import { sendMail } from "../../../lib/mail";
 
 interface Env extends DbEnv { RESEND_API_KEY?: string; CONTACT_TO?: string; CONTACT_FROM?: string }
 interface Doc { id: string; lead_id: string; type: string; title: string; body_md: string; status: string; accepted_at: string | null }
@@ -22,10 +23,9 @@ export const onRequestPost = async ({ request, env, params }: { request: Request
   }
   if (env.RESEND_API_KEY && env.CONTACT_FROM && env.CONTACT_TO && lead) {
     const record = `Accepted by ${name} on ${new Intl.DateTimeFormat("en-US", { dateStyle: "long", timeStyle: "short", timeZone: "America/Chicago" }).format(new Date(t))} (Central)${ip ? ` from ${ip}` : ""}.`;
-    const text = `${doc.title}\n\n${record}\n\n${"-".repeat(60)}\n\n${doc.body_md}`;
-    await fetch("https://api.resend.com/emails", {
-      method: "POST", headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "content-type": "application/json" },
-      body: JSON.stringify({ from: env.CONTACT_FROM, to: [lead.email], bcc: [env.CONTACT_TO], reply_to: env.CONTACT_TO, subject: `Accepted: ${doc.title}`, text: `Hi ${name},\n\nThank you. Here is the document you accepted, with the acceptance record, for your files.\n\n${text}` }),
+    await sendMail(env, {
+      to: lead.email, bcc: env.CONTACT_TO, replyTo: env.CONTACT_TO, subject: `Accepted: ${doc.title}`, title: `Accepted: ${doc.title}`, preheader: record,
+      text: `Hi ${name},\n\nThank you. Here is the document you accepted, with the acceptance record, for your files.\n\n**${record}**\n\n---\n\n${doc.body_md.replace(/^#\s+[^\n]*\n+/, "")}`,
     }).catch((e) => console.error("accept email:", (e as Error).message));
   }
   return json({ ok: true, accepted_at: t, accepted_name: name });

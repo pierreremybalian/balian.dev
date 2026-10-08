@@ -25,6 +25,13 @@ const api = async <T = unknown>(path: string, init: RequestInit = {}): Promise<T
 const when = (iso?: string | null) => (iso ? new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(iso)) : "");
 const money = (cents: number) => `$${(cents / 100).toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
 const pill = (text: string, kind = "") => h("span", { class: "pill " + kind }, text);
+/** Render the email exactly as the recipient sees it, inside a sandboxed frame built from our own HTML. */
+async function previewInto(box: HTMLElement, subject: string, body: string) {
+  const r = await api<{ html: string }>("/api/admin/preview", { method: "POST", body: JSON.stringify({ subject, body }) });
+  const frame = h("iframe", { class: "mailframe", title: "Email preview", sandbox: "" }) as HTMLIFrameElement;
+  box.replaceChildren(frame);
+  frame.srcdoc = r.html;
+}
 
 interface Lead { id: string; created_at: string; updated_at: string; name: string; email: string; company: string; phone: string; website: string; kind: string; source: string; stage: string; notes: string; prescan?: Record<string, unknown> | null }
 interface Detail { lead: Lead; submissions: { id: string; created_at: string; type: string; summary_text: string; payload_json: string }[]; events: { created_at: string; type: string; detail: string }[]; emails: { created_at: string; to_email: string; subject: string; body: string; template: string }[]; documents: { id: string; type: string; title: string; status: string; token: string; sent_at?: string; viewed_at?: string; accepted_at?: string; accepted_name?: string }[]; invoices: { id: string; number: string; amount_cents: number; due_date?: string; status: string; link: string; notes: string; paid_at?: string }[]; stages: string[]; stageLabel: Record<string, string> }
@@ -81,7 +88,13 @@ async function templates() {
   const t = await api<Templates>("/api/admin/templates");
   box.replaceChildren(
     h("h2", {}, "Emails"), h("p", { class: "note" }, "Placeholders: " + t.placeholders.map((p) => `{{${p}}}`).join(" ")),
-    ...t.email.map((e) => h("details", { class: "tpl" }, h("summary", {}, h("b", {}, e.name), h("span", { class: "note" }, " " + e.when)), h("p", {}, h("b", {}, "Subject: "), e.subject), h("pre", {}, e.body))),
+    ...t.email.map((e) => {
+      const sample: Record<string, string> = { name: "Ada Lovelace", first: "Ada", company: "Acme Widgets", website: "https://acme.example", slot: "Thursday, October 15 at 2:00 PM", meet: "https://meet.google.com/abc-defg-hij", doc_link: "https://balian.dev/d/?t=example", doc_title: "Proposal for Acme Widgets", invoice_number: "BD-2026-004", amount: "$9,600.00", due: "November 1, 2026", questionnaire_link: "https://balian.dev/intake/?site=acme.example" };
+      const f = (s: string) => s.replace(/\{\{(\w+)\}\}/g, (_, k) => sample[k] ?? `{{${k}}}`);
+      const pane = h("div", { class: "previewpane" });
+      const d = h("details", { class: "tpl", ontoggle: () => { if ((d as HTMLDetailsElement).open && !pane.childElementCount) previewInto(pane, f(e.subject), f(e.body)); } }, h("summary", {}, h("b", {}, e.name), h("span", { class: "note" }, " " + e.when)), h("p", {}, h("b", {}, "Subject: "), e.subject), h("pre", {}, e.body), h("p", { class: "note" }, "Preview with sample values:"), pane);
+      return d;
+    }),
     h("h2", {}, "Documents"),
     ...t.documents.map((d) => h("details", { class: "tpl" }, h("summary", {}, h("b", {}, d.name), h("span", { class: "note" }, " asks for: " + d.fields.map((f) => f.label).join("; "))), h("pre", {}, d.body))),
   );
@@ -125,7 +138,9 @@ async function lead() {
     const apply = (tplId: string, extra: Record<string, string> = {}) => { const e = t.email.find((x) => x.id === tplId); if (!e) return; sel.value = tplId; subj.value = fillT(e.subject, extra); body.value = fillT(e.body, extra); };
     sel.addEventListener("change", () => apply(sel.value));
     const send = h("button", { class: "btn small", type: "button", onclick: async () => { try { say("Sending..."); await api("/api/admin/email", { method: "POST", body: JSON.stringify({ lead_id: id, template: sel.value, to: to.value, subject: subj.value, body: body.value }) }); say("Sent."); reload(); } catch (err) { say((err as Error).message); } } }, "Send");
-    const el = h("section", { class: "panel" }, h("h2", {}, "Send an email"), h("div", { class: "arow" }, sel, to), subj, body, h("div", { class: "arow" }, send, h("span", { class: "note" }, "Goes out from the site's address with you in reply-to and bcc.")));
+    const pane = h("div", { class: "previewpane", hidden: true });
+    const preview = h("button", { class: "btn ghost small", type: "button", onclick: async () => { pane.hidden = false; await previewInto(pane, subj.value, body.value); } }, "Preview");
+    const el = h("section", { class: "panel" }, h("h2", {}, "Send an email"), h("div", { class: "arow" }, sel, to), subj, body, h("div", { class: "arow" }, send, preview, h("span", { class: "note" }, "Goes out from the site's address with you in reply-to and bcc. **bold**, lists and links render in the branded layout.")), pane);
     return { el, apply };
   })();
 
