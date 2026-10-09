@@ -113,6 +113,11 @@ export const seo: Record<string, Seo> = {
     description: "Companies spend fortunes bending new software to fit old processes. Why it happens, what it costs, and the right order: map, redesign, then pick the tool.",
     keyword: "old processes",
   },
+  "what-happens-when-you-submit-a-form": {
+    title: "Form Submissions: What Should Happen Next",
+    description: "Form submissions should do more than send an email. What to capture (UTM, GTM, referrer, consent), where the lead should land, and what to keep out.",
+    keyword: "form submissions",
+  },
   "dashboard-sprawl": {
     title: "Dashboard Sprawl: The Cost of Too Many Trackers",
     description: "Dashboard sprawl: every mistake spawns a tracker, the trackers live in spreadsheets, and the busywork costs six figures a year. Replace them with one screen.",
