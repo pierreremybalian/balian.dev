@@ -623,3 +623,10 @@ html:not(.js) .job + .job { margin-top: 64px; padding-top: 48px; border-top: 1px
 .steps .yg span { font: 500 11px var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--mut); margin-right: 8px; }
 .job .related { margin-top: 44px; }
 @media (max-width: 1000px) { .steps li { grid-template-columns: 32px minmax(0, 1fr); gap: 12px; } }
+/* blocks that belong to one job tab: separated by a hairline, no outer .in so they sit on the panel's grid */
+.job .sub { margin-top: 80px; padding-top: 80px; border-top: 1px solid var(--line); }
+.job .sub.prose { padding-bottom: 0; border-bottom: 0; }
+.job .sub.prose h3 { font-size: clamp(1.5rem, 2.6vw, 2.2rem); letter-spacing: -0.035em; font-weight: 800; line-height: 1.1; }
+.job .sub .label + .page-h2 { margin-top: 20px; }
+.job .pcell h4 { font: 700 1.15rem var(--display); letter-spacing: -0.02em; margin: 0; }
+.job .sub.fgrid { padding-bottom: 0; }

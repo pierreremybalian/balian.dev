@@ -1,10 +1,11 @@
 ---
+// A list of questions. On its own it is a page section; with `bare` it renders inside something else (a tab panel) and uses an h3.
 import type { Faq } from "../data/faq";
-interface Props { items: Faq[]; label?: string }
-const { items, label = "Questions" } = Astro.props;
+interface Props { items: Faq[]; label?: string; bare?: boolean }
+const { items, label = "Questions", bare = false } = Astro.props;
 ---
-<section class="sec" id="faq">
-  <div class="in fgrid">
+{bare ? (
+  <div class="fgrid sub">
     <div class="label">{label}</div>
     <div>
       {items.map((f) => (
@@ -15,4 +16,18 @@ const { items, label = "Questions" } = Astro.props;
       ))}
     </div>
   </div>
-</section>
+) : (
+  <section class="sec" id="faq">
+    <div class="in fgrid">
+      <div class="label">{label}</div>
+      <div>
+        {items.map((f) => (
+          <details>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+)}

@@ -26,7 +26,7 @@ const tabs = [{ id: "new-site", tab: "Build us a new site" }, ...playbooks.map((
 <Base
   title={seo.process.title}
   description={seo.process.description}
-  schema={[faqPage(faq), breadcrumbs([{ name: "Home", path: "/" }, { name: "Process", path: "/process/" }])]}
+  schema={[faqPage([...faq, ...playbooks.flatMap((p) => p.faq)]), breadcrumbs([{ name: "Home", path: "/" }, { name: "Process", path: "/process/" }])]}
 >
   <section class="phero">
     <div class="in">
@@ -50,6 +50,26 @@ const tabs = [{ id: "new-site", tab: "Build us a new site" }, ...playbooks.map((
       <div class="job on" role="tabpanel" id="job-new-site" aria-labelledby="tab-new-site">
         <p class="job-lede">The full sequence, with {gates} approval gates. Nothing is built before you have seen it designed, and nothing goes live before you have signed it off.</p>
         <Timeline detailed />
+
+        <div class="sub">
+          <span class="label">Design before build</span>
+          <h3 class="page-h2">Why the design stages come first.</h3>
+          <div class="pgrid" style="margin-top:48px">
+            <div class="pcell"><h4>Three real choices</h4><p>The styleframes use your actual content and differ in mood, type and layout. You react to something concrete instead of a mood board.</p></div>
+            <div class="pcell"><h4>A system and its blocks</h4><p>I design the system and the blocks pages are built from, then let the build produce the pages. Mocking up every page is where projects drown in preference.</p></div>
+            <div class="pcell"><h4>Cheap to change, then expensive</h4><p>Changing a design is quick. Changing a built site is not. The gates put the decisions where changes cost least.</p></div>
+          </div>
+        </div>
+
+        <div class="sub prose">
+          <h3>You will never be handed a blank page.</h3>
+          <div class="body">
+            <p>Most websites stall on the words. Copywriting is expensive, so the job goes to whoever on your team seems to have time. That person turns out not to have the time, has never written a website, was not in the room when the goals were set, and does not know the block system the pages are built from. Three weeks later I get a Word document and a question about how to center a section.</p>
+            <p>So I write it. I ran discovery, I know what the site is for, and AI drafts faster than anyone types. You give me an hour on a recorded call and whatever you already have: brochures, decks, the old site, sales emails, reviews. I turn that into every page, fitted to the blocks, and you correct facts on the staging site. If you have a writer you trust, they work inside the page briefs and I edit for fit.</p>
+          </div>
+        </div>
+
+        <Faq items={faq} bare />
       </div>
 
       {playbooks.map((p) => (
@@ -70,6 +90,7 @@ const tabs = [{ id: "new-site", tab: "Build us a new site" }, ...playbooks.map((
             ))}
           </ol>
           <div class="related">{p.related.map((r) => <a href={r.href}>{r.label}</a>)}</div>
+          <Faq items={p.faq} bare />
         </div>
       ))}
     </div>
@@ -109,28 +130,5 @@ const tabs = [{ id: "new-site", tab: "Build us a new site" }, ...playbooks.map((
     fromHash();
   </script>
 
-  <section class="sec">
-    <div class="in">
-      <span class="label">Design before build</span>
-      <h2>Why the design stages come first.</h2>
-      <div class="pgrid rv" style="margin-top:48px">
-        <div class="pcell"><h3>Three real choices</h3><p>The styleframes use your actual content and differ in mood, type and layout. You react to something concrete instead of a mood board.</p></div>
-        <div class="pcell"><h3>A system and its blocks</h3><p>I design the system and the blocks pages are built from, then let the build produce the pages. Mocking up every page is where projects drown in preference.</p></div>
-        <div class="pcell"><h3>Cheap to change, then expensive</h3><p>Changing a design is quick. Changing a built site is not. The gates put the decisions where changes cost least.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <div class="in">
-    <section class="prose">
-      <h2>You will never be handed a blank page.</h2>
-      <div class="body rv">
-        <p>Most websites stall on the words. Copywriting is expensive, so the job goes to whoever on your team seems to have time. That person turns out not to have the time, has never written a website, was not in the room when the goals were set, and does not know the block system the pages are built from. Three weeks later I get a Word document and a question about how to center a section.</p>
-        <p>So I write it. I ran discovery, I know what the site is for, and AI drafts faster than anyone types. You give me an hour on a recorded call and whatever you already have: brochures, decks, the old site, sales emails, reviews. I turn that into every page, fitted to the blocks, and you correct facts on the staging site. If you have a writer you trust, they work inside the page briefs and I edit for fit.</p>
-      </div>
-    </section>
-  </div>
-
-  <Faq items={faq} />
   <CtaBand heading="Ready to start with a call?" />
 </Base>

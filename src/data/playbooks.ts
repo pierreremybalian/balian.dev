@@ -16,6 +16,7 @@ export interface Playbook {
   pace: string; // how fast it usually moves, stated without invented numbers
   steps: Step[];
   related: { label: string; href: string }[];
+  faq: { q: string; a: string }[];
 }
 
 export const playbooks: Playbook[] = [
@@ -38,6 +39,11 @@ export const playbooks: Playbook[] = [
       { label: "Websites and CMS", href: "/services/websites-and-cms/" },
       { label: "Web apps and SaaS", href: "/services/web-app-saas-development/" },
     ],
+    faq: [
+      { q: "Can you work on a site someone else built?", a: "Yes, and most of this work is. I read the code first and tell you what I found before quoting, so you know whether the feature is a day or a month before anyone commits." },
+      { q: "What if the codebase is a mess?", a: "I say so, with specifics, and give you two prices: the feature on top of what is there, and the cleanup that would make the next feature cheaper. You choose." },
+      { q: "Do I get the same gates as a new site?", a: "The ones that matter: you approve the scope, the design if it has one, and the staging build before release. The rest compress because the site already exists." },
+    ],
   },
   {
     id: "cyber-insurance",
@@ -56,6 +62,11 @@ export const playbooks: Playbook[] = [
     related: [
       { label: "Compliance and remediation", href: "/services/compliance-and-remediation/" },
       { label: "Technology consulting", href: "/services/technology-consulting/" },
+    ],
+    faq: [
+      { q: "Can you fill in the questionnaire for us?", a: "I draft the technical answers and the evidence behind each one. You sign it, because the insurer is asking you, and you should understand every answer before you do." },
+      { q: "We answered yes to things that are not true. Now what?", a: "We make them true before renewal, in order of what the underwriter would check first. That is most of this work, and it is better done now than during a claim." },
+      { q: "Will this disrupt the business?", a: "MFA rollouts and access reviews touch people, so those are scheduled with you. The rest is infrastructure and happens without anyone noticing." },
     ],
   },
   {
@@ -77,6 +88,11 @@ export const playbooks: Playbook[] = [
       { label: "Compliance and remediation", href: "/services/compliance-and-remediation/" },
       { label: "CookieSteward", href: "/work/cookiesteward/" },
     ],
+    faq: [
+      { q: "Can you make the site fully compliant?", a: "Nobody can certify a site as compliant, and anyone who promises it is selling something. What I deliver is work done against WCAG AA, evidence of it, and a statement your lawyer can use. That is what courts and plaintiffs' firms actually look at." },
+      { q: "Will an overlay widget fix this?", a: "No. Overlays are named in a growing number of these lawsuits as the problem, and they do nothing for the structure of the page. I remove them." },
+      { q: "How fast can the first fixes go live?", a: "Within days of the plan. Letters have deadlines, so the highest-risk items are fixed first and documented as they go." },
+    ],
   },
   {
     id: "hacked",
@@ -96,6 +112,11 @@ export const playbooks: Playbook[] = [
     related: [
       { label: "Compliance and remediation", href: "/services/compliance-and-remediation/" },
       { label: "Hosting and care", href: "/services/#hosting-and-care" },
+    ],
+    faq: [
+      { q: "What should we do right now, before you answer?", a: "Change the passwords you can reach, especially hosting and email. Do not delete anything, do not restore a backup yet, and write down the time you noticed. Then call." },
+      { q: "Do we have to tell our customers?", a: "It depends on what was taken and where your customers live. Finding that out is step two, and I help you write the notice if one is required. Saying nothing when the law requires notice is the expensive option." },
+      { q: "Can we just restore a backup?", a: "Only once we know when the break-in happened. A backup from after it just restores the attacker. Containment and forensics come first, then a clean rebuild." },
     ],
   },
   {
@@ -117,6 +138,11 @@ export const playbooks: Playbook[] = [
       { label: "WooCommerce and Shopify", href: "/services/woocommerce-development/" },
       { label: "WordPress", href: "/services/wordpress-development/" },
     ],
+    faq: [
+      { q: "Will we lose our search rankings?", a: "Rankings move when URLs change and nobody maps them. Every product and category URL is redirected and the metadata carried over, and I watch Search Console for weeks after. A dip in the first days is normal; a cliff is a migration done wrong." },
+      { q: "Does the old store stay up during the move?", a: "Yes. The new store is built and tested on staging while the old one keeps selling. The cutover is one quiet hour with a final data sync." },
+      { q: "What about orders placed during the cutover?", a: "The final sync happens after the old store is put into maintenance, so nothing falls between the two. The first orders on the new store are checked by hand." },
+    ],
   },
   {
     id: "integration",
@@ -135,6 +161,11 @@ export const playbooks: Playbook[] = [
     related: [
       { label: "AI integration and data", href: "/services/ai-integration/" },
       { label: "WooCommerce and Shopify", href: "/services/woocommerce-development/" },
+    ],
+    faq: [
+      { q: "Should we buy a connector instead?", a: "Sometimes. If a well-kept connector exists for your exact pair of systems and your rules are standard, buy it and I will configure it. Custom work is for when the rules are yours, the systems are older, or the connector costs more per year than building." },
+      { q: "What happens when it fails?", a: "It tells you. Failed records are retried, ambiguous ones are held for a person, and an alert says what is waiting. Silent failure is the one outcome I design against." },
+      { q: "Can it start small?", a: "Yes, and it should. One direction, one record type, watched for a week, then the next. Big-bang integrations are how data gets corrupted on both sides at once." },
     ],
   },
   {
@@ -155,6 +186,11 @@ export const playbooks: Playbook[] = [
       { label: "Technology consulting", href: "/services/technology-consulting/" },
       { label: "The blog", href: "/blog/" },
     ],
+    faq: [
+      { q: "Will you just recommend yourself for the work?", a: "The findings are priced on their own and written so your team or any vendor can act on them. If I think I am the right person for what follows I will say so, with a price, and you can take it elsewhere." },
+      { q: "Can you review a vendor's proposal?", a: "Yes. I read it the way the vendor hopes you will not: what is actually included, what the hourly rate works out to, what happens at renewal, and what you own at the end." },
+      { q: "How honest is honest?", a: "If your site is fine, the report says so and the engagement is short. If the problem is a decision you made, the report says that too, politely." },
+    ],
   },
   {
     id: "care",
@@ -172,6 +208,11 @@ export const playbooks: Playbook[] = [
     related: [
       { label: "Hosting and care", href: "/services/#hosting-and-care" },
       { label: "WordPress", href: "/services/wordpress-development/" },
+    ],
+    faq: [
+      { q: "Can you take over a site you did not build?", a: "That is most of them. The health report in the first week tells you what you inherited, and anything urgent is fixed before the monthly plan starts." },
+      { q: "What does the plan include?", a: "Updates, backups, monitoring, performance checks, small fixes and questions, and a monthly report. Larger work is quoted separately so the plan stays the same price every month." },
+      { q: "What if I want to leave?", a: "You own everything, you have the documentation, and the plan ends at the end of the month. No lock-in, because lock-in is a reason to stay for the wrong reason." },
     ],
   },
 ];
