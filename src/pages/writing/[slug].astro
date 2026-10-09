@@ -1,0 +1,64 @@
+---
+import { getCollection, render } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { blogPosting, breadcrumbs } from "../../lib/schema";
+import { seo } from "../../data/seo";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("writing", ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+const path = `/writing/${post.id}/`;
+const meta = seo[post.id];
+if (!meta) throw new Error(`No entry in src/data/seo.ts for writing/${post.id}`);
+const fmt = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
+const words = post.body?.split(/\s+/).filter(Boolean).length ?? 0;
+---
+<Base
+  title={meta.title}
+  description={meta.description}
+  schema={[blogPosting(post.data.title, meta.description, path, post.data.date, post.data.updated), breadcrumbs([{ name: "Home", path: "/" }, { name: "Writing", path: "/writing/" }, { name: post.data.title, path }])]}
+>
+  <article>
+    <section class="phero">
+      <div class="in">
+        <p class="crumb"><a href="/writing/">Writing</a></p>
+        <h1>{post.data.title}</h1>
+        <p class="lede">{post.data.summary}</p>
+        <p class="byline">
+          <time datetime={post.data.date.toISOString().slice(0, 10)}>{fmt.format(post.data.date)}</time>
+          <span>·</span>
+          <span>{Math.max(1, Math.round(words / 230))} min read</span>
+          <span>·</span>
+          <span>Written by Pierre</span>
+        </p>
+      </div>
+    </section>
+
+    <div class="in">
+      <div class="article rv">
+        <Content />
+      </div>
+    </div>
+  </article>
+
+  <section class="pwrap">
+    <div class="in">
+      <h2>Related</h2>
+      <div>
+        <div class="related">{post.data.related.map((r) => <a href={r.href}>{r.label}</a>)}</div>
+        {post.data.sources.length > 0 && (
+          <div class="sources">
+            <span class="label">Sources for the figures, checked {fmt.format(post.data.updated ?? post.data.date)}. List prices change; check before you decide.</span>
+            <ul>{post.data.sources.map((s) => <li><a href={s.href} rel="noopener">{s.label}</a></li>)}</ul>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand heading="Want a second opinion on what you are paying for?" />
+</Base>

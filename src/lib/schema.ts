@@ -91,6 +91,30 @@ export const collectionPage = (items: { name: string; path: string }[]) => ({
   },
 });
 
+export const blog = (posts: { name: string; path: string }[]) => ({
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  name: `${site.brand} writing`,
+  url: abs("/writing/"),
+  author: { "@type": "Person", name: site.name },
+  blogPost: posts.map((p) => ({ "@type": "BlogPosting", headline: p.name, url: abs(p.path) })),
+});
+
+export const blogPosting = (headline: string, description: string, path: string, published: Date, updated?: Date) => ({
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline,
+  description,
+  url: abs(path),
+  mainEntityOfPage: abs(path),
+  datePublished: published.toISOString().slice(0, 10),
+  dateModified: (updated ?? published).toISOString().slice(0, 10),
+  author: { "@type": "Person", name: site.name, url: site.url },
+  publisher: { "@type": "Person", name: site.name, url: site.url },
+  image: abs(`/og/${path.split("/").filter(Boolean).pop()}.png`),
+  inLanguage: "en-US",
+});
+
 export const softwareApp = (name: string, description: string, path: string, external?: string) => ({
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",

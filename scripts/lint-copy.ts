@@ -61,10 +61,10 @@ const walk = (dir: string) => {
   for (const f of readdirSync(dir)) {
     const p = join(dir, f);
     if (statSync(p).isDirectory()) walk(p);
-    else if (/\.(ts|astro)$/.test(f) && !/skills\.ts$|site\.ts$|schema\.ts$/.test(f)) files.push(p);
+    else if (/\.(ts|astro|md)$/.test(f) && !/skills\.ts$|site\.ts$|schema\.ts$/.test(f)) files.push(p);
   }
 };
-for (const d of ["src/data", "src/pages", "src/components"]) walk(join(root, d));
+for (const d of ["src/data", "src/pages", "src/components", "src/content"]) walk(join(root, d));
 
 let prose = 0;
 for (const file of files) {

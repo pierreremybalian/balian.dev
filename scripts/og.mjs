@@ -1,7 +1,7 @@
 // Renders one 1200x630 share image per page into public/og/<key>.png, using the site's own fonts.
 // Run with: npm run og   (needs Playwright; set PLAYWRIGHT_PATH if it is not installed in this repo)
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { seo } from "../src/data/seo.ts";
@@ -15,8 +15,9 @@ const { chromium } = await import(process.env.PLAYWRIGHT_PATH ? pathToFileURL(pr
 
 const services = ["websites-and-cms", "wordpress-development", "woocommerce-development", "web-app-saas-development", "ai-integration", "ai-assisted-engineering"];
 const work = ["zonesteward", "cookiesteward"];
-const eyebrow = (k) => (services.includes(k) || k === "services" ? "Services" : work.includes(k) || k === "work" ? "Work" : k[0].toUpperCase() + k.slice(1));
-const urlPath = (k) => (services.includes(k) ? `services/${k}/` : work.includes(k) ? `work/${k}/` : `${k}/`);
+const writing = readdirSync(path.join(root, "src/content/writing")).filter((f) => f.endsWith(".md")).map((f) => f.slice(0, -3));
+const eyebrow = (k) => (services.includes(k) || k === "services" ? "Services" : work.includes(k) || k === "work" ? "Work" : writing.includes(k) ? "Writing" : k[0].toUpperCase() + k.slice(1));
+const urlPath = (k) => (services.includes(k) ? `services/${k}/` : work.includes(k) ? `work/${k}/` : writing.includes(k) ? `writing/${k}/` : `${k}/`);
 
 const html = (key, title, seed) => `<!doctype html><meta charset=utf-8><style>
 @font-face{font-family:Sora;src:url(${pathToFileURL(fonts)}/sora/files/sora-latin-wght-normal.woff2);font-weight:100 800}

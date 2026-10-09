@@ -1,0 +1,41 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { blog, breadcrumbs } from "../../lib/schema";
+import { copy } from "../../data/ledes";
+import { seo } from "../../data/seo";
+
+const posts = (await getCollection("writing", ({ data }) => !data.draft)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const fmt = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
+---
+<Base
+  title={seo.writing.title}
+  description={seo.writing.description}
+  schema={[blog(posts.map((p) => ({ name: p.data.title, path: `/writing/${p.id}/` }))), breadcrumbs([{ name: "Home", path: "/" }, { name: "Writing", path: "/writing/" }])]}
+>
+  <section class="phero">
+    <div class="in">
+      <p class="crumb">Writing</p>
+      <h1>{copy.writing.h1}</h1>
+      <p class="lede">{copy.writing.lede}</p>
+    </div>
+  </section>
+
+  <section class="sec" style="padding-block:72px">
+    <div class="in">
+      <h2 class="sr-only">Posts</h2>
+      <ol class="posts">
+        {posts.map((p) => (
+          <li class="rv">
+            <time datetime={p.data.date.toISOString().slice(0, 10)}>{fmt.format(p.data.date)}</time>
+            <h3><a href={`/writing/${p.id}/`}>{p.data.title}</a></h3>
+            <p>{p.data.summary}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <CtaBand heading="Recognise your company in one of these?" text="The first call is thirty minutes. Bring the invoice you are not sure about." />
+</Base>

@@ -88,6 +88,36 @@ export const seo: Record<string, Seo> = {
     description: "A 13-stage web design process with six approval gates: styleframes, a design system you approve, content written for you, and two revision rounds.",
     keyword: "web design process",
   },
+  writing: {
+    title: "Writing on Web Engineering and Business Systems",
+    description: "Writing on web engineering and the business systems around it: ERP and CRM costs, email marketing, Astro and Cloudflare, process and dashboards.",
+    keyword: "web engineering",
+  },
+  "erp-crm-bloatware": {
+    title: "ERP and CRM Software Costs for Small Business",
+    description: "ERP and CRM software costs for small business: Salesforce, HubSpot, NetSuite and Dynamics list prices, and the cheaper system built for one business.",
+    keyword: "erp and crm software costs",
+  },
+  "email-without-the-platform": {
+    title: "What Email Marketing Platforms Really Cost",
+    description: "What email marketing platforms cost at 1,000, 10,000 and 50,000 contacts, why the tiers are the trick, and how to run email on a list you own.",
+    keyword: "email marketing platforms",
+  },
+  "astro-and-cloudflare": {
+    title: "Astro and Cloudflare for Business Websites",
+    description: "Why I build on Astro and Cloudflare: what Cloudflare is, why serving from the edge is fast and resilient, what it costs, and where it is the wrong choice.",
+    keyword: "astro and cloudflare",
+  },
+  "tooling-into-old-process": {
+    title: "Why New Software Gets Bent to Fit Old Processes",
+    description: "Companies spend fortunes bending new software to fit old processes. Why it happens, what it costs, and the right order: map, redesign, then pick the tool.",
+    keyword: "old processes",
+  },
+  "dashboard-sprawl": {
+    title: "Dashboard Sprawl: The Cost of Too Many Trackers",
+    description: "Dashboard sprawl: every mistake spawns a tracker, the trackers live in spreadsheets, and the busywork costs six figures a year. Replace them with one screen.",
+    keyword: "dashboard sprawl",
+  },
   contact: {
     title: "Contact a Senior Web Developer",
     description: "Contact a senior web developer by email, phone or LinkedIn, book a 30-minute call, or send a short project brief. Replies come from Pierre.",
