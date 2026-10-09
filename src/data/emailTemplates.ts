@@ -7,6 +7,21 @@ export const PLACEHOLDERS = ["name", "first", "company", "website", "slot", "mee
 
 export const emailTemplates: EmailTemplate[] = [
   {
+    id: "reconnect", name: "Reconnect", when: "To people who already know you: past clients, ex-colleagues, vendors. One at a time, with a personal line at the top.",
+    subject: "Out on my own",
+    body: `Hi {{first}},
+
+(One line about what you worked on together, or what they are doing now.)
+
+After a long run inside Minneapolis agencies I have gone out on my own as Balian.dev. Same work, direct: websites and stores, the integrations behind them, compliance cleanups, and acting as the technical lead for companies that do not have one.
+
+[See what I do](https://balian.dev)
+
+If something is broken, slow or stuck on your end, I would like to hear about it. And if you know someone wrestling with any of this, I would appreciate the introduction.
+
+Pierre`,
+  },
+  {
     id: "reply-brief", name: "Reply to a brief", when: "Within a business day of a contact form or an email.",
     subject: "Your note about {{company}}",
     body: `Hi {{first}},
