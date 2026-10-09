@@ -241,15 +241,18 @@ async function calendar() {
       const col = h("div", { class: "day" + (day.key === todayKey ? " today" : "") }, h("div", { class: "dayhead" }, fmtD.format(day.date)));
       const body = h("div", { class: "daybody", style: `height:${(H1 - H0) * PX}px` });
       for (let hr = H0; hr < H1; hr++) body.append(h("div", { class: "line", style: `top:${(hr - H0) * PX}px` }));
-      const place = (s: string, e: string, cls: string, label?: Child, onclick?: () => void) => {
+      const place = (s: string, e: string, cls: string, label?: Child, onclick?: () => void, extra: Record<string, string> = {}) => {
         const a = partsIn(new Date(s)), b = partsIn(new Date(e));
         if (a.key !== day.key) return;
         const top = Math.max(0, (a.mins - H0 * 60) / 60 * PX), bottom = Math.min((H1 - H0) * PX, (b.mins - H0 * 60) / 60 * PX);
         if (bottom <= top) return;
-        const el = h("div", { class: cls, style: `top:${top}px;height:${Math.max(18, bottom - top - 2)}px`, ...(onclick ? { onclick, role: "button", tabindex: "0", onkeydown: (ev) => { if ((ev as KeyboardEvent).key === "Enter") onclick(); } } : {}) }, label);
+        const el = h("div", { class: cls, style: `top:${top}px;height:${Math.max(18, bottom - top - 2)}px`, ...extra, ...(onclick ? { onclick, role: "button", tabindex: "0", onkeydown: (ev) => { if ((ev as KeyboardEvent).key === "Enter") onclick(); } } : {}) }, label);
         body.append(el);
       };
-      for (const w of d.windows) place(w.start, w.end, "window");
+      for (const w of d.windows) {
+        const label = `Open ${fmtT.format(new Date(w.start)).replace(":00", "")} to ${fmtT.format(new Date(w.end)).replace(":00", "")}`;
+        place(w.start, w.end, "window", undefined, undefined, { "data-label": label });
+      }
       for (const ev of d.events) {
         if (ev.allDay) { if (day.key >= ev.start && day.key < ev.end) col.append(h("div", { class: "allday", onclick: () => open(ev) }, ev.summary)); continue; } // all-day events carry dates, end exclusive
         place(ev.start, ev.end, "ev " + ev.kind, h("span", {}, h("b", {}, fmtT.format(new Date(ev.start))), " ", ev.lead ? `${ev.lead.name || ev.lead.email}${ev.lead.company ? ", " + ev.lead.company : ""}` : ev.summary), () => open(ev));

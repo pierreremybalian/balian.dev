@@ -490,7 +490,14 @@ label.inline { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 
 .week .hour { font: 500 11px var(--mono); color: var(--mut); padding: 2px 6px; text-align: right; border-top: 1px solid var(--line); }
 .week .daybody { position: relative; }
 .week .line { position: absolute; left: 0; right: 0; border-top: 1px solid var(--line); }
-.week .window { position: absolute; left: 0; right: 0; background: rgba(255, 46, 147, 0.06); border-left: 2px solid rgba(255, 46, 147, 0.4); pointer-events: none; }
+.week .window { position: absolute; left: 0; right: 0; background: repeating-linear-gradient(135deg, rgba(255, 46, 147, 0.16) 0 6px, rgba(255, 46, 147, 0.06) 6px 12px); border-left: 3px solid var(--sig); border-top: 1px solid var(--sig); pointer-events: none; }
+.week .window::before { content: attr(data-label); position: absolute; left: 6px; top: 3px; font: 500 10px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--sig); }
+.cal-legend { display: flex; flex-wrap: wrap; gap: 14px 22px; font-size: 13px; color: var(--soft); }
+.cal-legend span::before { content: ""; display: inline-block; width: 14px; height: 10px; margin-right: 8px; vertical-align: middle; border-radius: 2px; }
+.cal-legend .l-win::before { background: repeating-linear-gradient(135deg, rgba(255, 46, 147, 0.4) 0 3px, rgba(255, 46, 147, 0.1) 3px 6px); border-left: 2px solid var(--sig); }
+.cal-legend .l-call::before { background: var(--sig); }
+.cal-legend .l-ph::before { background: var(--surface2); border: 1px dashed var(--mut); }
+.cal-legend .l-busy::before { background: var(--bg); border: 1px solid var(--line); }
 .week .ev { position: absolute; left: 4px; right: 4px; padding: 4px 6px; font: 500 11.5px/1.3 var(--sans); border-radius: 3px; overflow: hidden; cursor: pointer; border: 1px solid var(--line); background: var(--bg); color: var(--soft); }
 .week .ev b { font-family: var(--mono); font-weight: 500; font-size: 10.5px; color: var(--mut); }
 .week .ev.call { background: var(--sig); border-color: var(--sig); color: #0a0c18; }
