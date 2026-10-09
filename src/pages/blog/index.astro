@@ -6,19 +6,19 @@ import { blog, breadcrumbs } from "../../lib/schema";
 import { copy } from "../../data/ledes";
 import { seo } from "../../data/seo";
 
-const posts = (await getCollection("writing", ({ data }) => !data.draft)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const fmt = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
 ---
 <Base
-  title={seo.writing.title}
-  description={seo.writing.description}
-  schema={[blog(posts.map((p) => ({ name: p.data.title, path: `/writing/${p.id}/` }))), breadcrumbs([{ name: "Home", path: "/" }, { name: "Writing", path: "/writing/" }])]}
+  title={seo.blog.title}
+  description={seo.blog.description}
+  schema={[blog(posts.map((p) => ({ name: p.data.title, path: `/blog/${p.id}/` }))), breadcrumbs([{ name: "Home", path: "/" }, { name: "Blog", path: "/blog/" }])]}
 >
   <section class="phero">
     <div class="in">
-      <p class="crumb">Writing</p>
-      <h1>{copy.writing.h1}</h1>
-      <p class="lede">{copy.writing.lede}</p>
+      <p class="crumb">Blog</p>
+      <h1>{copy.blog.h1}</h1>
+      <p class="lede">{copy.blog.lede}</p>
     </div>
   </section>
 
@@ -29,7 +29,7 @@ const fmt = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", ye
         {posts.map((p) => (
           <li class="rv">
             <time datetime={p.data.date.toISOString().slice(0, 10)}>{fmt.format(p.data.date)}</time>
-            <h3><a href={`/writing/${p.id}/`}>{p.data.title}</a></h3>
+            <h3><a href={`/blog/${p.id}/`}>{p.data.title}</a></h3>
             <p>{p.data.summary}</p>
           </li>
         ))}

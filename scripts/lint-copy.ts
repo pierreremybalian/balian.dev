@@ -41,8 +41,8 @@ for (const [id, { h1, lede }] of Object.entries(copy)) {
   if (/[—–]/.test(lede)) problems.push("dash");
   if (/!/.test(lede)) problems.push("exclamation mark");
   if (countOpener.test(lede)) problems.push("opens by counting the page's own sections");
-  // "solutions" is banned as marketing filler; the writing lede uses it in its plain sense, in Pierre's own words.
-  for (const b of banned) if (lower.includes(b) && !(id === "writing" && b === "solutions")) problems.push(`banned phrase: "${b}"`);
+  // "solutions" is banned as marketing filler; the blog lede uses it in its plain sense, in Pierre's own words.
+  for (const b of banned) if (lower.includes(b) && !(id === "blog" && b === "solutions")) problems.push(`banned phrase: "${b}"`);
 
   const h = new Set(content(h1));
   const l = content(lede);

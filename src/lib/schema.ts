@@ -94,8 +94,8 @@ export const collectionPage = (items: { name: string; path: string }[]) => ({
 export const blog = (posts: { name: string; path: string }[]) => ({
   "@context": "https://schema.org",
   "@type": "Blog",
-  name: `${site.brand} writing`,
-  url: abs("/writing/"),
+  name: `${site.brand} blog`,
+  url: abs("/blog/"),
   author: { "@type": "Person", name: site.name },
   blogPost: posts.map((p) => ({ "@type": "BlogPosting", headline: p.name, url: abs(p.path) })),
 });

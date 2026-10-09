@@ -1,12 +1,12 @@
-// Content collections. `writing` is the blog: one Markdown file per post in src/content/writing.
+// Content collections. `blog`: one Markdown file per post in src/content/blog.
 // Title and meta description for each post live in src/data/seo.ts under the post's slug, like every other page.
 import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
 
 const link = z.object({ label: z.string(), href: z.string() });
 
-const writing = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/writing" }),
+const blog = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/blog" }),
   schema: z.object({
     title: z.string(), // the H1
     summary: z.string(), // the lede on the post and the blurb on the index
@@ -18,4 +18,4 @@ const writing = defineCollection({
   }),
 });
 
-export const collections = { writing };
+export const collections = { blog };

@@ -68,7 +68,7 @@ export const copy: Record<string, PageCopy> = {
     h1: "A process with your sign-off at every gate.",
     lede: "Every project follows the same thirteen steps, and nothing moves forward without your okay at six of them. Design comes first, before any code.",
   },
-  writing: {
+  blog: {
     h1: "Ramblings",
     lede: "The same stupid mistakes I see companies make over and over again. And the cool solutions I have found over the years.",
   },

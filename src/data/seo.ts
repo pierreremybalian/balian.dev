@@ -88,9 +88,9 @@ export const seo: Record<string, Seo> = {
     description: "A 13-stage web design process with six approval gates: styleframes, a design system you approve, content written for you, and two revision rounds.",
     keyword: "web design process",
   },
-  writing: {
-    title: "Writing on Web Engineering and Business Systems",
-    description: "Writing on web engineering and the business systems around it: ERP and CRM costs, email marketing, Astro and Cloudflare, process and dashboards.",
+  blog: {
+    title: "Blog on Web Engineering and Business Systems",
+    description: "A blog on web engineering and the business systems around it: ERP and CRM costs, email marketing, Astro and Cloudflare, process and dashboards.",
     keyword: "web engineering",
   },
   "erp-crm-bloatware": {

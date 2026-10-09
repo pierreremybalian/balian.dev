@@ -6,14 +6,14 @@ import { blogPosting, breadcrumbs } from "../../lib/schema";
 import { seo } from "../../data/seo";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("writing", ({ data }) => !data.draft);
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
   return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
 }
 const { post } = Astro.props;
 const { Content } = await render(post);
-const path = `/writing/${post.id}/`;
+const path = `/blog/${post.id}/`;
 const meta = seo[post.id];
-if (!meta) throw new Error(`No entry in src/data/seo.ts for writing/${post.id}`);
+if (!meta) throw new Error(`No entry in src/data/seo.ts for blog/${post.id}`);
 const fmt = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
 const month = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
 const words = post.body?.split(/\s+/).filter(Boolean).length ?? 0;
@@ -21,12 +21,12 @@ const words = post.body?.split(/\s+/).filter(Boolean).length ?? 0;
 <Base
   title={meta.title}
   description={meta.description}
-  schema={[blogPosting(post.data.title, meta.description, path, post.data.date, post.data.updated), breadcrumbs([{ name: "Home", path: "/" }, { name: "Writing", path: "/writing/" }, { name: post.data.title, path }])]}
+  schema={[blogPosting(post.data.title, meta.description, path, post.data.date, post.data.updated), breadcrumbs([{ name: "Home", path: "/" }, { name: "Blog", path: "/blog/" }, { name: post.data.title, path }])]}
 >
   <article>
     <section class="phero">
       <div class="in">
-        <p class="crumb"><a href="/writing/">Writing</a></p>
+        <p class="crumb"><a href="/blog/">Blog</a></p>
         <h1>{post.data.title}</h1>
         <p class="lede">{post.data.summary}</p>
         <p class="byline">
