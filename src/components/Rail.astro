@@ -6,7 +6,7 @@ const inServices = path.startsWith("/services/");
 ---
 <header class="rail">
   <a class="mark" href="/" aria-label={`${site.brand} home`}><i></i>Balian<span class="tld">.dev</span></a>
-  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mpanel" id="menu-btn">Menu</button>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mpanel" aria-label="Menu" id="menu-btn"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span></button>
   <nav class="rnav" aria-label="Primary">
     {nav.map((item) => (
       <>

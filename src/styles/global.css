@@ -389,9 +389,17 @@ footer.site a { padding-block: 6px; display: inline-block; }
 
 @media (max-width: 1000px) {
   :root { --rail: 0px; }
-  .rail { position: sticky; top: 0; bottom: auto; width: auto; flex-direction: row; align-items: center; padding: 12px 20px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .rail { position: sticky; top: 0; bottom: auto; width: auto; flex-direction: row; align-items: center; justify-content: space-between; padding: 8px 12px 8px 20px; border-right: 0; border-bottom: 1px solid var(--line); }
   .rnav, .rfoot { display: none; }
-  .menu-btn { display: inline-flex; border: 1px solid var(--line); background: transparent; color: var(--ink); padding: 10px 14px; font: 500 13px var(--mono); border-radius: 3px; cursor: pointer; }
+  .menu-btn { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-left: auto; border: 0; background: transparent; color: var(--ink); border-radius: 3px; cursor: pointer; }
+  .menu-btn .bars { display: block; width: 22px; height: 16px; position: relative; }
+  .menu-btn .bars i { position: absolute; left: 0; width: 100%; height: 2px; background: currentColor; border-radius: 1px; transition: transform 0.25s, opacity 0.2s; }
+  .menu-btn .bars i:nth-child(1) { top: 0; }
+  .menu-btn .bars i:nth-child(2) { top: 7px; }
+  .menu-btn .bars i:nth-child(3) { top: 14px; }
+  .menu-btn[aria-expanded="true"] .bars i:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .menu-btn[aria-expanded="true"] .bars i:nth-child(2) { opacity: 0; }
+  .menu-btn[aria-expanded="true"] .bars i:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
   .mpanel { display: none; position: fixed; inset: 58px 0 0 0; background: var(--bg); z-index: 29; padding: 24px 20px; overflow-y: auto; flex-direction: column; gap: 4px; }
   .mpanel.open { display: flex; }
   .mpanel a { padding: 14px 0; border-bottom: 1px solid var(--line); font: 700 1.3rem var(--display); letter-spacing: -0.03em; }

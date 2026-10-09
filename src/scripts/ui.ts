@@ -9,7 +9,7 @@ function setMenu(open: boolean, returnFocus = false) {
   if (!btn || !panel) return;
   panel.classList.toggle("open", open);
   btn.setAttribute("aria-expanded", String(open));
-  btn.textContent = open ? "Close" : "Menu";
+  btn.setAttribute("aria-label", open ? "Close menu" : "Menu");
   if (main) (main as HTMLElement & { inert: boolean }).inert = open;
   if (open) panel.querySelector<HTMLElement>("a")?.focus();
   else if (returnFocus) btn.focus();
