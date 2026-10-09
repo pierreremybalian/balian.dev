@@ -251,7 +251,7 @@ async function calendar() {
       };
       for (const w of d.windows) place(w.start, w.end, "window");
       for (const ev of d.events) {
-        if (ev.allDay) { col.append(h("div", { class: "allday", onclick: () => open(ev) }, ev.summary)); continue; }
+        if (ev.allDay) { if (day.key >= ev.start && day.key < ev.end) col.append(h("div", { class: "allday", onclick: () => open(ev) }, ev.summary)); continue; } // all-day events carry dates, end exclusive
         place(ev.start, ev.end, "ev " + ev.kind, h("span", {}, h("b", {}, fmtT.format(new Date(ev.start))), " ", ev.lead ? `${ev.lead.name || ev.lead.email}${ev.lead.company ? ", " + ev.lead.company : ""}` : ev.summary), () => open(ev));
       }
       col.append(body); grid.append(col);
