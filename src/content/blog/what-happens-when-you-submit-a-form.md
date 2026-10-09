@@ -1,6 +1,6 @@
 ---
 title: "What actually happens when someone submits your form"
-summary: "Most forms send an email and forget everything else. Where the submission should go, what to capture on the way (UTM, GTM, referrer, consent), what to keep out, and what my own form does."
+summary: "Most forms send an email and forget everything else. Where the submission should go, what to capture on the way (UTM, GTM, referrer, consent), and why a healthcare form is a HIPAA pipeline the moment a name sits next to a symptom."
 date: 2026-10-09T20:00:00Z
 related:
   - label: "Marketing systems"
@@ -65,11 +65,29 @@ If you do not have a CRM, you do not need to buy one to do this. A table and a s
 
 ## What not to capture
 
-I have been a HIPAA compliance officer, so this part is not optional for me. The rule is to capture what you will use and nothing you cannot protect.
+The rule is to capture what you will use and nothing you cannot protect. Do not record IP addresses or full browsing histories without a reason you could explain to a regulator. Do not send the record to a marketing platform the visitor has not consented to. Do not collect payment details through a general form. And write down, somewhere a lawyer can find it, what you collect and why.
 
-Do not put health information, payment details or anything that counts as sensitive data through a general contact form. If your business needs that, the form that collects it is a different build, with encryption, access controls and an agreement with whoever hosts it. Do not record IP addresses or full browsing histories without a reason you could explain to a regulator. Do not send the record to a marketing platform the visitor has not consented to. And write down, somewhere a lawyer can find it, what you collect and why.
+The consent state in the table is the key to the marketing side of this. If they declined marketing cookies, the UTM capture still works, because your server did it, but the data layer push to the ad platform should not happen. The record says which.
 
-The consent state in the table is the key to all of this. If they declined marketing cookies, the UTM capture still works, because your server did it, but the data layer push to the ad platform should not happen. The record says which.
+## If you are a healthcare business, read this twice
+
+I have been a HIPAA compliance officer, and the forms on healthcare websites are where I have seen the most expensive mistakes made by people who thought they were being careful.
+
+Here is the thing nobody tells the marketing team. A form on a covered entity's website that collects a name and anything that suggests a health condition, an appointment, a service line or a provider is collecting protected health information. "Request an appointment with Dr. Alvarez for a knee consultation" is PHI the moment it has a name attached. So is "contact us" when the message says what is wrong. The form does not have to ask for a diagnosis. It only has to let someone type one, next to who they are.
+
+Once that is true, every step in the journey above becomes a place PHI can leak, and most of them do by default:
+
+- The form plugin or SaaS that receives the submission needs a business associate agreement. Most free form tools will not sign one, which means they cannot legally hold the data, which means you cannot use them.
+- The notification email is the worst offender. "New appointment request from Jane Smith: knee pain, Tuesday" sent to the front desk's Gmail is a disclosure, every time, to a mail provider that has no agreement with you. The email should say that a submission arrived and link to a secure place to read it, nothing more.
+- The CRM is a business associate too. HubSpot and Salesforce will sign for the right tier and the right price. The spreadsheet in a shared drive will not, and the shared drive may not be covered either.
+- Analytics and tags on the form page are the one regulators have been loudest about. Google Analytics, the Meta Pixel, a session-replay tool or a chat widget running on an appointment page can see the URL, the form fields and the button clicks. The HHS guidance on tracking technologies made this explicit, a court trimmed part of it back in 2024, and the lawsuits over pixels on hospital sites kept coming anyway. The safe reading is simple: no third-party tracking on any page where PHI is entered or displayed, and consent does not change that, because a visitor cannot consent on your behalf to a disclosure you are not allowed to make.
+- The hosting, the database and the backups all need to be covered, encrypted and access-logged, with a retention rule that says when the record is deleted.
+
+So the healthcare version of the journey is the same six steps with different plumbing. Validation and spam checks stay. The record is written to a database you control under a BAA. The CRM is one that signed. The notification carries no content. The thank-you page records a conversion with no PHI in the event, which means no form field values in the data layer and no pixel on the page at all, or the whole thing goes through server-side tagging with the PHI stripped before it leaves. And the UTM capture, which is perfectly fine, is done by your server, never by a tag.
+
+There is also a distinction worth drawing on the site itself. A general "contact us" form on the marketing pages can be kept out of scope if it genuinely does not invite health information and the message field says so. The appointment request, the patient portal link, the symptom checker and the prescription refill form cannot, and they should live on pages with nothing on them but your own code. I have built sites both ways and the separation is cheap if you decide it at the start. It is expensive after the letter arrives.
+
+If you run a clinic, a practice, a lab or anything that bills insurance, this is the audit to do first. It takes a day to find out what your forms are leaking, and the fix is usually a week.
 
 ## What my own form does
 
