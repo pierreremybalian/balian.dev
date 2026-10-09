@@ -115,7 +115,7 @@ export const seo: Record<string, Seo> = {
   },
   "what-happens-when-you-submit-a-form": {
     title: "Form Submissions: What Should Happen Next",
-    description: "Form submissions should do more than send an email. What to capture (UTM, GTM, referrer, consent), where the lead should land, and the HIPAA rules for healthcare forms.",
+    description: "Form submissions should do more than email someone. What to capture (UTM, GTM, referrer, consent), where the lead lands, and the HIPAA rules for healthcare forms.",
     keyword: "form submissions",
   },
   "dashboard-sprawl": {
