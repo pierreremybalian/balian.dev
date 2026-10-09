@@ -1,7 +1,7 @@
 ---
 title: "Email marketing's false tiers, and how to stop paying them"
 summary: "Klaviyo, Mailchimp, HubSpot and Pardot charge by the size of your list, and the price has nothing to do with what email costs. What each tier buys, what still needs a platform, and what I build instead."
-date: 2026-10-09T15:00:00Z
+date: 2026-10-06T15:00:00Z
 related:
   - label: "Marketing systems"
     href: "/services/#marketing-systems"

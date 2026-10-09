@@ -15,6 +15,7 @@ const path = `/writing/${post.id}/`;
 const meta = seo[post.id];
 if (!meta) throw new Error(`No entry in src/data/seo.ts for writing/${post.id}`);
 const fmt = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
+const month = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
 const words = post.body?.split(/\s+/).filter(Boolean).length ?? 0;
 ---
 <Base
@@ -52,7 +53,7 @@ const words = post.body?.split(/\s+/).filter(Boolean).length ?? 0;
         <div class="related">{post.data.related.map((r) => <a href={r.href}>{r.label}</a>)}</div>
         {post.data.sources.length > 0 && (
           <div class="sources">
-            <span class="label">Sources for the figures, checked {fmt.format(post.data.updated ?? post.data.date)}. List prices change; check before you decide.</span>
+            <span class="label">Sources for the figures, checked {month.format(post.data.updated ?? post.data.date)}. List prices change; check before you decide.</span>
             <ul>{post.data.sources.map((s) => <li><a href={s.href} rel="noopener">{s.label}</a></li>)}</ul>
           </div>
         )}

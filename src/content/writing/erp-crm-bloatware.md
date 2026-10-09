@@ -1,7 +1,7 @@
 ---
 title: "Your CRM is a cathedral and you need a shed"
 summary: "Most businesses use a sliver of the ERP or CRM they pay for. What the big systems cost, why they are overbuilt on purpose, and what a system built for one business looks like now."
-date: 2026-10-09T14:00:00Z
+date: 2026-10-05T15:00:00Z
 related:
   - label: "Technology consulting"
     href: "/services/technology-consulting/"

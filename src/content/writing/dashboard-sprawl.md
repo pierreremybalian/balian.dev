@@ -1,7 +1,7 @@
 ---
 title: "A dashboard for every mistake"
 summary: "Every problem spawns a tracker and nobody takes one away. How the trackers pile up in spreadsheets and shared docs, what the busywork costs, and how to replace thirty of them with one screen."
-date: 2026-10-09T18:00:00Z
+date: 2026-10-09T15:00:00Z
 related:
   - label: "Technology consulting"
     href: "/services/technology-consulting/"

@@ -1,7 +1,7 @@
 ---
 title: "I moved everything to Astro and Cloudflare, and I am not going back"
 summary: "Why this site, its booking system and its admin run on Astro and Cloudflare: what Cloudflare is, why serving from the edge matters, what it costs, and where it is the wrong call."
-date: 2026-10-09T16:00:00Z
+date: 2026-10-07T15:00:00Z
 related:
   - label: "Websites and CMS"
     href: "/services/websites-and-cms/"

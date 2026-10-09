@@ -1,7 +1,7 @@
 ---
 title: "The entropy of bad systems"
 summary: "Companies spend fortunes bending new software to fit old processes. Why that happens, what it costs, and the order to do it in: map the process, redesign it, then pick the tool."
-date: 2026-10-09T17:00:00Z
+date: 2026-10-08T15:00:00Z
 related:
   - label: "Technology consulting"
     href: "/services/technology-consulting/"
