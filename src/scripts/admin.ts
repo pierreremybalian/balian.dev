@@ -86,18 +86,33 @@ async function submissions() {
 async function templates() {
   const box = document.getElementById("templates")!;
   const t = await api<Templates>("/api/admin/templates");
-  box.replaceChildren(
-    h("h2", {}, "Emails"), h("p", { class: "note" }, "Placeholders: " + t.placeholders.map((p) => `{{${p}}}`).join(" ")),
-    ...t.email.map((e) => {
-      const sample: Record<string, string> = { name: "Ada Lovelace", first: "Ada", company: "Acme Widgets", website: "https://acme.example", slot: "Thursday, October 15 at 2:00 PM", meet: "https://meet.google.com/abc-defg-hij", doc_link: "https://balian.dev/d/?t=example", doc_title: "Proposal for Acme Widgets", invoice_number: "BD-2026-004", amount: "$9,600.00", due: "November 1, 2026", questionnaire_link: "https://balian.dev/intake/?site=acme.example" };
-      const f = (s: string) => s.replace(/\{\{(\w+)\}\}/g, (_, k) => sample[k] ?? `{{${k}}}`);
-      const pane = h("div", { class: "previewpane" });
-      const d = h("details", { class: "tpl", ontoggle: () => { if ((d as HTMLDetailsElement).open && !pane.childElementCount) previewInto(pane, f(e.subject), f(e.body)); } }, h("summary", {}, h("b", {}, e.name), h("span", { class: "note" }, " " + e.when)), h("p", {}, h("b", {}, "Subject: "), e.subject), h("pre", {}, e.body), h("p", { class: "note" }, "Preview with sample values:"), pane);
-      return d;
-    }),
-    h("h2", {}, "Documents"),
-    ...t.documents.map((d) => h("details", { class: "tpl" }, h("summary", {}, h("b", {}, d.name), h("span", { class: "note" }, " asks for: " + d.fields.map((f) => f.label).join("; "))), h("pre", {}, d.body))),
-  );
+  const sample: Record<string, string> = { name: "Ada Lovelace", first: "Ada", company: "Acme Widgets", website: "https://acme.example", slot: "Thursday, October 15 at 2:00 PM", meet: "https://meet.google.com/abc-defg-hij", doc_link: "https://balian.dev/d/?t=example", doc_title: "Proposal for Acme Widgets", invoice_number: "BD-2026-004", amount: "$9,600.00", due: "November 1, 2026", questionnaire_link: "https://balian.dev/intake/?site=acme.example", date: "October 9, 2026" };
+  const f = (s: string) => s.replace(/\{\{(\w+)\}\}/g, (_, k) => sample[k] ?? `{{${k}}}`);
+  type Item = { id: string; name: string; group: "email" | "doc"; when?: string; subject?: string; body: string; fields?: string };
+  const items: Item[] = [
+    ...t.email.map((e): Item => ({ id: "email-" + e.id, name: e.name, group: "email", when: e.when, subject: e.subject, body: e.body })),
+    ...t.documents.map((d): Item => ({ id: "doc-" + d.id, name: d.name, group: "doc", when: "Generated from a lead's page; the fields below are asked at that point.", body: d.body, fields: d.fields.map((x) => x.label).join("; ") })),
+  ];
+  const nav = h("nav", { class: "tnav", "aria-label": "Templates" });
+  const pane = h("div", { class: "tpane" });
+  const link = (it: Item) => h("a", { href: "#" + it.id, onclick: (e) => { e.preventDefault(); history.replaceState(null, "", "#" + it.id); show(it.id); } }, it.name);
+  nav.append(h("span", { class: "label" }, "Emails"), ...items.filter((i) => i.group === "email").map(link), h("span", { class: "label", style: "margin-top:18px" }, "Documents"), ...items.filter((i) => i.group === "doc").map(link));
+  async function show(id: string) {
+    const it = items.find((i) => i.id === id) ?? items[0];
+    nav.querySelectorAll("a").forEach((a) => a.setAttribute("aria-current", a.getAttribute("href") === "#" + it.id ? "page" : "false"));
+    const preview = h("div", { class: "previewpane" });
+    pane.replaceChildren(...[
+      h("h2", {}, it.name), h("p", { class: "note" }, it.when ?? ""),
+      it.subject ? h("p", {}, h("span", { class: "label" }, "Subject "), f(it.subject)) : null,
+      it.fields ? h("p", {}, h("span", { class: "label" }, "Asks for "), it.fields) : null,
+      h("div", { class: "grid2" }, h("div", {}, h("span", { class: "label" }, "Source"), h("pre", {}, it.body)), h("div", {}, h("span", { class: "label" }, it.group === "email" ? "As the recipient sees it" : "Rendered"), preview)),
+    ].filter((x): x is HTMLElement => x !== null));
+    if (it.group === "email") await previewInto(preview, f(it.subject ?? ""), f(it.body));
+    else { const d = h("div", { class: "doc preview" }); preview.replaceChildren(d); renderMarkdown(f(it.body).replace(/_list\}\}/g, "}}"), d); }
+  }
+  box.replaceChildren(h("div", { class: "tsplit" }, nav, pane));
+  show(location.hash.slice(1) || items[0].id);
+  window.addEventListener("hashchange", () => show(location.hash.slice(1)));
 }
 
 async function lead() {

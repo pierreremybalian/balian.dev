@@ -480,6 +480,20 @@ label.inline { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 
 .admin .fields p { font-size: 14px; }
 .timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: 14px; }
 .tpl summary { cursor: pointer; padding: 8px 0; }
+/* templates: rail of names on the left, the selected template on the right, like the site's own nav */
+.tsplit { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 32px; align-items: start; }
+.tnav { position: sticky; top: 76px; display: flex; flex-direction: column; gap: 2px; padding-left: 16px; border-left: 1px solid var(--line); font: 500 13px/1.2 var(--mono); }
+.tnav .label { margin: 0 0 6px; }
+.tnav a { position: relative; padding: 9px 0; color: var(--mut); transition: color 0.2s, transform 0.2s; }
+.tnav a::before { content: ""; position: absolute; left: -17px; top: 50%; width: 10px; height: 2px; background: var(--sig); transform: translateY(-50%) scaleX(0); transform-origin: left; transition: transform 0.25s; }
+.tnav a:is(:hover, :focus-visible), .tnav a[aria-current="page"] { color: var(--ink); transform: translateX(6px); }
+.tnav a[aria-current="page"]::before { transform: translateY(-50%) scaleX(1); }
+.tpane { display: grid; gap: 14px; min-width: 0; }
+.tpane h2 { font-size: 1.5rem; letter-spacing: -0.03em; }
+.tpane .label { margin-right: 8px; }
+.tpane pre { max-height: 720px; overflow: auto; margin: 6px 0 0; }
+.tpane .doc.preview { max-height: 720px; }
+@media (max-width: 800px) { .tsplit { grid-template-columns: minmax(0, 1fr); } .tnav { position: static; flex-direction: row; flex-wrap: wrap; gap: 6px 14px; border-left: 0; padding-left: 0; } .tnav .label { width: 100%; } }
 .mailframe { width: 100%; height: 720px; border: 1px solid var(--line); background: #f4f2ec; border-radius: 3px; }
 .previewpane:not([hidden]) { margin-top: 10px; }
 .admin pre, .admin details pre { white-space: pre-wrap; font: 400 13px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); padding: 14px; overflow-x: auto; margin: 8px 0 0; }
