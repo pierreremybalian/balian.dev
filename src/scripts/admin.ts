@@ -232,13 +232,13 @@ async function calendar() {
     box.replaceChildren(h("p", { class: "note" }, "Loading..."));
     type Ev = { id: string; summary: string; description: string; allDay: boolean; start: string; end: string; meet: string | null; link: string | null; attendees: { email: string; name: string; status: string }[]; kind: "call" | "placeholder" | "busy"; lead: { id: string; name: string; email: string; company: string; stage: string; website: string } | null };
     const d = await api<{ events: Ev[]; windows: { start: string; end: string }[] }>(`/api/admin/calendar?start=${from.toISOString()}&end=${to.toISOString()}`);
-    const todayKey = partsIn(new Date()).key;
+    const nowP = partsIn(new Date()), todayKey = nowP.key, nowMs = Date.now();
     const grid = h("div", { class: "week" });
     const gutter = h("div", { class: "gutter" }, h("div", { class: "dayhead" }));
     for (let hr = H0; hr < H1; hr++) gutter.append(h("div", { class: "hour", style: `height:${PX}px` }, `${((hr + 11) % 12) + 1}${hr < 12 ? "am" : "pm"}`));
     grid.append(gutter);
     for (const day of days) {
-      const col = h("div", { class: "day" + (day.key === todayKey ? " today" : "") }, h("div", { class: "dayhead" }, fmtD.format(day.date)));
+      const col = h("div", { class: "day" + (day.key === todayKey ? " today" : "") + (day.key < todayKey ? " pastday" : "") }, h("div", { class: "dayhead" }, fmtD.format(day.date)));
       const body = h("div", { class: "daybody", style: `height:${(H1 - H0) * PX}px` });
       for (let hr = H0; hr < H1; hr++) body.append(h("div", { class: "line", style: `top:${(hr - H0) * PX}px` }));
       const place = (s: string, e: string, cls: string, label?: Child, onclick?: () => void, extra: Record<string, string> = {}) => {
@@ -246,7 +246,8 @@ async function calendar() {
         if (a.key !== day.key) return;
         const top = Math.max(0, (a.mins - H0 * 60) / 60 * PX), bottom = Math.min((H1 - H0) * PX, (b.mins - H0 * 60) / 60 * PX);
         if (bottom <= top) return;
-        const el = h("div", { class: cls, style: `top:${top}px;height:${Math.max(18, bottom - top - 2)}px`, ...extra, ...(onclick ? { onclick, role: "button", tabindex: "0", onkeydown: (ev) => { if ((ev as KeyboardEvent).key === "Enter") onclick(); } } : {}) }, label);
+        const past = Date.parse(e) < nowMs;
+        const el = h("div", { class: cls + (past ? " past" : ""), style: `top:${top}px;height:${Math.max(18, bottom - top - 2)}px`, ...extra, ...(onclick ? { onclick, role: "button", tabindex: "0", onkeydown: (ev) => { if ((ev as KeyboardEvent).key === "Enter") onclick(); } } : {}) }, label);
         body.append(el);
       };
       for (const w of d.windows) {
@@ -254,9 +255,10 @@ async function calendar() {
         place(w.start, w.end, "window", undefined, undefined, { "data-label": label });
       }
       for (const ev of d.events) {
-        if (ev.allDay) { if (day.key >= ev.start && day.key < ev.end) col.append(h("div", { class: "allday", onclick: () => open(ev) }, ev.summary)); continue; } // all-day events carry dates, end exclusive
+        if (ev.allDay) { if (day.key >= ev.start && day.key < ev.end) col.append(h("div", { class: "allday" + (day.key < todayKey ? " past" : ""), onclick: () => open(ev) }, ev.summary)); continue; } // all-day events carry dates, end exclusive
         place(ev.start, ev.end, "ev " + ev.kind, h("span", {}, h("b", {}, fmtT.format(new Date(ev.start))), " ", ev.lead ? `${ev.lead.name || ev.lead.email}${ev.lead.company ? ", " + ev.lead.company : ""}` : ev.summary), () => open(ev));
       }
+      if (day.key === todayKey && nowP.mins >= H0 * 60 && nowP.mins <= H1 * 60) body.append(h("div", { class: "now", style: `top:${(nowP.mins - H0 * 60) / 60 * PX}px` }));
       col.append(body); grid.append(col);
     }
     box.replaceChildren(grid);

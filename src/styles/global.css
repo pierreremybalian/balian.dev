@@ -490,11 +490,16 @@ label.inline { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 
 .week .hour { font: 500 11px var(--mono); color: var(--mut); padding: 2px 6px; text-align: right; border-top: 1px solid var(--line); }
 .week .daybody { position: relative; }
 .week .line { position: absolute; left: 0; right: 0; border-top: 1px solid var(--line); }
-.week .window { position: absolute; left: 0; right: 0; background: repeating-linear-gradient(135deg, rgba(255, 46, 147, 0.16) 0 6px, rgba(255, 46, 147, 0.06) 6px 12px); border-left: 3px solid var(--sig); border-top: 1px solid var(--sig); pointer-events: none; }
-.week .window::before { content: attr(data-label); position: absolute; left: 6px; top: 3px; font: 500 10px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--sig); }
+.week .window { position: absolute; left: 2px; right: 2px; border: 2px solid var(--sig); border-radius: 3px; background: transparent; pointer-events: none; }
+.week .window::before { content: attr(data-label); position: absolute; left: 6px; top: -1px; font: 500 10px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--sig); background: var(--surface); padding: 2px 4px; transform: translateY(-50%); }
+.week .past { opacity: 0.4; filter: grayscale(1); }
+.week .day.pastday .daybody { background: repeating-linear-gradient(0deg, transparent 0 11px, rgba(255, 255, 255, 0.015) 11px 12px); }
+.week .now { position: absolute; left: 0; right: 0; border-top: 2px solid var(--warm); z-index: 2; pointer-events: none; }
+.week .now::before { content: ""; position: absolute; left: -4px; top: -4px; width: 6px; height: 6px; border-radius: 50%; background: var(--warm); }
 .cal-legend { display: flex; flex-wrap: wrap; gap: 14px 22px; font-size: 13px; color: var(--soft); }
 .cal-legend span::before { content: ""; display: inline-block; width: 14px; height: 10px; margin-right: 8px; vertical-align: middle; border-radius: 2px; }
-.cal-legend .l-win::before { background: repeating-linear-gradient(135deg, rgba(255, 46, 147, 0.4) 0 3px, rgba(255, 46, 147, 0.1) 3px 6px); border-left: 2px solid var(--sig); }
+.cal-legend .l-win::before { background: transparent; border: 2px solid var(--sig); }
+.cal-legend .l-past::before { background: var(--bg); border: 1px solid var(--line); opacity: 0.4; filter: grayscale(1); }
 .cal-legend .l-call::before { background: var(--sig); }
 .cal-legend .l-ph::before { background: var(--surface2); border: 1px dashed var(--mut); }
 .cal-legend .l-busy::before { background: var(--bg); border: 1px solid var(--line); }

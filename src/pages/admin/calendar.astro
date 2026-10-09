@@ -3,7 +3,7 @@ import Admin from "../../layouts/Admin.astro";
 ---
 <Admin title="Calendar" page="calendar">
   <div class="ahead"><h1 id="cal-title">Calendar</h1><div class="arow"><button class="btn ghost small" type="button" id="cal-prev">Previous week</button><button class="btn ghost small" type="button" id="cal-today">This week</button><button class="btn ghost small" type="button" id="cal-next">Next week</button></div></div>
-  <div class="cal-legend"><span class="l-win">Open for booking</span><span class="l-call">Call booked through the site</span><span class="l-ph">Placeholder</span><span class="l-busy">Other events</span><span class="note">Times in Central.</span></div>
+  <div class="cal-legend"><span class="l-win">Open for booking</span><span class="l-call">Call booked through the site</span><span class="l-ph">Placeholder</span><span class="l-busy">Other events</span><span class="l-past">Past</span><span class="note">Times in Central.</span></div>
   <div id="calendar" class="cal"><p class="note">Loading...</p></div>
   <dialog id="cal-modal" class="modal"><div id="cal-modal-body"></div></dialog>
 </Admin>
