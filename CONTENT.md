@@ -55,6 +55,7 @@ Say:
 - More than twenty years; most of it inside agencies; "led the technical side of a Minneapolis agency"; "as director of web technology and security". The agency is never named.
 - Kinds of work: re-platformed a manufacturer's store to WooCommerce with a Sage 100 integration; migrated a specialty retailer off BigCommerce with QuickBooks and point-of-sale sync; led incident response and cleanup for compromised sites; ran cyber-insurance audit remediation; administered Cloudflare WAF and DNS for a large portfolio; dozens of WCAG AA remediations; HIPAA-scoped sites; built the team's starter framework and a maintenance hub that watches plugins for vulnerabilities; an alt-text plugin on the Claude API.
 - Industries as categories: manufacturers, specialty retail, grocery and regional retail brands, healthcare with HIPAA obligations, B2C brands.
+- Roles: director of web technology and security; the agency's HIPAA compliance officer for stretches of that time (so PHI, PII and business associate obligations can be stated as first-hand knowledge that informs tooling and vendor decisions).
 - Named systems: Stripe, PayPal, Authorize.net, Avalara, TaxJar, TrueCommerce EDI, Sage 100, QuickBooks, Cloudflare.
 
 Never:

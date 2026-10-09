@@ -307,6 +307,7 @@ export const servicePages: ServicePage[] = [
           "An evaluation set with known answers, run before launch and after every model change",
           "Untrusted input, such as third-party text or uploaded documents, wrapped so it cannot steer the model",
           "A model chosen per task, cost logged per feature, and a way to switch the feature off",
+          "PHI and PII mapped before any record reaches a model. I have been a HIPAA compliance officer, so the data-handling decisions get made at design time and written down",
         ],
       },
       {
@@ -432,7 +433,7 @@ export const servicePages: ServicePage[] = [
           { title: "An ADA or WCAG complaint", text: "A demand letter or a lawsuit threat about the website. The fix is an audit against WCAG 2.2 AA, remediation in priority order, and evidence you can hand to your lawyer." },
           { title: "A cyber-insurance questionnaire", text: "The insurer wants MFA, patching, backups, headers, a WAF and proof. I have run that remediation across a whole client portfolio and I know what the underwriters actually check." },
           { title: "A privacy or cookie complaint", text: "GDPR, CCPA and the state laws that followed. Consent that blocks trackers until it is given, and receipts that prove it. I built CookieSteward for exactly this." },
-          { title: "HIPAA tracking guidance", text: "Healthcare sites with Google Analytics, the Meta Pixel or session replay on them. Tracking removed or hard-blocked, and the site checked afterward." },
+          { title: "HIPAA tracking guidance", text: "Healthcare sites with Google Analytics, the Meta Pixel or session replay on them. Tracking removed or hard-blocked, and the site checked afterward. I have been the HIPAA compliance officer at an agency, so I know what the guidance means in practice and where PHI hides in a website." },
           { title: "A hacked site", text: "Containment, forensics, cleanup, re-hardening, and the awkward conversation with your customers. I have done this more times than I would like." },
         ],
       },
@@ -452,6 +453,7 @@ export const servicePages: ServicePage[] = [
           "Cyber-insurance audit remediation across a large client portfolio, including CSP, HSTS and WAF hardening",
           "Incident response and cleanup for compromised sites, from containment through client communication",
           "HIPAA-scoped sites, and CookieSteward with its HIPAA mode that keeps tracking pixels off healthcare pages",
+          "Served as an agency's HIPAA compliance officer: business associate agreements, PHI and PII handling rules, and vendor decisions made with those rules in the room",
         ],
       },
       {
