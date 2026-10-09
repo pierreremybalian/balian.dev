@@ -3,7 +3,7 @@
 import "../styles/global.css";
 interface Props { title: string; page: string }
 const { title, page } = Astro.props;
-const nav = [["/admin/", "Pipeline"], ["/admin/leads/", "Leads"], ["/admin/submissions/", "Submissions"], ["/admin/templates/", "Templates"]];
+const nav = [["/admin/", "Pipeline"], ["/admin/leads/", "Leads"], ["/admin/calendar/", "Calendar"], ["/admin/submissions/", "Submissions"], ["/admin/templates/", "Templates"]];
 const path = Astro.url.pathname;
 ---
 <!doctype html>

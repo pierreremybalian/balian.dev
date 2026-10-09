@@ -210,10 +210,100 @@ async function lead() {
   box.replaceChildren(head, contact, prescan, emailPanel.el, docs, inv, subs, mails, timeline);
 }
 
+/* ---------- calendar: a week of the booking calendar, with a lead context modal ---------- */
+const TZ = "America/Chicago";
+const partsIn = (d: Date) => { const p = new Intl.DateTimeFormat("en-US", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false, weekday: "short" }).formatToParts(d); const g = (t: string) => p.find((x) => x.type === t)?.value ?? ""; return { key: `${g("year")}-${g("month")}-${g("day")}`, mins: (Number(g("hour")) % 24) * 60 + Number(g("minute")), wd: g("weekday") }; };
+const fmtT = new Intl.DateTimeFormat("en-US", { timeZone: TZ, hour: "numeric", minute: "2-digit" });
+const fmtD = new Intl.DateTimeFormat("en-US", { timeZone: TZ, weekday: "short", month: "short", day: "numeric" });
+const fmtLong = new Intl.DateTimeFormat("en-US", { timeZone: TZ, weekday: "long", month: "long", day: "numeric", hour: "numeric", minute: "2-digit" });
+
+async function calendar() {
+  const box = document.getElementById("calendar")!, title = document.getElementById("cal-title")!, modal = document.getElementById("cal-modal") as HTMLDialogElement, mbody = document.getElementById("cal-modal-body")!;
+  const H0 = 7, H1 = 19, PX = 48; // 7am to 7pm Central, 48px per hour
+  // week starts Monday, computed in Central
+  let anchor = new Date();
+  const weekStart = (d: Date) => { const c = partsIn(d); const dow = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].indexOf(c.wd); const s = new Date(d); s.setUTCDate(s.getUTCDate() - (dow < 0 ? 0 : dow)); return s; };
+  const dayKeys = (start: Date) => Array.from({ length: 7 }, (_, i) => { const d = new Date(start); d.setUTCDate(d.getUTCDate() + i); return { key: partsIn(d).key, date: d }; });
+
+  async function load() {
+    const ws = weekStart(anchor); const days = dayKeys(ws);
+    const from = new Date(ws); from.setUTCDate(from.getUTCDate() - 1); const to = new Date(ws); to.setUTCDate(to.getUTCDate() + 8);
+    title.textContent = `Week of ${fmtD.format(days[0].date)}`;
+    box.replaceChildren(h("p", { class: "note" }, "Loading..."));
+    type Ev = { id: string; summary: string; description: string; allDay: boolean; start: string; end: string; meet: string | null; link: string | null; attendees: { email: string; name: string; status: string }[]; kind: "call" | "placeholder" | "busy"; lead: { id: string; name: string; email: string; company: string; stage: string; website: string } | null };
+    const d = await api<{ events: Ev[]; windows: { start: string; end: string }[] }>(`/api/admin/calendar?start=${from.toISOString()}&end=${to.toISOString()}`);
+    const todayKey = partsIn(new Date()).key;
+    const grid = h("div", { class: "week" });
+    const gutter = h("div", { class: "gutter" }, h("div", { class: "dayhead" }));
+    for (let hr = H0; hr < H1; hr++) gutter.append(h("div", { class: "hour", style: `height:${PX}px` }, `${((hr + 11) % 12) + 1}${hr < 12 ? "am" : "pm"}`));
+    grid.append(gutter);
+    for (const day of days) {
+      const col = h("div", { class: "day" + (day.key === todayKey ? " today" : "") }, h("div", { class: "dayhead" }, fmtD.format(day.date)));
+      const body = h("div", { class: "daybody", style: `height:${(H1 - H0) * PX}px` });
+      for (let hr = H0; hr < H1; hr++) body.append(h("div", { class: "line", style: `top:${(hr - H0) * PX}px` }));
+      const place = (s: string, e: string, cls: string, label?: Child, onclick?: () => void) => {
+        const a = partsIn(new Date(s)), b = partsIn(new Date(e));
+        if (a.key !== day.key) return;
+        const top = Math.max(0, (a.mins - H0 * 60) / 60 * PX), bottom = Math.min((H1 - H0) * PX, (b.mins - H0 * 60) / 60 * PX);
+        if (bottom <= top) return;
+        const el = h("div", { class: cls, style: `top:${top}px;height:${Math.max(18, bottom - top - 2)}px`, ...(onclick ? { onclick, role: "button", tabindex: "0", onkeydown: (ev) => { if ((ev as KeyboardEvent).key === "Enter") onclick(); } } : {}) }, label);
+        body.append(el);
+      };
+      for (const w of d.windows) place(w.start, w.end, "window");
+      for (const ev of d.events) {
+        if (ev.allDay) { col.append(h("div", { class: "allday", onclick: () => open(ev) }, ev.summary)); continue; }
+        place(ev.start, ev.end, "ev " + ev.kind, h("span", {}, h("b", {}, fmtT.format(new Date(ev.start))), " ", ev.lead ? `${ev.lead.name || ev.lead.email}${ev.lead.company ? ", " + ev.lead.company : ""}` : ev.summary), () => open(ev));
+      }
+      col.append(body); grid.append(col);
+    }
+    box.replaceChildren(grid);
+
+    async function open(ev: Ev) {
+      const L = ev.lead;
+      const rows: [string, Child][] = [["When", `${fmtLong.format(new Date(ev.start))} to ${fmtT.format(new Date(ev.end))} Central`]];
+      if (ev.meet) rows.push(["Meet", h("a", { class: "lnk", href: ev.meet, target: "_blank", rel: "noopener" }, ev.meet)]);
+      if (ev.attendees.length) rows.push(["Guests", ev.attendees.map((a) => `${a.name || a.email}${a.status ? ` (${a.status})` : ""}`).join(", ")]);
+      if (ev.link) rows.push(["Calendar", h("a", { class: "lnk", href: ev.link, target: "_blank", rel: "noopener" }, "Open in Google Calendar")]);
+      const dl = h("dl", { class: "mrows" }, ...rows.flatMap(([k, v]) => [h("dt", {}, k), h("dd", {}, v as Child)]));
+      const ctx = h("div", { class: "ctx" });
+      mbody.replaceChildren(...([
+        h("div", { class: "mhead" }, h("span", { class: "pill " + (ev.kind === "call" ? "sig" : "") }, ev.kind === "call" ? "Booked call" : ev.kind === "placeholder" ? "Placeholder" : "Busy"), h("button", { class: "btn ghost small", type: "button", onclick: () => modal.close() }, "Close")),
+        h("h2", {}, ev.summary), dl,
+        ev.description && ev.kind !== "placeholder" ? h("pre", {}, ev.description) : null,
+        L ? h("div", {}, h("h3", {}, "Client context"), ctx) : h("p", { class: "note" }, ev.kind === "placeholder" ? "A placeholder holding this slot. Delete it in Google Calendar to open the slot." : "No lead matches the guests on this event."),
+      ] as (HTMLElement | null)[]).filter((x): x is HTMLElement => x !== null));
+      modal.showModal();
+      if (L) {
+        ctx.append(h("p", { class: "note" }, "Loading the lead..."));
+        try {
+          const det = await api<Detail>("/api/admin/lead/" + L.id);
+          const scan = det.lead.prescan as { summary?: string[] } | null;
+          const last = det.submissions[0];
+          ctx.replaceChildren(...([
+            h("dl", { class: "mrows" },
+              h("dt", {}, "Lead"), h("dd", {}, h("a", { class: "lnk", href: `/admin/lead/?id=${L.id}` }, `${det.lead.name || det.lead.email}${det.lead.company ? ", " + det.lead.company : ""}`), " ", pill(det.stageLabel[det.lead.stage] ?? det.lead.stage, "sig")),
+              h("dt", {}, "Contact"), h("dd", {}, det.lead.email, det.lead.phone ? ` · ${det.lead.phone}` : "", det.lead.website ? h("span", {}, " · ", h("a", { class: "lnk", href: det.lead.website, target: "_blank", rel: "noopener" }, det.lead.website.replace(/^https?:\/\//, ""))) : null),
+              ...(det.lead.kind ? [h("dt", {}, "Looking for"), h("dd", {}, det.lead.kind)] : []),
+              h("dt", {}, "Notes"), h("dd", {}, det.lead.notes || h("span", { class: "note" }, "none yet")),
+            ),
+            last ? h("div", {}, h("h4", {}, `Latest: ${last.type} · ${when(last.created_at)}`), h("pre", {}, last.summary_text.slice(0, 1200))) : null,
+            scan?.summary?.length ? h("div", {}, h("h4", {}, "Pre-scan"), h("ul", { class: "plainlist small" }, ...scan.summary.slice(0, 7).map((s) => h("li", {}, s)))) : null,
+          ] as (HTMLElement | null)[]).filter((x): x is HTMLElement => x !== null));
+        } catch (err) { ctx.replaceChildren(h("p", { class: "note" }, (err as Error).message)); }
+      }
+    }
+  }
+  document.getElementById("cal-prev")?.addEventListener("click", () => { anchor.setUTCDate(anchor.getUTCDate() - 7); load(); });
+  document.getElementById("cal-next")?.addEventListener("click", () => { anchor.setUTCDate(anchor.getUTCDate() + 7); load(); });
+  document.getElementById("cal-today")?.addEventListener("click", () => { anchor = new Date(); load(); });
+  modal.addEventListener("click", (e) => { if (e.target === modal) modal.close(); });
+  load();
+}
+
 export function initAdmin() {
   const page = document.body.dataset.page;
   api<{ login: string }>("/api/admin/me").then((m) => { const w = document.getElementById("admin-who"); if (w) w.textContent = m.login; }).catch(() => {});
   document.getElementById("admin-logout")?.addEventListener("click", async () => { await api("/api/admin/logout", { method: "POST" }); location.href = "/admin/login/"; });
-  const run = { pipeline, leads, submissions, templates, lead }[page ?? ""];
+  const run = { pipeline, leads, submissions, templates, lead, calendar }[page ?? ""];
   if (run) run().catch((e) => say((e as Error).message));
 }
