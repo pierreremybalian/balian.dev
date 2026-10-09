@@ -70,7 +70,7 @@ export const copy: Record<string, PageCopy> = {
   },
   writing: {
     h1: "Ramblings",
-    lede: "The same stupid mistakes I see companies make over and over again.",
+    lede: "The same stupid mistakes I see companies make over and over again. And the cool solutions I have found over the years.",
   },
   contact: {
     h1: "Tell me what you're building.",
