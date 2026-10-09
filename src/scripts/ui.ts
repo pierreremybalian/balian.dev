@@ -78,7 +78,7 @@ function update() {
     // past the last section (CTA, footer) keeps the last one marked
     idxLinks.forEach((a, i) => a.classList.toggle("on", i === active));
   }
-  if (tl && tlFill) {
+  if (tl && tlFill && tl.offsetHeight) { // hidden inside an inactive tab: leave it alone
     const r = tl.getBoundingClientRect();
     const mark = window.innerHeight * 0.62;
     const p = Math.max(0, Math.min(1, (mark - r.top) / r.height));

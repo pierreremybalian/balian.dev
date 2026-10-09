@@ -4,6 +4,7 @@ import Faq from "../components/Faq.astro";
 import CtaBand from "../components/CtaBand.astro";
 import Timeline from "../components/Timeline.astro";
 import { stages } from "../data/process";
+import { playbooks } from "../data/playbooks";
 import { breadcrumbs, faqPage } from "../lib/schema";
 import { copy } from "../data/ledes";
 import { seo } from "../data/seo";
@@ -20,6 +21,7 @@ const faq: FaqItem[] = [
   { q: "Does this work for a web app as well as a website?", a: "Yes. Content and copy stages give way to product scoping and iterative delivery, and the design gates stay the same." },
 ];
 const gates = stages.filter((s) => s.gate).length;
+const tabs = [{ id: "new-site", tab: "Build us a new site" }, ...playbooks.map((p) => ({ id: p.id, tab: p.tab }))];
 ---
 <Base
   title={seo.process.title}
@@ -31,17 +33,81 @@ const gates = stages.filter((s) => s.gate).length;
       <p class="crumb">Process</p>
       <h1>{copy.process.h1}</h1>
       <p class="lede">{copy.process.lede}</p>
-      <p class="note" style="max-width:52ch">This is the sequence for a new website or store. Smaller jobs, such as an audit, a compliance fix, an integration or ongoing consulting, follow a shorter version, and the proposal for each one spells out its steps and gates.</p>
+      <p class="note" style="max-width:52ch">A new website gets the full sequence below. Other jobs run shorter. Pick the one that sounds like yours.</p>
     </div>
   </section>
 
-  <section class="sec">
+  <section class="sec" id="jobs">
     <div class="in">
       <span class="label">The stages</span>
       <h2>What happens, and what you get.</h2>
-      <Timeline detailed />
+      <div class="tabs" role="tablist" aria-label="Kind of job">
+        {tabs.map((t, i) => (
+          <button type="button" role="tab" id={`tab-${t.id}`} aria-controls={`job-${t.id}`} aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1}>{t.tab}</button>
+        ))}
+      </div>
+
+      <div class="job on" role="tabpanel" id="job-new-site" aria-labelledby="tab-new-site">
+        <p class="job-lede">The full sequence, with {gates} approval gates. Nothing is built before you have seen it designed, and nothing goes live before you have signed it off.</p>
+        <Timeline detailed />
+      </div>
+
+      {playbooks.map((p) => (
+        <div class="job" role="tabpanel" id={`job-${p.id}`} aria-labelledby={`tab-${p.id}`}>
+          <h3 class="job-title">{p.title}</h3>
+          <p class="job-lede">{p.lede}</p>
+          <p class="job-pace"><span class="label">Pace</span>{p.pace}</p>
+          <ol class="steps">
+            {p.steps.map((s, i) => (
+              <li>
+                <span class="n">{String(i + 1).padStart(2, "0")}</span>
+                <div>
+                  <h4>{s.name}{s.gate && <span class="gate">Your approval</span>}</h4>
+                  <p>{s.text}</p>
+                  {s.youGet && <p class="yg"><span>You get:</span> {s.youGet}</p>}
+                </div>
+              </li>
+            ))}
+          </ol>
+          <div class="related">{p.related.map((r) => <a href={r.href}>{r.label}</a>)}</div>
+        </div>
+      ))}
     </div>
   </section>
+
+  <script>
+    // Job tabs: click or arrow keys switch panels; the hash remembers which one (/process/#hacked).
+    const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('.tabs [role="tab"]'));
+    const panels = Array.from(document.querySelectorAll<HTMLElement>(".job"));
+    const show = (id: string, focus = false) => {
+      tabs.forEach((t) => {
+        const on = t.id === `tab-${id}`;
+        t.setAttribute("aria-selected", String(on));
+        t.tabIndex = on ? 0 : -1;
+        if (on && focus) t.focus();
+        if (on) t.scrollIntoView({ block: "nearest", inline: "nearest" });
+      });
+      panels.forEach((p) => p.classList.toggle("on", p.id === `job-${id}`));
+    };
+    const idOf = (t: HTMLElement) => t.id.replace(/^tab-/, "");
+    tabs.forEach((t, i) => {
+      t.addEventListener("click", () => { show(idOf(t)); history.replaceState(null, "", `#${idOf(t)}`); });
+      t.addEventListener("keydown", (e) => {
+        const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : e.key === "Home" ? -i : e.key === "End" ? tabs.length - 1 - i : 0;
+        if (!d) return;
+        e.preventDefault();
+        const n = tabs[(i + d + tabs.length) % tabs.length];
+        show(idOf(n), true);
+        history.replaceState(null, "", `#${idOf(n)}`);
+      });
+    });
+    const fromHash = () => {
+      const id = location.hash.slice(1);
+      if (tabs.some((t) => t.id === `tab-${id}`)) { show(id); document.getElementById("jobs")?.scrollIntoView(); }
+    };
+    window.addEventListener("hashchange", fromHash);
+    fromHash();
+  </script>
 
   <section class="sec">
     <div class="in">
