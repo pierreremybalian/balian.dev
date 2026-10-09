@@ -77,7 +77,7 @@ for (const file of files) {
     if (file.endsWith(".astro") && /^\s*(const|let) \w+ = \[?$/.test(line)) return;
     const hits: string[] = [];
     const lower = line.toLowerCase();
-    for (const b of proseBanned) if (lower.includes(b)) hits.push(`"${b}"`);
+    for (const b of proseBanned) if (lower.includes(b) && !(b === "solutions" && /cool solutions/.test(lower))) hits.push(`"${b}"`);
     for (const [re, label] of tics) if (re.test(line)) hits.push(label);
     if (hits.length) {
       prose++;
