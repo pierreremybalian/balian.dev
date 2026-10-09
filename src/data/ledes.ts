@@ -69,8 +69,8 @@ export const copy: Record<string, PageCopy> = {
     lede: "Every project follows the same thirteen steps, and nothing moves forward without your okay at six of them. Design comes first, before any code.",
   },
   writing: {
-    h1: "Opinions, with the numbers attached.",
-    lede: "I write about the systems businesses pay for and the ones I build instead. Each post says what things cost and what I would do about it.",
+    h1: "Things I keep saying to clients.",
+    lede: "Most of these started as a rant on a call. I wrote them down so I can send a link instead of repeating myself.",
   },
   contact: {
     h1: "Tell me what you're building.",
